@@ -9,7 +9,7 @@ public class ShortRandom implements RandomType{
 
     public static short random(){
         short i = (short) new Random().nextInt(100);
-        System.out.println(i);
+//        System.out.println(i);
         return i;
     }
 

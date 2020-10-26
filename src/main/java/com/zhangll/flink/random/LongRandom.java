@@ -9,7 +9,7 @@ public class LongRandom implements RandomType{
 
     public static long random(){
         int i = new Random().nextInt(100);
-        System.out.println(i);
+//        System.out.println(i);
         return i;
     }
 

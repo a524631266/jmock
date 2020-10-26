@@ -5,7 +5,8 @@ import com.zhangll.flink.rule.Rule;
 import java.lang.reflect.Field;
 import java.util.Random;
 
-public class StringRandom implements RandomType{
+public class StringRandom extends AbstractRandom{
+    private DefaultStringRule defaultStringRule = new DefaultStringRule(3);
     public static String surName[] = {
             "赵","钱","孙","李","周","吴","郑","王","冯","陈","楮","卫","蒋","沈","韩","杨",
             "朱","秦","尤","许","何","吕","施","张","孔","曹","严","华","金","魏","陶","姜",
@@ -204,7 +205,50 @@ public class StringRandom implements RandomType{
     }
 
     @Override
-    public void updateField(Object o, Field declaredField, Rule rule) throws IllegalAccessException {
-        declaredField.set(o, StringRandom.random());
+    public Object compute(Field declaredField, Rule rule) {
+
+        if(rule == null) {
+            return defaultStringRule.apply();
+        }else{
+            return rule.apply();
+        }
     }
+
+
+    /**
+     * 属性值是字符串 String
+     * 'name|min-max': 'value' 通过重复 'value' 生成一个字符串，重复次数大于等于 min，小于等于 max。
+     * 'name|count': 'value' 通过重复 'value' 生成一个字符串，重复次数等于 count。
+     */
+    public class DefaultStringRule implements Rule<String> {
+        // 最小重复次数
+        private int min = 0;
+        // 最大重复次数
+        private int max = 0;
+        // 固定次数
+        private int count = 0;
+
+        public DefaultStringRule(int min, int max) {
+            this.min = min;
+            this.max = max;
+        }
+
+        public DefaultStringRule(int count) {
+            this.count = count;
+        }
+
+        @Override
+        public String apply() {
+            int num = count;
+            if(num == 0) {
+                num = (new Random().nextInt(max -min)) + min;
+            }
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < num; i++) {
+                sb.append(StringRandom.randomChinese());
+            }
+            return sb.toString();
+        }
+    }
+
 }

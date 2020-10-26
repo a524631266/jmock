@@ -9,7 +9,7 @@ public class IntegerRandom extends AbstractRandom{
     public Rule<Integer> defaultRule = new DefaultIntegerRule();
     public static int random(){
         int i = new Random().nextInt(100);
-        System.out.println(i);
+//        System.out.println(i);
         return i;
     }
 

@@ -88,7 +88,7 @@ public class ListRandom<T> extends AbstractRandom{
                         // TODO RULE转换
                         Rule rule = RuleTransfer.transferToIntRule(this);
                         Object randomValue = ((IntegerRandom) random).compute(null, rule);
-                        System.out.println(randomValue);
+//                        System.out.println(randomValue);
                         o.add(randomValue);
                     }
                 }
