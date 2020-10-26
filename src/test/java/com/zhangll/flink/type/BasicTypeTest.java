@@ -1,25 +1,27 @@
 package com.zhangll.flink.type;
 
-import com.zhangll.flink.Person;
+import com.zhangll.flink.Father;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Vector;
 
 import static org.junit.Assert.*;
 
 public class BasicTypeTest {
     @Test
     public void testInteger() throws NoSuchFieldException {
-        Field age = Person.class.getDeclaredField("age");
+        Field age = Father.class.getDeclaredField("age");
         assertTrue(BasicType.isInteger(age.getType()));
         assertTrue(BasicType.isInteger(Integer.class));
         assertTrue(BasicType.isPrimitive(age.getType()));
     }
     @Test
     public void testString() throws NoSuchFieldException {
-        Field name = Person.class.getDeclaredField("name");
+        Field name = Father.class.getDeclaredField("name");
         assertTrue(BasicType.isString(name.getType()));
         assertTrue(BasicType.isString(String.class));
         assertFalse(BasicType.isPrimitive(name.getType()));
@@ -60,6 +62,14 @@ public class BasicTypeTest {
 
         // 包装类型不是基本类型
         assertFalse(BasicType.isPrimitive(Integer.class));
+    }
+
+    @Test
+    public void testList(){
+        assertTrue(BasicType.isList(List.class));
+        assertTrue(BasicType.isList(ArrayList.class));
+        assertTrue(BasicType.isList(LinkedList.class));
+        assertTrue(BasicType.isList(Vector.class));
     }
 
 }

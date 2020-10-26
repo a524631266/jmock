@@ -2,8 +2,13 @@ package com.zhangll.flink;
 
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
 @ToString
-public class Person {
+public class Father {
     private int age;
     private Integer id;
     private String name;
@@ -14,4 +19,10 @@ public class Person {
     private Character a = 'c';
     // 男为1 女为0
     private boolean sex;
+    private ArrayList<Integer> sonsNameList1;
+    private List<Integer> sonsNameList2;
+    private LinkedList<Integer> sonsNameList3;
+
+    private Set<String> sonsName2;
+
 }

@@ -39,6 +39,9 @@ public class BasicType {
     public static boolean isPrimitive(Class type) {
         return type.isPrimitive();
     }
+    public static boolean isList(Class type) {
+        return List.class.isAssignableFrom(type);
+    }
 
     public static boolean isArray(Object o) {
         return o instanceof List;

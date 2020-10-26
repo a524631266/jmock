@@ -18,4 +18,5 @@ public interface RandomType {
      * @param rule 规则
      */
     void updateField(Object o, Field declaredField, Rule rule) throws IllegalAccessException;
+
 }

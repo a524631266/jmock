@@ -1,6 +1,9 @@
 package com.zhangll.flink.random;
 
+import com.zhangll.flink.type.BasicType;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RandomFactory {
@@ -21,9 +24,17 @@ public class RandomFactory {
         randomMap.put(Boolean.class, new BooleanRandom());
         randomMap.put(boolean.class, new BooleanRandom());
         randomMap.put(String.class, new StringRandom());
+        randomMap.put(List.class, new ListRandom<>());
     }
 
     public static RandomType getRandom(Class type) {
+        RandomType randomType = randomMap.get(type);
+        if(randomType!= null){
+            return randomType;
+        }
+        if(BasicType.isList(type)){
+            return randomMap.get(List.class);
+        }
         return randomMap.get(type);
     }
 }
