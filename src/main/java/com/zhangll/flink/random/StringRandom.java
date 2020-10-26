@@ -1,5 +1,8 @@
 package com.zhangll.flink.random;
 
+import com.zhangll.flink.rule.Rule;
+
+import java.lang.reflect.Field;
 import java.util.Random;
 
 public class StringRandom implements RandomType{
@@ -198,5 +201,10 @@ public class StringRandom implements RandomType{
     @Override
     public boolean isCurrentType(Class<?> type) {
         return type == String.class;
+    }
+
+    @Override
+    public void updateField(Object o, Field declaredField, Rule rule) throws IllegalAccessException {
+        declaredField.set(o, StringRandom.random());
     }
 }
