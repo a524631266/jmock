@@ -18,6 +18,8 @@ public class RandomFactory {
         randomMap.put(long.class, new LongRandom());
         randomMap.put(Short.class, new ShortRandom());
         randomMap.put(short.class, new ShortRandom());
+        randomMap.put(Boolean.class, new BooleanRandom());
+        randomMap.put(boolean.class, new BooleanRandom());
         randomMap.put(String.class, new StringRandom());
     }
 

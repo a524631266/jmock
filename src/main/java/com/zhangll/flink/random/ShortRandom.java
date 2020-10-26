@@ -4,8 +4,8 @@ import java.util.Random;
 
 public class ShortRandom implements RandomType{
 
-    public static long random(){
-        int i = new Random().nextInt(100);
+    public static short random(){
+        short i = (short) new Random().nextInt(100);
         System.out.println(i);
         return i;
     }
