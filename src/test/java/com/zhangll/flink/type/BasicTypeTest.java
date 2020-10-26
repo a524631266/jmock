@@ -4,6 +4,8 @@ import com.zhangll.flink.Person;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -26,6 +28,12 @@ public class BasicTypeTest {
     @Test
     public void testChar(){
 
+    }
+
+    @Test
+    public void isArray() {
+        List list = new ArrayList();
+        assertTrue(BasicType.isArray(list));
     }
 
     /**

@@ -1,5 +1,7 @@
 package com.zhangll.flink.type;
 
+import java.util.List;
+
 public class BasicType {
 
     public static boolean isInteger(Class type) {
@@ -38,4 +40,7 @@ public class BasicType {
         return type.isPrimitive();
     }
 
+    public static boolean isArray(Object o) {
+        return o instanceof List;
+    }
 }

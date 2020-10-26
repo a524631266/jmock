@@ -2,9 +2,9 @@ package com.zhangll.flink.random;
 
 import java.util.Random;
 
-public class IntegerRandom implements RandomType{
+public class ShortRandom implements RandomType{
 
-    public static int random(){
+    public static long random(){
         int i = new Random().nextInt(100);
         System.out.println(i);
         return i;
@@ -12,6 +12,6 @@ public class IntegerRandom implements RandomType{
 
     @Override
     public boolean isCurrentType(Class<?> type) {
-        return type == Integer.class || type == int.class;
+        return type == Short.class || type == short.class;
     }
 }

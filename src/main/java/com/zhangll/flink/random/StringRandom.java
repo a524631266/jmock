@@ -2,7 +2,7 @@ package com.zhangll.flink.random;
 
 import java.util.Random;
 
-public class StringRandom {
+public class StringRandom implements RandomType{
     public static String surName[] = {
             "赵","钱","孙","李","周","吴","郑","王","冯","陈","楮","卫","蒋","沈","韩","杨",
             "朱","秦","尤","许","何","吕","施","张","孔","曹","严","华","金","魏","陶","姜",
@@ -195,4 +195,8 @@ public class StringRandom {
         return sb.toString();
     }
 
+    @Override
+    public boolean isCurrentType(Class<?> type) {
+        return type == String.class;
+    }
 }

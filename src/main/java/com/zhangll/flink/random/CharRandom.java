@@ -2,7 +2,7 @@ package com.zhangll.flink.random;
 
 import java.util.Random;
 
-public class CharRandom {
+public class CharRandom implements RandomType{
     // 返回 char类型数值
     // char大小可以
     public static char random() {
@@ -19,5 +19,10 @@ public class CharRandom {
         // 两个字节 0- 65535
         char random = (char) (new Random().nextInt(45567) + 19968);
         return random;
+    }
+
+    @Override
+    public boolean isCurrentType(Class<?> type) {
+        return type == char.class || type == Character.class;
     }
 }
