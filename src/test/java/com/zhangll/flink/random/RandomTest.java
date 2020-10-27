@@ -13,6 +13,7 @@ import static org.junit.Assert.*;
 
 public class RandomTest {
     private IntegerRandom integerRandom = new IntegerRandom();
+    private LongRandom longRandom = new LongRandom();
     private DoubleRandom doubleRandom = new DoubleRandom();
     private BooleanRandom booleanRandom = new BooleanRandom();
     @Before
@@ -100,5 +101,28 @@ public class RandomTest {
             map.put(bool,map.getOrDefault(bool, 0)+1);
         }
         System.out.println("map:"+map);
+    }
+    /**
+     * 检测规则是否正确
+     */
+    @Test
+    public void testLongRandom(){
+        // 定义规则
+        int min = 10;
+        int max = 100000;
+        FieldToken token = new FieldToken(min,max,0,0,0,0,0, null);
+        Rule rule = longRandom.getRule(token);
+        for (int i = 0; i < 100; i++) {
+            long res1 = (Long) rule.apply();
+            assertTrue( res1 >= min && res1 < max);
+        }
+        int count = 600;
+
+        FieldToken token2 = new FieldToken(min , max,count,0,0,0,0, null);
+        Rule rule2 = longRandom.getRule(token2);
+        for (int i = 0; i < 100; i++) {
+            long res2 = (Long) rule2.apply();
+            assertTrue( res2 == count);
+        }
     }
 }
