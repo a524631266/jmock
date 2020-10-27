@@ -1,12 +1,14 @@
 package com.zhangll.flink.random;
 
+import com.zhangll.flink.expression.ValueExpression;
+import com.zhangll.flink.model.Token;
 import com.zhangll.flink.rule.Rule;
 
 import java.lang.reflect.Field;
 import java.util.Random;
 
 public class StringRandom extends AbstractRandom{
-    private DefaultStringRule defaultStringRule = new DefaultStringRule(3);
+    private DefaultStringRule defaultStringRule = new DefaultStringRule(3, null);
     public static String surName[] = {
             "赵","钱","孙","李","周","吴","郑","王","冯","陈","楮","卫","蒋","沈","韩","杨",
             "朱","秦","尤","许","何","吕","施","张","孔","曹","严","华","金","魏","陶","姜",
@@ -223,6 +225,20 @@ public class StringRandom extends AbstractRandom{
         return defaultStringRule;
     }
 
+    /**
+     * count 优先级高于 min - max
+     * @param token 词法分析结果
+     * @return
+     */
+    @Override
+    public Rule getRule(Token token) {
+        //
+        if(token.count == 0){
+            return new DefaultStringRule(token.min, token.max ,token.value);
+        }
+        return new DefaultStringRule(token.count , token.value);
+    }
+
     @Override
     public Object compute(Field declaredField, Rule rule) {
 
@@ -247,25 +263,41 @@ public class StringRandom extends AbstractRandom{
         private int max = 0;
         // 固定次数
         private int count = 0;
+        // 可能会有@First的功能 TODO
+        private String value;
 
-        public DefaultStringRule(int min, int max) {
+        public DefaultStringRule(int min, int max ,String value) {
             this.min = min;
             this.max = max;
+            this.value = value;
         }
 
-        public DefaultStringRule(int count) {
+        public DefaultStringRule(int count, String value) {
             this.count = count;
+            this.value = value;
         }
 
+        /**
+         * 根据实际情况进行rule分解
+         * @return
+         */
         @Override
         public String apply() {
+            String result = null;
+            if(value!=null){
+                result = new ValueExpression(value).generate();
+            }
             int num = count;
             if(num == 0) {
                 num = (new Random().nextInt(max -min)) + min;
             }
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < num; i++) {
-                sb.append(StringRandom.randomOneWord());
+                if(result!=null){
+                    sb.append(result);
+                }else{
+                    sb.append(StringRandom.randomOneWord());
+                }
             }
             return sb.toString();
         }
