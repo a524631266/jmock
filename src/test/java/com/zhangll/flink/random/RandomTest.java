@@ -6,11 +6,15 @@ import org.junit.Before;
 import org.junit.Test;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.Assert.*;
 
 public class RandomTest {
     private IntegerRandom integerRandom = new IntegerRandom();
     private DoubleRandom doubleRandom = new DoubleRandom();
+    private BooleanRandom booleanRandom = new BooleanRandom();
     @Before
     public void init(){
 
@@ -76,5 +80,25 @@ public class RandomTest {
             assertTrue( dLength >= dmin && dLength <= dmax);
             assertTrue(it >= min && it <= max);
         }
+    }
+
+    /**
+     * 测试成功
+     */
+    @Test
+    public void testBooleanRandom(){
+        // 定义规则
+        int min = 1;
+        int max = 15;
+        int count = 0;
+        String value = "false";
+        FieldToken token = new FieldToken(min,max,count,0,0,0,0, value);
+        Rule rule = booleanRandom.getRule(token);
+        Map<Boolean, Integer>  map = new HashMap();
+        for (int i = 0; i < 1000; i++) {
+            boolean bool = (boolean) rule.apply();
+            map.put(bool,map.getOrDefault(bool, 0)+1);
+        }
+        System.out.println("map:"+map);
     }
 }

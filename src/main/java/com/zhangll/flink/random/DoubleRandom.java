@@ -7,7 +7,7 @@ import com.zhangll.flink.uitl.RandomUtil;
 import java.lang.reflect.Field;
 import java.util.Random;
 
-public class DoubleRandom implements RandomType{
+public class DoubleRandom extends AbstractRandom{
     private static DefaultDoubleRule defaultDoubleRule = new DefaultDoubleRule();
     // 返回 char类型数值
     public static double random() {
@@ -20,10 +20,6 @@ public class DoubleRandom implements RandomType{
         return type == Double.class || type == double.class;
     }
 
-    @Override
-    public void updateField(Object o, Field declaredField, Rule rule) throws IllegalAccessException {
-        declaredField.set(o, DoubleRandom.random());
-    }
 
     @Override
     public Rule getRule() {
@@ -41,6 +37,12 @@ public class DoubleRandom implements RandomType{
                 fieldToken.getDmax(),
                 fieldToken.getValue());
     }
+
+    @Override
+    public Object compute(Field declaredField, Rule rule) {
+        return rule.apply();
+    }
+
     /**
      * 'name|min-max.dmin-dmax': number
      * 保留位数

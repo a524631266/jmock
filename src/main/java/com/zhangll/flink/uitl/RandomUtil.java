@@ -14,6 +14,21 @@ public class RandomUtil {
         return new Random().nextInt(gap) + min;
     }
 
+    /**
+     * 等概率事件
+     *  min/ (min + max)
+     * @param min
+     * @param max
+     * @return
+     */
+    public static Boolean getBoolean(int min, int max){
+        double v = (min * 1.0) / (min + max);
+        double v1 = new Random().nextDouble();
+        if(v1 >= v){
+            return true;
+        }
+        return false;
+    }
 
     public static void main(String[] args) {
         for (int i = 0; i < 100; i++) {
