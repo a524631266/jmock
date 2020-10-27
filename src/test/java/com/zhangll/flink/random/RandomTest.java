@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
 
 public class RandomTest {
     private IntegerRandom integerRandom = new IntegerRandom();
+    private DoubleRandom doubleRandom = new DoubleRandom();
     @Before
     public void init(){
 
@@ -27,7 +28,7 @@ public class RandomTest {
         Rule rule = integerRandom.getRule(token);
         for (int i = 0; i < 100; i++) {
             int res1 = (int) rule.apply();
-            assertTrue( res1 >= min && res1 <= max);
+            assertTrue( res1 >= min && res1 < max);
         }
         int count = 5;
 
@@ -38,5 +39,42 @@ public class RandomTest {
             assertTrue( res2 == count);
         }
     }
+    /**
+     * 检测规则是否正确
+     *  奇葩的规则
+     * 8 + (43391 / Math.pow(10,5)) 结果为8.433910000000001
+     */
+    @Test
+    public void testDoubleRandom(){
+        // 定义规则
+        int min = 5;
+        int max = 15;
+        int count = 50;
+        int dmin = 2;
+        int dmax = 7;
+        String value = "10.287";
+        FieldToken token = new FieldToken(min,max,count,dmin,dmax,0,0, value);
+        Rule rule = doubleRandom.getRule(token);
+        for (int i = 0; i < 100; i++) {
+            double res1 = (double) rule.apply();
+//            System.out.println(res1);
+            //
+            assertTrue( res1 >= min && res1 < max + (Integer.valueOf(value.split("\\.")[1])+1));
+            String s = String.valueOf(res1);
+            int dLength = s.split("\\.")[1].length();
+            assertTrue( dLength >= dmin && dLength <= dmax);
+        }
 
+        FieldToken token2 = new FieldToken(min,max,count,dmin,dmax,0,0, null);
+        Rule rule2 = doubleRandom.getRule(token2);
+        for (int i = 0; i < 100; i++) {
+            double res1 = (double) rule2.apply();
+            String s = String.valueOf(res1);
+            int dLength = s.split("\\.")[1].length();
+            int it = Integer.valueOf(s.split("\\.")[0]);
+            System.out.println(res1);
+            assertTrue( dLength >= dmin && dLength <= dmax);
+            assertTrue(it >= min && it <= max);
+        }
+    }
 }
