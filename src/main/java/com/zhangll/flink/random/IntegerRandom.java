@@ -32,6 +32,11 @@ public class IntegerRandom extends AbstractRandom{
         return type == Integer.class || type == int.class;
     }
 
+    @Override
+    public Rule getRule() {
+        // TODO
+        return null;
+    }
 
 
     /**

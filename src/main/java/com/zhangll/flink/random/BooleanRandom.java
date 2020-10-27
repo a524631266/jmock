@@ -24,4 +24,10 @@ public class BooleanRandom implements RandomType{
     public void updateField(Object o, Field declaredField, Rule rule) throws IllegalAccessException {
         declaredField.set(o, BooleanRandom.random());
     }
+
+    @Override
+    public Rule getRule() {
+        //TODO
+        return null;
+    }
 }

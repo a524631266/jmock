@@ -21,4 +21,10 @@ public class DoubleRandom implements RandomType{
     public void updateField(Object o, Field declaredField, Rule rule) throws IllegalAccessException {
         declaredField.set(o, DoubleRandom.random());
     }
+
+    @Override
+    public Rule getRule() {
+        // TOCO
+        return null;
+    }
 }

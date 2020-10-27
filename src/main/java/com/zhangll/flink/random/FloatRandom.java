@@ -21,4 +21,10 @@ public class FloatRandom implements RandomType{
     public void updateField(Object o, Field declaredField, Rule rule) throws IllegalAccessException {
         declaredField.set(o, FloatRandom.random());
     }
+
+    @Override
+    public Rule getRule() {
+        // TODO
+        return null;
+    }
 }

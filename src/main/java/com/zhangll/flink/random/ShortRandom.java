@@ -22,4 +22,10 @@ public class ShortRandom implements RandomType{
     public void updateField(Object o, Field declaredField, Rule rule) throws IllegalAccessException {
         declaredField.set(o, ShortRandom.random());
     }
+
+    @Override
+    public Rule getRule() {
+        // TODO
+        return null;
+    }
 }

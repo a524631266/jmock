@@ -219,6 +219,11 @@ public class StringRandom extends AbstractRandom{
     }
 
     @Override
+    public Rule getRule() {
+        return defaultStringRule;
+    }
+
+    @Override
     public Object compute(Field declaredField, Rule rule) {
 
         if(rule == null) {

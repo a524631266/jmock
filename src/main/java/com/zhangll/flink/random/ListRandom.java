@@ -19,6 +19,12 @@ public class ListRandom<T> extends AbstractRandom{
         return BasicType.isList(type);
     }
 
+    @Override
+    public Rule getRule() {
+        // TODO
+        return defaultRule;
+    }
+
 
     @Override
     public Object compute(Field declaredField, Rule rule) {

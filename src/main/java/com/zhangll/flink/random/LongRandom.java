@@ -22,4 +22,10 @@ public class LongRandom implements RandomType{
     public void updateField(Object o, Field declaredField, Rule rule) throws IllegalAccessException {
         declaredField.set(o, LongRandom.random());
     }
+
+    @Override
+    public Rule getRule() {
+        // TODO
+        return null;
+    }
 }

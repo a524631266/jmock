@@ -21,4 +21,5 @@ public abstract class AbstractRandom implements RandomType {
      * @return
      */
     public abstract Object compute(Field declaredField, Rule rule);
+
 }
