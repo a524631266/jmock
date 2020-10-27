@@ -11,7 +11,9 @@ public class RuleTransfer {
         if (defaultListRule instanceof ListRandom.DefaultListRule){
             int end = ((DefaultListRule) defaultListRule).getEnd();
             int start = ((DefaultListRule) defaultListRule).getStart();
-            return new DefaultIntegerRule(start, end);
+            int count = ((DefaultListRule) defaultListRule).getCount();
+            String value = ((DefaultListRule) defaultListRule).getValue();
+            return new DefaultIntegerRule(start, end, count, value);
         }
         return null;
     }

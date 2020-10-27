@@ -1,5 +1,6 @@
 package com.zhangll.flink.random;
 
+import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.rule.Rule;
 import com.zhangll.flink.type.BasicType;
 import com.zhangll.flink.type.RuleTransfer;
@@ -25,6 +26,12 @@ public class ListRandom<T> extends AbstractRandom{
         return defaultRule;
     }
 
+    @Override
+    public Rule getRule(FieldToken fieldToken) {
+        // TODO
+        return null;
+    }
+
 
     @Override
     public Object compute(Field declaredField, Rule rule) {
@@ -45,6 +52,7 @@ public class ListRandom<T> extends AbstractRandom{
         final int count = 0;
         // step为以多少自增
         final int step = 1;
+        final String value;
         final List<T> defaultList = new ArrayList<>();
 
         public int getStart() {
@@ -55,13 +63,22 @@ public class ListRandom<T> extends AbstractRandom{
             return end;
         }
 
-        public DefaultListRule() {
-            this(0, 5);
+        public String getValue() {
+            return value;
         }
 
-        public DefaultListRule(int start, int end) {
+        public int getCount() {
+            return count;
+        }
+
+        public DefaultListRule() {
+            this(0, 5, null);
+        }
+
+        public DefaultListRule(int start, int end, String value) {
             this.start = start;
             this.end = end;
+            this.value = value;
         }
 
         @Override

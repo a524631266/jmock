@@ -1,5 +1,6 @@
 package com.zhangll.flink.random;
 
+import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.rule.Rule;
 
 import java.lang.reflect.Field;
@@ -24,4 +25,11 @@ public interface RandomType {
      * @return
      */
     Rule getRule();
+
+    /**
+     * 根据token结果集获取指定类型的rule
+     * @param fieldToken 词法分析结果
+     * @return
+     */
+    Rule getRule(FieldToken fieldToken);
 }

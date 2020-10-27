@@ -27,7 +27,9 @@ public class MappingStoreTest {
     public void setRuleMap() {
         for (Field field : fields) {
             RandomType random = RandomFactory.getRandom(field.getType());
-            mappingStore.setRuleMap(testClass, field, random.getRule());
+            if(random != null){
+                mappingStore.setRuleMap(testClass, field, random.getRule());
+            }
         }
 
     }
@@ -37,7 +39,7 @@ public class MappingStoreTest {
         setRuleMap();
         for (Field field : fields) {
             Rule rule = mappingStore.getRule(testClass, field);
-            System.out.println(rule);
+            System.out.println("field:" + field.getType() + "====> rule: " + rule);
         }
     }
 

@@ -1,5 +1,6 @@
 package com.zhangll.flink.random;
 
+import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.rule.Rule;
 
 import java.lang.reflect.Field;
@@ -36,6 +37,12 @@ public class CharRandom implements RandomType{
 
     @Override
     public Rule getRule() {
+        // TODO
+        return null;
+    }
+
+    @Override
+    public Rule getRule(FieldToken fieldToken) {
         // TODO
         return null;
     }

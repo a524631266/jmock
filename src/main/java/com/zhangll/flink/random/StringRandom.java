@@ -1,7 +1,7 @@
 package com.zhangll.flink.random;
 
 import com.zhangll.flink.expression.ValueExpression;
-import com.zhangll.flink.model.Token;
+import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.rule.Rule;
 
 import java.lang.reflect.Field;
@@ -227,16 +227,16 @@ public class StringRandom extends AbstractRandom{
 
     /**
      * count 优先级高于 min - max
-     * @param token 词法分析结果
+     * @param fieldToken 词法分析结果
      * @return
      */
     @Override
-    public Rule getRule(Token token) {
+    public Rule getRule(FieldToken fieldToken) {
         //
-        if(token.count == 0){
-            return new DefaultStringRule(token.min, token.max ,token.value);
+        if(fieldToken.count == 0){
+            return new DefaultStringRule(fieldToken.min, fieldToken.max , fieldToken.value);
         }
-        return new DefaultStringRule(token.count , token.value);
+        return new DefaultStringRule(fieldToken.count , fieldToken.value);
     }
 
     @Override
