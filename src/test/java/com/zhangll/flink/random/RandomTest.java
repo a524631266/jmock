@@ -187,7 +187,7 @@ public class RandomTest {
 //        System.out.println(random);
         for (int i = 0; i < 100; i++) {
 
-            String s = StringRandom.randomChinese();
+            String s = StringRandom.randomChineseName();
             System.out.println(s);
         }
     }

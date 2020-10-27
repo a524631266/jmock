@@ -186,7 +186,11 @@ public class StringRandom extends AbstractRandom{
         return sb.toString();
     }
 
-    public static String randomChinese(){
+    /**
+     * 返回一个有 surName 两个或一个字的中文姓名
+     * @return
+     */
+    public static String randomChineseName(){
         StringBuilder sb = new StringBuilder();
         // add famialy
         sb.append(surName[new Random().nextInt(surName.length)]);
@@ -196,6 +200,16 @@ public class StringRandom extends AbstractRandom{
         for (int i = 0; i < len; i++) {
             sb.append(word[new Random().nextInt(word.length)]);
         }
+        return sb.toString();
+    }
+
+    /**
+     * 返回一个有 surName 两个或一个字的中文姓名
+     * @return
+     */
+    public static String randomOneWord(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(word[new Random().nextInt(word.length)]);
         return sb.toString();
     }
 
@@ -219,6 +233,7 @@ public class StringRandom extends AbstractRandom{
      * 属性值是字符串 String
      * 'name|min-max': 'value' 通过重复 'value' 生成一个字符串，重复次数大于等于 min，小于等于 max。
      * 'name|count': 'value' 通过重复 'value' 生成一个字符串，重复次数等于 count。
+     *
      */
     public class DefaultStringRule implements Rule<String> {
         // 最小重复次数
@@ -245,7 +260,7 @@ public class StringRandom extends AbstractRandom{
             }
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < num; i++) {
-                sb.append(StringRandom.randomChinese());
+                sb.append(StringRandom.randomOneWord());
             }
             return sb.toString();
         }
