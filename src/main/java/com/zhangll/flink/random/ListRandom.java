@@ -9,10 +9,12 @@ import com.zhangll.flink.type.RuleTransfer;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
+/**
+ * List => list + set
+ * @param <T>
+ */
 public class ListRandom<T> extends AbstractRandom{
     public DefaultListRule defaultRule = new DefaultListRule(
             new FieldToken.FieldTokenBuilder()
@@ -76,8 +78,8 @@ public class ListRandom<T> extends AbstractRandom{
      *
      * 通过重复属性值 array 生成一个新数组，重复次数为 count。
      */
-    public class DefaultListRule implements Rule<List<T>> {
-        final List<T> defaultList = null;
+    public class DefaultListRule implements Rule<Collection<T>> {
+        final Collection<T> defaultList = null;
         private final FieldToken fieldToken;
 
         public FieldToken getFieldToken() {
@@ -89,7 +91,7 @@ public class ListRandom<T> extends AbstractRandom{
         }
 
         @Override
-        public List<T> apply() {
+        public Collection<T> apply() {
             return defaultList;
         }
 
@@ -97,15 +99,17 @@ public class ListRandom<T> extends AbstractRandom{
          * @param declaredField
          * @return
          */
-        public List<T> apply(Field declaredField) {
+        public Collection<T> apply(Field declaredField) {
             // 当前的list类型
             Class<?> listType = declaredField.getType();
             Type genericType = declaredField.getGenericType();
-            List o = null;
+            Collection o = null;
             try {
                 if(listType == List.class){
                     o = new ArrayList();
-                } else{
+                } else if(listType == Set.class){
+                    o = new HashSet();
+                }else{
                     o = (List) listType.newInstance();
                 }
             } catch ( InstantiationException e ) {

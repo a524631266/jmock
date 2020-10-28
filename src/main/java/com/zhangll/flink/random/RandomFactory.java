@@ -5,6 +5,7 @@ import com.zhangll.flink.type.BasicType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class RandomFactory {
     private static Map<Class, RandomType> randomMap = new HashMap<Class, RandomType>();
@@ -25,6 +26,7 @@ public class RandomFactory {
         randomMap.put(boolean.class, new BooleanRandom());
         randomMap.put(String.class, new StringRandom());
         randomMap.put(List.class, new ListRandom<>());
+        randomMap.put(Set.class, new ListRandom<>());
     }
 
     public static RandomType getRandom(Class type) {

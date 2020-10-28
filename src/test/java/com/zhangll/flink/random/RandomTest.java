@@ -291,7 +291,7 @@ public class RandomTest {
         );
 
         for (int i = 0; i < 10000; i++) {
-            List object = rule.apply(Father.class.getDeclaredField("sonsNameList"));
+            List object = (List) rule.apply(Father.class.getDeclaredField("sonsNameList"));
             System.out.println(object);
             assertTrue( object.size() == count);
         }
@@ -306,7 +306,7 @@ public class RandomTest {
         ListRandom.DefaultListRule rule = (ListRandom.DefaultListRule)listRandom.getRule();
         int count = 10;
         for (int i = 0; i < 10000; i++) {
-            List object = rule.apply(Father.class.getDeclaredField("sonsAgeList"));
+            List object = (List) rule.apply(Father.class.getDeclaredField("sonsAgeList"));
 //            System.out.println(object);
             assertTrue( object.size() == count);
         }
@@ -322,7 +322,7 @@ public class RandomTest {
         ListRandom.DefaultListRule rule = (ListRandom.DefaultListRule)listRandom.getRule();
         int count = 10;
         for (int i = 0; i < 10000; i++) {
-            List object = rule.apply(Father.class.getDeclaredField("sonsNameList"));
+            List object = (List) rule.apply(Father.class.getDeclaredField("sonsNameList"));
             System.out.println(object);
             assertTrue( object.size() == count);
         }
@@ -337,7 +337,7 @@ public class RandomTest {
         ListRandom.DefaultListRule rule = (ListRandom.DefaultListRule)listRandom.getRule();
         int count = 10;
         for (int i = 0; i < 10000; i++) {
-            List object = rule.apply(Father.class.getDeclaredField("sonsMoneyList"));
+            List object = (List) rule.apply(Father.class.getDeclaredField("sonsMoneyList"));
             System.out.println(object);
             assertTrue( object.size() == count);
         }
@@ -352,7 +352,7 @@ public class RandomTest {
         ListRandom.DefaultListRule rule = (ListRandom.DefaultListRule)listRandom.getRule();
         int count = 10;
         for (int i = 0; i < 10000; i++) {
-            List object = rule.apply(Father.class.getDeclaredField("sonsLongList"));
+            List object = (List) rule.apply(Father.class.getDeclaredField("sonsLongList"));
             System.out.println(object);
             assertTrue( object.size() == count);
         }
@@ -379,7 +379,7 @@ public class RandomTest {
         );
         int count = 10;
         for (int i = 0; i < 10000; i++) {
-            List object = rule.apply(Father.class.getDeclaredField("sonsMoneyList"));
+            List object = (List) rule.apply(Father.class.getDeclaredField("sonsMoneyList"));
             System.out.println(object);
             assertTrue( object.size() == count);
         }
