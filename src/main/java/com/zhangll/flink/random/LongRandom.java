@@ -5,6 +5,7 @@ import com.zhangll.flink.rule.Rule;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Random;
 
 public class LongRandom extends AbstractRandom{
@@ -82,14 +83,24 @@ public class LongRandom extends AbstractRandom{
             if(count != 0){
                 return count;
             }
-            BigDecimal i = new BigDecimal(new Random().nextLong());
-            BigDecimal max = new BigDecimal(this.max);
-            BigDecimal min = new BigDecimal(this.min);
+            // 概率
+            double p = new Random().nextDouble();
+            Double len = (this.max - this.min) * p;
 
-            BigDecimal p = min.subtract(i).divide(max.subtract(i).add(min.subtract(i)));
-            Double g = (max - min) * 0.1;
-            long l = g.longValue();
-            return l + min;
+            return  len.longValue() + min;
+//            BigDecimal i = new BigDecimal(new Random().nextLong());
+//            BigDecimal max = new BigDecimal(this.max);
+//            BigDecimal min = new BigDecimal(this.min);
+//            BigDecimal a = min.subtract(i);
+//            BigDecimal b = max.subtract(i).add(min.subtract(i));
+//            Double aDouble = (Long.valueOf(a.toString()) / Math.pow(2, 32));
+//            Double bDouble = (Long.valueOf(b.toString()) / Math.pow(2, 32));
+//            BigDecimal p = min.subtract(i).divide(max.subtract(i).add(min.subtract(i)));
+//
+//            BigDecimal multiply = max.subtract(min).multiply(p);
+//            BigInteger bigInteger = multiply.add(min).toBigInteger();
+//            Long aLong = Long.valueOf(bigInteger.toString());
+//            return aLong;
         }
     }
 }
