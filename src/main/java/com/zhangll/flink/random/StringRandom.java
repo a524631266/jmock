@@ -11,7 +11,9 @@ import java.util.Random;
 
 public class StringRandom extends AbstractRandom{
     private DefaultStringRule defaultStringRule = new DefaultStringRule(
-            FieldTokenFactory.getDefaultFieldToken()
+            new FieldToken.FieldTokenBuilder()
+                    .setMin(1)
+                    .setMax(3).build()
     );
     public static String surName[] = {
             "赵","钱","孙","李","周","吴","郑","王","冯","陈","楮","卫","蒋","沈","韩","杨",

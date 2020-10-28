@@ -1,12 +1,15 @@
 package com.zhangll.flink.random;
 
+import com.zhangll.flink.Father;
 import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.rule.Rule;
 import org.junit.Before;
 import org.junit.Test;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -18,6 +21,8 @@ public class RandomTest {
     private BooleanRandom booleanRandom = new BooleanRandom();
     private StringRandom stringRandom = new StringRandom();
     private ListRandom listRandom = new ListRandom<>();
+
+    private Father father = new Father();
     @Before
     public void init(){
 
@@ -57,8 +62,40 @@ public class RandomTest {
     @Test
     public void testDefaultIntegerRandom(){
         Rule rule = integerRandom.getRule();
-        for (int i = 0; i < 1000; i++) {
-            System.out.println(rule.apply());
+        for (int i = 0; i < 10000; i++) {
+            Integer value = (Integer)rule.apply();
+            assertTrue(value >= 1 && value < 1000);
+        }
+    }
+
+    @Test
+    public void testDefaultLongRandom(){
+        Rule rule = longRandom.getRule();
+        for (int i = 0; i < 10000; i++) {
+            Long value = (Long)rule.apply();
+//            System.out.println(value);
+            assertTrue(value >= 10 && value<1000);
+        }
+    }
+
+    @Test
+    public void testDefaultBooleanRandom(){
+        Map<Boolean , Integer> map = new HashMap<Boolean, Integer>();
+        Rule rule = booleanRandom.getRule();
+        for (int i = 0; i < 10000; i++) {
+            Boolean value = (Boolean)rule.apply();
+            map.put(value,map.getOrDefault(value, 0)+1);
+        }
+        System.out.println(map);
+    }
+
+    @Test
+    public void testDefaultStringRandom(){
+        Rule rule = stringRandom.getRule();
+        for (int i = 0; i < 10000; i++) {
+            String value = (String)rule.apply();
+//            System.out.println(value);
+            assertTrue(value.length() >=1 && value.length() <3);
         }
     }
     /**
@@ -229,18 +266,70 @@ public class RandomTest {
      * b) name|2: ["asdf","asdf","ads"]
      */
     @Test
-    public void testListRandomRule1(){
+    public void testListRandomRule1() throws NoSuchFieldException {
         // 定义规则
         int min = 0;
         int max = 0;
         int count = 10;
         String value = "";
-        FieldToken token = new FieldToken(min,max,count,0,0,0,0, value,null);
-        Rule rule = listRandom.getRule(token);
+        ListRandom.DefaultListRule rule = (ListRandom.DefaultListRule)listRandom.getRule(
+                new FieldToken.FieldTokenBuilder()
+                .setMin(min)
+                .setMax(max)
+                .setCount(count)
+                .setValue(value).build()
+        );
+
         for (int i = 0; i < 10000; i++) {
-            String object = (String) rule.apply();
+            List object = rule.apply(Father.class.getDeclaredField("sonsNameList"));
             System.out.println(object);
-            assertTrue( object.length() == count);
+            assertTrue( object.size() == count);
+        }
+    }
+
+    /**
+     * 默认为10
+     * @throws NoSuchFieldException
+     */
+    @Test
+    public void testDefalutListRandomRuleForInteger() throws NoSuchFieldException {
+        ListRandom.DefaultListRule rule = (ListRandom.DefaultListRule)listRandom.getRule();
+        int count = 10;
+        for (int i = 0; i < 10000; i++) {
+            List object = rule.apply(Father.class.getDeclaredField("sonsAgeList"));
+//            System.out.println(object);
+            assertTrue( object.size() == count);
+        }
+    }
+
+
+    /**
+     * 默认为10
+     * @throws NoSuchFieldException
+     */
+    @Test
+    public void testDefalutListRandomRuleForString() throws NoSuchFieldException {
+        ListRandom.DefaultListRule rule = (ListRandom.DefaultListRule)listRandom.getRule();
+        int count = 10;
+        for (int i = 0; i < 10000; i++) {
+            List object = rule.apply(Father.class.getDeclaredField("sonsNameList"));
+            System.out.println(object);
+            assertTrue( object.size() == count);
+        }
+    }
+
+    /**
+     * 默认为10
+     * @throws NoSuchFieldException
+     */
+    @Test
+    public void testDefalutListRandomRuleForDouble() throws NoSuchFieldException {
+        ListRandom.DefaultListRule rule = (ListRandom.DefaultListRule)listRandom.getRule();
+        int count = 10;
+        for (int i = 0; i < 10000; i++) {
+            List object = rule.apply(Father.class.getDeclaredField("sonsMoneyList"));
+            System.out.println(object);
+            assertTrue( object.size() == count);
         }
     }
 }

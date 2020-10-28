@@ -9,7 +9,9 @@ import java.util.Random;
 
 public class LongRandom extends AbstractRandom{
     public Rule<Long> defaultRule = new DefaultLongRule(
-            FieldTokenFactory.getDefaultFieldToken()
+            new FieldToken.FieldTokenBuilder()
+                    .setMin(10)
+                    .setMax(1000).build()
     );
     @Override
     public boolean isCurrentType(Class<?> type) {

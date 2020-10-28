@@ -10,7 +10,7 @@ import java.util.Random;
 public class IntegerRandom extends AbstractRandom{
     public Rule<Integer> defaultRule = new DefaultIntegerRule(
             new FieldToken.FieldTokenBuilder()
-            .setCount(3).build()
+            .setMin(1).setMax(1000).build()
     );
     public static int random(){
         int i = new Random().nextInt(100);

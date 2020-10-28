@@ -10,7 +10,10 @@ import java.util.Random;
 
 public class BooleanRandom extends AbstractRandom{
     private static DefaultBooleanRule defaultBooleanRule = new DefaultBooleanRule(
-            FieldTokenFactory.getDefaultFieldToken()
+            new FieldToken.FieldTokenBuilder()
+                    .setMin(1)
+                    .setMax(1)
+                    .setValue("true").build()
     );
     // 返回 char类型数值
     public static boolean random() {

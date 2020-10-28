@@ -83,7 +83,9 @@ public class DoubleRandom extends AbstractRandom{
             integral = RandomUtil.getMin2Max(fieldToken.getMin(), fieldToken.getMax());
             // 小数部分 计算方式
             int digit = RandomUtil.getMin2Max(fieldToken.getDmin(), fieldToken.getDmax());
-
+            if (digit == 0) {
+                digit++;
+            }
             //            digit
             int fracLength = fractional.length();
             if(digit <= fracLength){

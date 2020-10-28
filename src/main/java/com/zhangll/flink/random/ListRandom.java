@@ -15,7 +15,17 @@ import java.util.Random;
 
 public class ListRandom<T> extends AbstractRandom{
     public DefaultListRule defaultRule = new DefaultListRule(
-            FieldTokenFactory.getDefaultFieldToken()
+            new FieldToken.FieldTokenBuilder()
+                    .setCount(10)
+                    .setSubFieldToken(
+                            new FieldToken.FieldTokenBuilder()
+                            .setMin(1)
+                            .setMax(5)
+                            .setDmin(0)
+                            .setDmax(5)
+                            .build()
+                    )
+                    .build()
     );
 
     @Override
@@ -65,13 +75,6 @@ public class ListRandom<T> extends AbstractRandom{
      * 通过重复属性值 array 生成一个新数组，重复次数为 count。
      */
     public class DefaultListRule implements Rule<List<T>> {
-//        final int start;
-//        final int end;
-//        // count 为数量，list数量
-//        final int count = 0;
-//        // step为在用户有+1的情况下获取数据
-//        final int step = 1;
-//        final String value;
         final List<T> defaultList = new ArrayList<>();
         private final FieldToken fieldToken;
 
@@ -83,32 +86,6 @@ public class ListRandom<T> extends AbstractRandom{
             this.fieldToken = fieldToken;
         }
 
-//        public int getStart() {
-//            return start;
-//        }
-//
-//        public int getEnd() {
-//            return end;
-//        }
-//
-//        public String getValue() {
-//            return value;
-//        }
-//
-//        public int getCount() {
-//            return count;
-//        }
-//
-//        public DefaultListRule() {
-//            this(0, 5, null);
-//        }
-//
-//        public DefaultListRule(int start, int end, String value) {
-//            this.start = start;
-//            this.end = end;
-//            this.value = value;
-//        }
-
         @Override
         public List<T> apply() {
             return defaultList;
@@ -119,31 +96,36 @@ public class ListRandom<T> extends AbstractRandom{
          * @return
          */
         public List<T> apply(Field declaredField) {
+            // 当前的list类型
+            Class<?> listType = declaredField.getType();
+            Type genericType = declaredField.getGenericType();
             List o = null;
             try {
-                if(declaredField.getType() == List.class){
+                if(listType == List.class){
                     o = new ArrayList();
                 } else{
-                    o = (List) declaredField.getType().newInstance();
+                    o = (List) listType.newInstance();
                 }
             } catch ( InstantiationException e ) {
                 e.printStackTrace();
             } catch ( IllegalAccessException e ) {
                 e.printStackTrace();
             }
-            if(declaredField.getGenericType() instanceof ParameterizedType){
-                Class type = (Class)((ParameterizedType) declaredField.getGenericType()).getActualTypeArguments()[0];
-                RandomType random = RandomFactory.getRandom(type);
-                if (random instanceof IntegerRandom) {
-                    for (int i = 0; i < (fieldToken.getMax() - fieldToken.getMin()); i++) {
-                        // TODO RULE转换
-                        // 上层的rule 转换 成下层的rule
-                        Rule rule = RuleTransfer.transferToIntRule(this);
-                        Object randomValue = ((IntegerRandom) random).compute(null, rule);
-//                        System.out.println(randomValue);
-                        o.add(randomValue);
-                    }
+
+            int elementNum = (fieldToken.getMax() - fieldToken.getMin()) == 0 ?
+                    fieldToken.getCount():fieldToken.getMax() - fieldToken.getMin()
+                    ;
+            if(genericType instanceof ParameterizedType){
+                Class type = (Class)((ParameterizedType) genericType).getActualTypeArguments()[0];
+                AbstractRandom random = (AbstractRandom) RandomFactory.getRandom(type);
+                for (int i = 0; i < elementNum; i++) {
+                    // 通过子token规则获取subFiledToken内容
+                    Rule rule = random.getRule(fieldToken.getSubFieldToken());
+                    Object randomValue = random.compute(null, rule);
+                    o.add(randomValue);
                 }
+            } else{
+                throw  new IllegalArgumentException(" list must has type");
             }
             return o;
         }

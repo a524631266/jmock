@@ -19,9 +19,9 @@ public class Father {
     private Character a = 'c';
     // 男为1 女为0
     private boolean sex;
-    private ArrayList<Integer> sonsNameList1;
-    private List<Integer> sonsNameList2;
-    private LinkedList<Integer> sonsNameList3;
+    private ArrayList<String> sonsNameList;
+    private List<Integer> sonsAgeList;
+    private LinkedList<Double> sonsMoneyList;
 
     private Set<String> sonsName2;
 
