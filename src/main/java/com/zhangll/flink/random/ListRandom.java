@@ -21,7 +21,7 @@ public class ListRandom<T> extends AbstractRandom{
                             new FieldToken.FieldTokenBuilder()
                             .setMin(1)
                             .setMax(2)
-                            .setDmin(0)
+                            .setDmin(1)
                             .setDmax(5)
                             .build()
                     )
@@ -48,10 +48,12 @@ public class ListRandom<T> extends AbstractRandom{
 
     @Override
     public Object compute(Field declaredField, Rule rule) {
+
         if(rule == null){
             return defaultRule.apply(declaredField);
         } else{
-            return rule.apply();
+            return ((DefaultListRule) rule).apply(declaredField);
+//                return rule.apply();
         }
     }
 
@@ -75,7 +77,7 @@ public class ListRandom<T> extends AbstractRandom{
      * 通过重复属性值 array 生成一个新数组，重复次数为 count。
      */
     public class DefaultListRule implements Rule<List<T>> {
-        final List<T> defaultList = new ArrayList<>();
+        final List<T> defaultList = null;
         private final FieldToken fieldToken;
 
         public FieldToken getFieldToken() {

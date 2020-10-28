@@ -78,6 +78,16 @@ public class RandomTest {
         }
     }
 
+
+    @Test
+    public void testDefaultDoubleRandom(){
+        Rule rule = doubleRandom.getRule();
+        for (int i = 0; i < 10000; i++) {
+            Double value = (Double)rule.apply();
+            System.out.println(value);
+//            assertTrue(value >= 10 && value<1000);
+        }
+    }
     @Test
     public void testDefaultBooleanRandom(){
         Map<Boolean , Integer> map = new HashMap<Boolean, Integer>();

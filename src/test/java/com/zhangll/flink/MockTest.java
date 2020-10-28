@@ -16,7 +16,7 @@ public class MockTest
     public void shouldAnswerWithTrue()
     {
         assertTrue( true );
-        Father father = (Father) MockData.mock(Father.class);
+        Father father = (Father) MockContext.mock(Father.class);
         System.out.println(father);
     }
 

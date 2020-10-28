@@ -10,7 +10,10 @@ import java.util.Random;
 
 public class DoubleRandom extends AbstractRandom{
     private static DefaultDoubleRule defaultDoubleRule = new DefaultDoubleRule(
-            FieldTokenFactory.getDefaultFieldToken()
+            new FieldToken.FieldTokenBuilder()
+                    .setMin(1).setMax(10)
+                    .setDmin(1)
+                    .setDmax(5).build()
     );
     // 返回 char类型数值
     public static double random() {
