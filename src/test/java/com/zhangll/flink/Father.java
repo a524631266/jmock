@@ -15,7 +15,9 @@ public class Father {
     private float money_f;
     private char firstName;
     private Character a = 'c';
-    private Date date;
+    private java.sql.Date date;
+    private java.sql.Time time;
+    private java.sql.Timestamp timestamp;
     // 男为1 女为0
     private boolean sex;
     private ArrayList<String> sonsNameList;
