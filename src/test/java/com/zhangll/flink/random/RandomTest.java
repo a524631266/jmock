@@ -332,4 +332,46 @@ public class RandomTest {
             assertTrue( object.size() == count);
         }
     }
+
+    /**
+     * 默认为10
+     * @throws NoSuchFieldException
+     */
+    @Test
+    public void testDefalutListRandomRuleForLong() throws NoSuchFieldException {
+        ListRandom.DefaultListRule rule = (ListRandom.DefaultListRule)listRandom.getRule();
+        int count = 10;
+        for (int i = 0; i < 10000; i++) {
+            List object = rule.apply(Father.class.getDeclaredField("sonsLongList"));
+            System.out.println(object);
+            assertTrue( object.size() == count);
+        }
+    }
+    /**
+     * 默认为10
+     * @throws NoSuchFieldException
+     */
+    @Test
+    public void testDefalutListRandomRuleForStringByValue() throws NoSuchFieldException {
+        ListRandom.DefaultListRule rule = (ListRandom.DefaultListRule)listRandom.getRule(
+                new FieldToken.FieldTokenBuilder()
+                        .setCount(10)
+                        .setValue("")
+                        .setSubFieldToken(
+                                new FieldToken.FieldTokenBuilder()
+                                        .setMin(1)
+                                        .setMax(5)
+                                        .setDmin(0)
+                                        .setDmax(5)
+                                        .build()
+                        )
+                        .build()
+        );
+        int count = 10;
+        for (int i = 0; i < 10000; i++) {
+            List object = rule.apply(Father.class.getDeclaredField("sonsMoneyList"));
+            System.out.println(object);
+            assertTrue( object.size() == count);
+        }
+    }
 }

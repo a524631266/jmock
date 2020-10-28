@@ -20,7 +20,7 @@ public class ListRandom<T> extends AbstractRandom{
                     .setSubFieldToken(
                             new FieldToken.FieldTokenBuilder()
                             .setMin(1)
-                            .setMax(5)
+                            .setMax(2)
                             .setDmin(0)
                             .setDmax(5)
                             .build()
@@ -111,7 +111,7 @@ public class ListRandom<T> extends AbstractRandom{
             } catch ( IllegalAccessException e ) {
                 e.printStackTrace();
             }
-
+            // 元素数量
             int elementNum = (fieldToken.getMax() - fieldToken.getMin()) == 0 ?
                     fieldToken.getCount():fieldToken.getMax() - fieldToken.getMin()
                     ;

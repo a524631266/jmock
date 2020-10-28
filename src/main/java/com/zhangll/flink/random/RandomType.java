@@ -21,7 +21,7 @@ public interface RandomType {
     void updateField(Object o, Field declaredField, Rule rule) throws IllegalAccessException;
 
     /**
-     * 获取当前执行器的Rule
+     * 获取当前默认执行器的Rule
      * @return
      */
     Rule getRule();

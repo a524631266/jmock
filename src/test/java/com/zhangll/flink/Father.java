@@ -22,6 +22,7 @@ public class Father {
     private ArrayList<String> sonsNameList;
     private List<Integer> sonsAgeList;
     private LinkedList<Double> sonsMoneyList;
+    private LinkedList<Long> sonsLongList;
 
     private Set<String> sonsName2;
 

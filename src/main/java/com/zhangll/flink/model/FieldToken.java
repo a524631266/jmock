@@ -7,7 +7,7 @@ import lombok.Getter;
 import java.io.File;
 
 /**
- * 作为词法分析的结果
+ * 作为词法分析的结果,类似于springmvc中的 mappingInfo信息
  * @author zhangll
  */
 @Getter
