@@ -31,22 +31,34 @@ public class RandomTest {
         // 定义规则
         int min = 10;
         int max = 100;
-        FieldToken token = new FieldToken(
-                min,max,0,0,0,0,0, null,
-                null
+        int count = 5;
+        Rule rule = integerRandom.getRule(
+        new FieldToken.FieldTokenBuilder()
+                .setMin(min)
+                .setMax(max)
+                .build()
         );
-        Rule rule = integerRandom.getRule(token);
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1000; i++) {
             int res1 = (int) rule.apply();
             assertTrue( res1 >= min && res1 < max);
         }
-        int count = 5;
-
-        FieldToken token2 = new FieldToken(min , max,count,0,0,0,0, null ,null);
-        Rule rule2 = integerRandom.getRule(token2);
-        for (int i = 0; i < 100; i++) {
+        Rule rule2 = integerRandom.getRule(
+                new FieldToken.FieldTokenBuilder()
+                        .setMax(max)
+                        .setMin(min)
+                        .setCount(count)
+                        .build()
+        );
+        for (int i = 0; i < 1000; i++) {
             int res2 = (int) rule2.apply();
             assertTrue( res2 == count);
+        }
+    }
+    @Test
+    public void testDefaultIntegerRandom(){
+        Rule rule = integerRandom.getRule();
+        for (int i = 0; i < 1000; i++) {
+            System.out.println(rule.apply());
         }
     }
     /**

@@ -9,11 +9,11 @@ import java.util.Random;
 
 public class IntegerRandom extends AbstractRandom{
     public Rule<Integer> defaultRule = new DefaultIntegerRule(
-            FieldTokenFactory.getDefaultFieldToken()
+            new FieldToken.FieldTokenBuilder()
+            .setCount(3).build()
     );
     public static int random(){
         int i = new Random().nextInt(100);
-//        System.out.println(i);
         return i;
     }
 
@@ -61,33 +61,10 @@ public class IntegerRandom extends AbstractRandom{
      * =>
      */
     public static class DefaultIntegerRule implements Rule<Integer>{
-//        final int min ;
-//        final int max;
-//        // 表达式中的count 表示一个固定值
-//        final int count;
-////        // step用来给指定的array做递增用的
-////        final int step;
-//        // value 这个只有在 +1step的时候才会初始化
-//        final String value;
+
         private FieldToken fieldToken;
 
 
-//        public DefaultIntegerRule() {
-//            this(0, 100, 0, null);
-//        }
-//
-//        /**
-//         *
-//         * @param min  integer最小值
-//         * @param max integer 最大值
-//         * @param value 默认值
-//         */
-//        public DefaultIntegerRule(int min, int max, int count, String value) {
-//            this.min = min;
-//            this.max = max;
-//            this.count = count;
-//            this.value = value;
-//        }
 
         public DefaultIntegerRule(FieldToken fieldToken) {
             this.fieldToken = fieldToken;
@@ -95,13 +72,6 @@ public class IntegerRandom extends AbstractRandom{
 
         @Override
         public Integer apply() {
-            // 规则1
-//            if(count != 0){
-//                return count;
-//            }
-//            int gap = max - min;
-//            int i = new Random().nextInt(gap) + min;
-
 
             if(fieldToken.getCount() != 0){
                 return fieldToken.getCount();

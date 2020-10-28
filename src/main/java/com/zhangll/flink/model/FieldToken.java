@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 
+import java.io.File;
+
 /**
  * 作为词法分析的结果
  * @author zhangll
@@ -53,4 +55,94 @@ public class FieldToken {
      *
      */
     public FieldToken subFieldToken;
+
+    FieldToken(FieldTokenBuilder builder){
+        this.min = builder.getMin();
+        this.max = builder.getMax();
+        this.count = builder.getCount();
+        this.dmin = builder.getDmin();
+        this.dmax = builder.getDmax();
+        this.dcount = builder.getDcount();
+        this.step = builder.getStep();
+        this.value = builder.getValue();
+        this.subFieldToken = builder.getSubFieldToken();
+    }
+
+    /**
+     * 内部创建构建者，屏蔽对象的设置，用来封装
+     * 内容
+     */
+    @Getter
+    public static class FieldTokenBuilder {
+        private int min;
+        private int max;
+        private int count;
+        private int dmin;
+        private int dmax;
+        private int dcount;
+        private int step;
+        private String value;
+        private FieldToken subFieldToken = FieldTokenFactory.getDefaultFieldToken();
+        public FieldToken build() {
+            if(min > max) {
+                throw new IllegalArgumentException("min must not large than max");
+            }
+            if(dmin > dmax){
+                throw  new IllegalArgumentException("dmin must not larger than dmax");
+            }
+            return  new FieldToken(this);
+        }
+
+        public FieldTokenBuilder setMin(int min) {
+            this.min = min;
+            return this;
+        }
+        public FieldTokenBuilder setMax(int max) {
+            this.max = max;
+            return this;
+        }
+
+        public FieldTokenBuilder setCount(int count) {
+            if(count <= 0) {
+                throw  new IllegalArgumentException("count must be positive");
+            }
+            this.count = count;
+            return this;
+        }
+
+        public FieldTokenBuilder setDcount(int dcount) {
+            this.dcount = dcount;
+            return this;
+        }
+
+        public FieldTokenBuilder setDmin(int dmin) {
+            this.dmin = dmin;
+            return this;
+        }
+
+        public FieldTokenBuilder setStep(int step) {
+
+            this.step = step;
+            return this;
+        }
+
+        public FieldTokenBuilder setDmax(int dmax) {
+
+            this.dmax = dmax;
+            return this;
+        }
+
+        public FieldTokenBuilder setValue(String value) {
+            this.value = value;
+            return this;
+        }
+
+        public FieldTokenBuilder setSubFieldToken(FieldToken subFieldToken) {
+            if(subFieldToken  == null) {
+                throw  new IllegalArgumentException("FieldToken must not be null");
+            }
+            this.subFieldToken = subFieldToken;
+            return this;
+        }
+    }
 }
