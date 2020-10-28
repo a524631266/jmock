@@ -2,12 +2,13 @@ package com.zhangll.flink.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 
 /**
  * 作为词法分析的结果
  * @author zhangll
  */
-@Data
+@Getter
 @AllArgsConstructor
 public class FieldToken {
     /**
@@ -48,4 +49,8 @@ public class FieldToken {
      *
      */
     public String value;
+    /**
+     *
+     */
+    public FieldToken subFieldToken;
 }

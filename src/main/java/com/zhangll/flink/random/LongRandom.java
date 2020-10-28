@@ -1,15 +1,16 @@
 package com.zhangll.flink.random;
 
 import com.zhangll.flink.model.FieldToken;
+import com.zhangll.flink.model.FieldTokenFactory;
 import com.zhangll.flink.rule.Rule;
 
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Random;
 
 public class LongRandom extends AbstractRandom{
-    public Rule<Long> defaultRule = new DefaultLongRule();
+    public Rule<Long> defaultRule = new DefaultLongRule(
+            FieldTokenFactory.getDefaultFieldToken()
+    );
     @Override
     public boolean isCurrentType(Class<?> type) {
         return type == Long.class || type == long.class;
@@ -23,11 +24,7 @@ public class LongRandom extends AbstractRandom{
 
     @Override
     public Rule getRule(FieldToken fieldToken) {
-        return new DefaultLongRule(
-                fieldToken.getMin(),
-                fieldToken.getMax(),
-                fieldToken.getCount(),
-                fieldToken.getValue());
+        return new DefaultLongRule(fieldToken);
     }
 
     @Override
@@ -51,43 +48,22 @@ public class LongRandom extends AbstractRandom{
      * =>
      */
     public static class DefaultLongRule implements Rule<Long>{
-        final long min ;
-        final long max;
-        // 表达式中的count 表示一个固定值
-        final long count;
-        //        // step用来给指定的array做递增用的
-//        final int step;
-        // value 这个只有在 +1step的时候才会初始化
-        final String value;
+        final FieldToken fieldToken;
 
-
-        public DefaultLongRule() {
-            this(0, 100, 0, null);
-        }
-
-        /**
-         *
-         * @param min  integer最小值
-         * @param max integer 最大值
-         * @param value 默认值
-         */
-        public DefaultLongRule(int min, int max, int count, String value) {
-            this.min = min;
-            this.max = max;
-            this.count = count;
-            this.value = value;
+        public DefaultLongRule(FieldToken fieldToken) {
+            this.fieldToken = fieldToken;
         }
 
         @Override
         public Long apply() {
-            if(count != 0){
-                return count;
+            if(fieldToken.getCount() != 0){
+                return Long.valueOf(fieldToken.getCount());
             }
             // 概率
             double p = new Random().nextDouble();
-            Double len = (this.max - this.min) * p;
+            Double len = (fieldToken.getMax() - fieldToken.getMin()) * p;
 
-            return  len.longValue() + min;
+            return  len.longValue() + fieldToken.getMin();
 //            BigDecimal i = new BigDecimal(new Random().nextLong());
 //            BigDecimal max = new BigDecimal(this.max);
 //            BigDecimal min = new BigDecimal(this.min);

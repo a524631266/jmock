@@ -1,6 +1,7 @@
 package com.zhangll.flink.random;
 
 import com.zhangll.flink.model.FieldToken;
+import com.zhangll.flink.model.FieldTokenFactory;
 import com.zhangll.flink.rule.Rule;
 import com.zhangll.flink.uitl.RandomUtil;
 
@@ -8,7 +9,9 @@ import java.lang.reflect.Field;
 import java.util.Random;
 
 public class DoubleRandom extends AbstractRandom{
-    private static DefaultDoubleRule defaultDoubleRule = new DefaultDoubleRule();
+    private static DefaultDoubleRule defaultDoubleRule = new DefaultDoubleRule(
+            FieldTokenFactory.getDefaultFieldToken()
+    );
     // 返回 char类型数值
     public static double random() {
         double v = new Random().nextDouble();
@@ -30,12 +33,7 @@ public class DoubleRandom extends AbstractRandom{
     @Override
     public Rule getRule(FieldToken fieldToken) {
         // TODO
-        return new DefaultDoubleRule(
-                fieldToken.getMin(),
-                fieldToken.getMax(),
-                fieldToken.getDmin(),
-                fieldToken.getDmax(),
-                fieldToken.getValue());
+        return new DefaultDoubleRule(fieldToken);
     }
 
     @Override
@@ -48,25 +46,30 @@ public class DoubleRandom extends AbstractRandom{
      * 保留位数
      */
     public static class DefaultDoubleRule implements Rule<Double>{
-        final int min;
-        final int max;
-        // 最小保留位数
-        final int dmin;
-        // 最小保留位数
-        final int dmax;
-        final String value;
+        private final FieldToken fieldToken;
 
-        public DefaultDoubleRule() {
-            this(0,0,0,0,null);
+        public DefaultDoubleRule(FieldToken fieldToken) {
+            this.fieldToken = fieldToken;
         }
-
-        public DefaultDoubleRule(int min, int max, int dmin, int dmax, String value) {
-            this.min = min;
-            this.max = max;
-            this.dmin = dmin;
-            this.dmax = dmax;
-            this.value = value;
-        }
+//        final int min;
+//        final int max;
+//        // 最小保留位数
+//        final int dmin;
+//        // 最小保留位数
+//        final int dmax;
+//        final String value;
+//
+//        public DefaultDoubleRule() {
+//            this(0,0,0,0,null);
+//        }
+//
+//        public DefaultDoubleRule(int min, int max, int dmin, int dmax, String value) {
+//            this.min = min;
+//            this.max = max;
+//            this.dmin = dmin;
+//            this.dmax = dmax;
+//            this.value = value;
+//        }
 
         @Override
         public Double apply() {
@@ -74,12 +77,12 @@ public class DoubleRandom extends AbstractRandom{
             int integral = 0;
             int frac = 0;
             String fractional = "";
-            if (value != null) {
-                fractional = value.split("\\.")[1];
+            if (fieldToken.getValue() != null) {
+                fractional = fieldToken.getValue().split("\\.")[1];
             }
-            integral = RandomUtil.getMin2Max(min, max);
+            integral = RandomUtil.getMin2Max(fieldToken.getMin(), fieldToken.getMax());
             // 小数部分 计算方式
-            int digit = RandomUtil.getMin2Max(dmin, dmax);
+            int digit = RandomUtil.getMin2Max(fieldToken.getDmin(), fieldToken.getDmax());
 
             //            digit
             int fracLength = fractional.length();

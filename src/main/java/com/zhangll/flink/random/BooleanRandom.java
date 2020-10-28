@@ -1,6 +1,7 @@
 package com.zhangll.flink.random;
 
 import com.zhangll.flink.model.FieldToken;
+import com.zhangll.flink.model.FieldTokenFactory;
 import com.zhangll.flink.rule.Rule;
 import com.zhangll.flink.uitl.RandomUtil;
 
@@ -8,7 +9,9 @@ import java.lang.reflect.Field;
 import java.util.Random;
 
 public class BooleanRandom extends AbstractRandom{
-    private static DefaultBooleanRule defaultBooleanRule = new DefaultBooleanRule();
+    private static DefaultBooleanRule defaultBooleanRule = new DefaultBooleanRule(
+            FieldTokenFactory.getDefaultFieldToken()
+    );
     // 返回 char类型数值
     public static boolean random() {
         boolean v = new Random().nextBoolean();
@@ -34,10 +37,7 @@ public class BooleanRandom extends AbstractRandom{
     @Override
     public Rule getRule(FieldToken fieldToken) {
         // TODO
-        return new DefaultBooleanRule(fieldToken.getMin()
-                , fieldToken.getMax()
-                , fieldToken.getCount()
-                , fieldToken.getValue());
+        return new DefaultBooleanRule(fieldToken);
     }
 
     /**
@@ -46,40 +46,28 @@ public class BooleanRandom extends AbstractRandom{
      * 随机生成一个布尔值，值为 value 的概率是 min / (min + max)，值为 !value 的概率是 max / (min + max)。
      */
     public static class DefaultBooleanRule implements Rule<Boolean>{
-        final int min;
-        final int max;
-        final int count ;
-        final String value;
 
-        public DefaultBooleanRule() {
-            this(0,1, 0,null);
-        }
+        private final FieldToken fieldToken;
 
-        public DefaultBooleanRule(int min, int max , int count, String value) {
-            this.min = min;
-            this.max = max;
-            this.count = count;
-            if(value == null) {
-                this.value = "true";
-            }else{
-                this.value = value;
-            }
+
+        public DefaultBooleanRule(FieldToken fieldToken) {
+            this.fieldToken = fieldToken;
         }
 
         @Override
         public Boolean apply() {
             boolean leftResult = true;
-            if (this.value.equals("true")) {
+            if (fieldToken.getValue().equals("true")) {
                 leftResult = true;
             } else {
                 leftResult = false;
             }
 
             boolean result = true;
-            if (count != 0) {
-                result = RandomUtil.getBoolean(count, count);
+            if (fieldToken.getCount() != 0) {
+                result = RandomUtil.getBoolean(fieldToken.getCount(), fieldToken.getCount());
             } else{
-                result = RandomUtil.getBoolean(this.min, this.max);
+                result = RandomUtil.getBoolean(fieldToken.getMin(), fieldToken.getMax());
             }
             return result ? !leftResult: leftResult;
         }

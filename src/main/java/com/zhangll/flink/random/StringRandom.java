@@ -2,6 +2,7 @@ package com.zhangll.flink.random;
 
 import com.zhangll.flink.expression.ValueExpression;
 import com.zhangll.flink.model.FieldToken;
+import com.zhangll.flink.model.FieldTokenFactory;
 import com.zhangll.flink.rule.Rule;
 import com.zhangll.flink.uitl.RandomUtil;
 
@@ -9,7 +10,9 @@ import java.lang.reflect.Field;
 import java.util.Random;
 
 public class StringRandom extends AbstractRandom{
-    private DefaultStringRule defaultStringRule = new DefaultStringRule(3, null);
+    private DefaultStringRule defaultStringRule = new DefaultStringRule(
+            FieldTokenFactory.getDefaultFieldToken()
+    );
     public static String surName[] = {
             "赵","钱","孙","李","周","吴","郑","王","冯","陈","楮","卫","蒋","沈","韩","杨",
             "朱","秦","尤","许","何","吕","施","张","孔","曹","严","华","金","魏","陶","姜",
@@ -234,10 +237,7 @@ public class StringRandom extends AbstractRandom{
     @Override
     public Rule getRule(FieldToken fieldToken) {
         //
-        if(fieldToken.count == 0){
-            return new DefaultStringRule(fieldToken.min, fieldToken.max , fieldToken.value);
-        }
-        return new DefaultStringRule(fieldToken.count , fieldToken.value);
+        return new DefaultStringRule(fieldToken);
     }
 
     @Override
@@ -258,24 +258,10 @@ public class StringRandom extends AbstractRandom{
      * "name|2": "age" => name: ageage
      */
     public class DefaultStringRule implements Rule<String> {
-        // 最小重复次数
-        private int min = 0;
-        // 最大重复次数
-        private int max = 0;
-        // 固定次数
-        private int count = 0;
-        // 可能会有@First的功能 TODO
-        private String value;
+        private final FieldToken fieldToken;
 
-        public DefaultStringRule(int min, int max ,String value) {
-            this.min = min;
-            this.max = max;
-            this.value = value;
-        }
-
-        public DefaultStringRule(int count, String value) {
-            this.count = count;
-            this.value = value;
+        public DefaultStringRule(FieldToken fieldToken) {
+            this.fieldToken = fieldToken;
         }
 
         /**
@@ -285,14 +271,14 @@ public class StringRandom extends AbstractRandom{
         @Override
         public String apply() {
             String result = null;
-            if(value!=null && !"".equals(value)){
+            if(fieldToken.getValue()!=null && !"".equals(fieldToken.getValue())){
 //                result = new ValueExpression(value).generate();
-                result = value;
+                result = fieldToken.getValue();
             }
-            int num = count;
+            int num = fieldToken.getCount();
             if(num == 0) {
 //                num = (new Random().nextInt(max -min)) + min;
-                num = RandomUtil.getMin2Max(min, max);
+                num = RandomUtil.getMin2Max(fieldToken.getMin(), fieldToken.getMax());
             }
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < num; i++) {
