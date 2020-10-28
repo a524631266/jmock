@@ -3,6 +3,7 @@ package com.zhangll.flink.random;
 import com.zhangll.flink.expression.ValueExpression;
 import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.rule.Rule;
+import com.zhangll.flink.uitl.RandomUtil;
 
 import java.lang.reflect.Field;
 import java.util.Random;
@@ -254,7 +255,7 @@ public class StringRandom extends AbstractRandom{
      * 属性值是字符串 String
      * 'name|min-max': 'value' 通过重复 'value' 生成一个字符串，重复次数大于等于 min，小于等于 max。
      * 'name|count': 'value' 通过重复 'value' 生成一个字符串，重复次数等于 count。
-     *
+     * "name|2": "age" => name: ageage
      */
     public class DefaultStringRule implements Rule<String> {
         // 最小重复次数
@@ -284,16 +285,18 @@ public class StringRandom extends AbstractRandom{
         @Override
         public String apply() {
             String result = null;
-            if(value!=null){
-                result = new ValueExpression(value).generate();
+            if(value!=null && !"".equals(value)){
+//                result = new ValueExpression(value).generate();
+                result = value;
             }
             int num = count;
             if(num == 0) {
-                num = (new Random().nextInt(max -min)) + min;
+//                num = (new Random().nextInt(max -min)) + min;
+                num = RandomUtil.getMin2Max(min, max);
             }
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < num; i++) {
-                if(result!=null){
+                if(result != null){
                     sb.append(result);
                 }else{
                     sb.append(StringRandom.randomOneWord());
