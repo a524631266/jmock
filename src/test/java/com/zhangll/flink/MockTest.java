@@ -1,7 +1,9 @@
 package com.zhangll.flink;
 
+import com.zhangll.flink.annotation.FieldTokenType;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,9 +25,15 @@ public class MockTest
         System.out.println(father);
     }
 
+    /**
+     * getDeclaredFields
+     */
     @Test
     public void test(){
-        Set<String> set = new HashSet();
+        for (Field declaredField : Father.class.getDeclaredFields()) {
+            FieldTokenType annotation = declaredField.getAnnotation(FieldTokenType.class);
+            System.out.println(annotation);
+        }
     }
 
 }

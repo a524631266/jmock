@@ -9,9 +9,8 @@ import java.util.Properties;
 
 /**
  * 解析流程
- * @param <T>
  */
-public abstract class MockContext<T> {
+public abstract class MockContext {
     private static MappingStore mappingStore = new MappingStore();
 //    /**
 //     * 默认没有rule，使用默认的rule

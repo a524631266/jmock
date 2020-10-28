@@ -1,11 +1,13 @@
 package com.zhangll.flink;
 
+import com.zhangll.flink.annotation.FieldTokenType;
 import lombok.ToString;
 
 import java.util.*;
 
 @ToString
 public class Father {
+    @FieldTokenType(min = "10", max = "100")
     private int age;
     private Integer id;
     private Long money;
