@@ -46,5 +46,10 @@ public class Father {
     private String[] stringArr;
     private Double[] doubleWrapperArr;
     private double[] doubleNoWrapperArr;
+    private int[] intNoWrapperArr;
+    private Integer[] intWrapperArr;
+
+    private char[] charNoWrapperArr;
+    private Character[] charWrapperArr;
 
 }

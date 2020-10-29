@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
@@ -46,6 +47,17 @@ public class ArrayTypeTest {
         System.out.println(componentType);
         assertTrue(componentType == null);
     }
+    class A<T> {
+
+    }
+    @Test
+    public void testGenericType(){
+        A<String> a = new A<String>();
+        Class<?> componentType = a.getClass().getComponentType();
+        System.out.println(componentType);
+        assertTrue(componentType == null);
+    }
+
 
     /**
      * 测试发现 getComponentType 不为null代表数组
@@ -59,7 +71,11 @@ public class ArrayTypeTest {
 //        System.out.println(doubles);
         Double[] doubles = {1.112,23.3,2424.02};
         double[] doubles2 = {1.112,23.3,2424.02};
-
+        Class<? extends double[]> aClass = doubles2.getClass();
+//        aClass.getCo
+        Object o = Array.newInstance(aClass, 10);
+        Object[] objects = Arrays.asList(o).toArray();
+        System.out.println(o);
     }
 
     /**
@@ -75,6 +91,7 @@ public class ArrayTypeTest {
         assertTrue(a.isPrimitive());
         assertTrue(!b.isPrimitive());
         assertTrue(!aClass.isPrimitive());
+
     }
 
 

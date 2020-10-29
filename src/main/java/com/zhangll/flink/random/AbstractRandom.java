@@ -2,6 +2,7 @@ package com.zhangll.flink.random;
 
 import com.zhangll.flink.expression.RulePostProcessor;
 import com.zhangll.flink.rule.Rule;
+import com.zhangll.flink.type.BasicType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,12 +19,16 @@ public abstract class AbstractRandom implements RandomType {
     public void updateField(Object o, Field declaredField, Rule rule) throws IllegalAccessException {
 
         Object compute = compute(declaredField, rule);
-
-
-        if(LOG.isDebugEnabled()){
-            LOG.debug(declaredField.getName());
+        Object result = postProcessor.postProcessAfterCompute(compute);
+        if(BasicType.isArray(result.getClass())){
+            if(LOG.isDebugEnabled()){
+                LOG.debug(declaredField.getName());
+                LOG.debug(result.getClass().getName());
+            }
+            declaredField.set(o, BasicType.transWrapperArrayToBasicArray(declaredField.getType().getComponentType(), (Object[]) result));
+        }else{
+            declaredField.set(o, result);
         }
-        declaredField.set(o, postProcessor.postProcessAfterCompute(compute));
     }
 
     /**

@@ -7,6 +7,7 @@ import com.zhangll.flink.type.BasicType;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 
 /**
  *
@@ -103,22 +104,16 @@ public class ArrayRandom<T> extends AbstractRandom {
                     fieldToken.getCount():fieldToken.getMax() - fieldToken.getMin()
                     ;
             // 基本数据类型不能转化为Object[]
-            boolean primitive = listType.isPrimitive();
-            if(primitive){
-                // TODO 根据基本类型创建随机值
-                
-                return null;
-            }else{
-                Object[] o = (Object[]) Array.newInstance(listType, elementNum);
-                AbstractRandom random = (AbstractRandom) RandomFactory.getRandom(listType);
-                for (int i = 0; i < elementNum; i++) {
-                    // 通过子token规则获取subFiledToken内容
-                    Rule rule = random.getRule(fieldToken.getSubFieldToken());
-                    Object randomValue = random.compute(null, rule);
-                    o[i] = randomValue;
-                }
-                return o;
+            Object[] o = (Object[]) Array.newInstance(
+                    BasicType.primitiveToWarpper(listType), elementNum);
+            AbstractRandom random = (AbstractRandom) RandomFactory.getRandom(listType);
+            for (int i = 0; i < elementNum; i++) {
+                // 通过子token规则获取subFiledToken内容
+                Rule rule = random.getRule(fieldToken.getSubFieldToken());
+                Object randomValue = random.compute(null, rule);
+                o[i] = randomValue;
             }
+            return o;
         }
     }
 
