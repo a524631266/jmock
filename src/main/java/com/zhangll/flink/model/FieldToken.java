@@ -3,6 +3,7 @@ package com.zhangll.flink.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.io.File;
 
@@ -12,6 +13,7 @@ import java.io.File;
  */
 @Getter
 @AllArgsConstructor
+@ToString
 public class FieldToken {
     /**
      * 语义说明

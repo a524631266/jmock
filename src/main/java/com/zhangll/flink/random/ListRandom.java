@@ -1,10 +1,8 @@
 package com.zhangll.flink.random;
 
 import com.zhangll.flink.model.FieldToken;
-import com.zhangll.flink.model.FieldTokenFactory;
 import com.zhangll.flink.rule.Rule;
 import com.zhangll.flink.type.BasicType;
-import com.zhangll.flink.type.RuleTransfer;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -32,7 +30,7 @@ public class ListRandom<T> extends AbstractRandom{
 
     @Override
     public boolean isCurrentType(Class<?> type) {
-        return BasicType.isList(type);
+        return BasicType.isCollection(type);
     }
 
     @Override

@@ -40,7 +40,7 @@ public class RandomFactory {
         if(randomType!= null){
             return randomType;
         }
-        if(BasicType.isList(type)){
+        if(BasicType.isCollection(type)){
             return randomMap.get(List.class);
         }
         return randomMap.get(type);

@@ -1,6 +1,7 @@
 package com.zhangll.flink.type;
 
 import java.util.List;
+import java.util.Set;
 
 public class BasicType {
 
@@ -39,8 +40,9 @@ public class BasicType {
     public static boolean isPrimitive(Class type) {
         return type.isPrimitive();
     }
-    public static boolean isList(Class type) {
-        return List.class.isAssignableFrom(type);
+    public static boolean isCollection(Class type) {
+        return List.class.isAssignableFrom(type)||
+                Set.class.isAssignableFrom(type);
     }
 
     public static boolean isArray(Object o) {

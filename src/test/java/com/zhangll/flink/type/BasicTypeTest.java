@@ -4,10 +4,7 @@ import com.zhangll.flink.Father;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -66,10 +63,11 @@ public class BasicTypeTest {
 
     @Test
     public void testList(){
-        assertTrue(BasicType.isList(List.class));
-        assertTrue(BasicType.isList(ArrayList.class));
-        assertTrue(BasicType.isList(LinkedList.class));
-        assertTrue(BasicType.isList(Vector.class));
+        assertTrue(BasicType.isCollection(List.class));
+        assertTrue(BasicType.isCollection(ArrayList.class));
+        assertTrue(BasicType.isCollection(LinkedList.class));
+        assertTrue(BasicType.isCollection(Vector.class));
+        assertTrue(BasicType.isCollection(Set.class));
     }
 
 }
