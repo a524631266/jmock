@@ -105,7 +105,8 @@ public class ArrayRandom<T> extends AbstractRandom {
             // 基本数据类型不能转化为Object[]
             boolean primitive = listType.isPrimitive();
             if(primitive){
-                // TODO
+                // TODO 根据基本类型创建随机值
+                
                 return null;
             }else{
                 Object[] o = (Object[]) Array.newInstance(listType, elementNum);

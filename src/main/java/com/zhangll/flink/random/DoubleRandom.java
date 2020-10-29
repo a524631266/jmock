@@ -35,7 +35,7 @@ public class DoubleRandom extends AbstractRandom{
 
     @Override
     public Rule getRule(FieldToken fieldToken) {
-        // TODO
+
         return new DefaultDoubleRule(fieldToken);
     }
 

@@ -38,7 +38,6 @@ public class IntegerRandom extends AbstractRandom{
 
     @Override
     public Rule getRule() {
-        // TODO
         return defaultRule;
     }
 

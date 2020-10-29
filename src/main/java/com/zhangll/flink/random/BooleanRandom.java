@@ -33,13 +33,11 @@ public class BooleanRandom extends AbstractRandom{
 
     @Override
     public Rule getRule() {
-        //TODO
         return defaultBooleanRule;
     }
 
     @Override
     public Rule getRule(FieldToken fieldToken) {
-        // TODO
         return new DefaultBooleanRule(fieldToken);
     }
 

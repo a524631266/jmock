@@ -20,7 +20,6 @@ public class LongRandom extends AbstractRandom{
 
     @Override
     public Rule getRule() {
-        // TODO
         return defaultRule;
     }
 

@@ -9,6 +9,7 @@ import java.util.*;
 @Getter
 @ToString
 public class Father {
+
     @FieldTokenType(min = "10", max = "100")
     private int age;
     @FieldTokenType(min = "100", max = "1000")
@@ -44,6 +45,6 @@ public class Father {
 
     private String[] stringArr;
     private Double[] doubleWrapperArr;
-//    private double[] doubleNoWrapperArr;
+    private double[] doubleNoWrapperArr;
 
 }

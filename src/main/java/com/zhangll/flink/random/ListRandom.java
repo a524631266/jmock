@@ -35,13 +35,12 @@ public class ListRandom<T> extends AbstractRandom{
 
     @Override
     public Rule getRule() {
-        // TODO
+
         return defaultRule;
     }
 
     @Override
     public Rule getRule(FieldToken fieldToken) {
-        // TODO
         return new DefaultListRule(fieldToken);
     }
 

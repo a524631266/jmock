@@ -1,7 +1,10 @@
 package com.zhangll.flink.expression;
 
+
 import com.zhangll.flink.type.BasicType;
 import com.zhangll.flink.uitl.RandomUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 
@@ -14,12 +17,16 @@ import java.util.Collection;
  * /[a-z][A-Z][0-9]/ ==> "pJ7"
  */
 public class RulePostProcessor {
+     public static Logger LOG = LoggerFactory.getLogger(RulePostProcessor.class);
     /**
      * 在compute之后处理的结果
      *
      * @return
      */
     public Object postProcessAfterCompute(Object object) {
+        if(LOG.isDebugEnabled()){
+            LOG.debug(object.toString());
+        }
         if(BasicType.isCollection(object.getClass())){
             Collection cols = (Collection)object;
             Object[] objects = cols.toArray();
@@ -41,6 +48,7 @@ public class RulePostProcessor {
     }
 
     private Object handleOne(Object string) {
+
         if(string instanceof String){
             String middleStr = ((String) string);
             if (middleStr.startsWith("@")) {
