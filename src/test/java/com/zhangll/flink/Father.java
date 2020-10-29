@@ -17,6 +17,10 @@ public class Father {
     private Long money;
     @FieldTokenType(min = "3", max = "5")
     private String name;
+
+    @FieldTokenType(value = {"张三", "李四" ,"王五" , "赵六"})
+    private String innerName;
+
     @FieldTokenType(min = "10", max = "20")
     private String Address;
     @FieldTokenType(min = "1000", max = "2000", dmin = "3", dmax = "8")

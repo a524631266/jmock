@@ -7,13 +7,16 @@ import com.zhangll.flink.rule.Rule;
 import com.zhangll.flink.uitl.RandomUtil;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 
 public class StringRandom extends AbstractRandom{
     private DefaultStringRule defaultStringRule = new DefaultStringRule(
             new FieldToken.FieldTokenBuilder()
                     .setMin(1)
-                    .setMax(3).build()
+                    .setMax(3)
+                    .build()
     );
     public static String surName[] = {
             "赵","钱","孙","李","周","吴","郑","王","冯","陈","楮","卫","蒋","沈","韩","杨",
@@ -279,13 +282,21 @@ public class StringRandom extends AbstractRandom{
             }
             int num = fieldToken.getCount();
             if(num == 0) {
-//                num = (new Random().nextInt(max -min)) + min;
-                num = RandomUtil.getMin2Max(fieldToken.getMin(), fieldToken.getMax());
+                // 当获取count 为0,说明只设置了values
+                if(result!=null){
+                    num = 1;
+                }else{
+                    num = RandomUtil.getMin2Max(fieldToken.getMin(), fieldToken.getMax());
+                }
+
+            } else if( num > 1 && result != null){
+                throw new IllegalArgumentException("should set String count be no more than 1");
             }
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < num; i++) {
                 if(result != null){
-                    sb.append(result);
+                    Collections.shuffle(Arrays.asList(result));
+                    sb.append(result[0]);
                 }else{
                     sb.append(StringRandom.randomOneWord());
                 }

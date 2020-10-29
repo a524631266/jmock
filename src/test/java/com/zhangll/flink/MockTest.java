@@ -61,8 +61,6 @@ public class MockTest
         }
     }
 
-
-
     @Test
     public void testNestModel()
     {
