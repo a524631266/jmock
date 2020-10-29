@@ -42,4 +42,8 @@ public class Father {
 
     private Son son;
 
+    private String[] stringArr;
+    private Double[] doubleWrapperArr;
+//    private double[] doubleNoWrapperArr;
+
 }

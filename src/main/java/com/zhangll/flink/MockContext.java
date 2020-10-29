@@ -31,6 +31,7 @@ public abstract class MockContext {
         // 1.首先处理各种token，并设置到mappingStore
         initMapping(personClass, path );
         try {
+
             // 2. 先通过一个构造函数来获取数据
             Object o = personClass.newInstance();
             Field[] declaredFields = personClass.getDeclaredFields();
@@ -41,7 +42,7 @@ public abstract class MockContext {
             }
             return o;
         } catch ( InstantiationException e ) {
-            throw new RuntimeException("初始化失败");
+            throw new RuntimeException(personClass.getName() + "初始化失败");
         } catch ( IllegalAccessException e ) {
             throw new RuntimeException("非法参数");
         }

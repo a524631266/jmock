@@ -2,6 +2,7 @@ package com.zhangll.flink.random;
 
 import com.zhangll.flink.type.BasicType;
 
+import java.lang.reflect.Array;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Date;
@@ -33,6 +34,7 @@ public class RandomFactory {
         randomMap.put(Date.class, new SqlTimeRandom(Date.class));
         randomMap.put(Time.class, new SqlTimeRandom(Time.class));
         randomMap.put(Timestamp.class, new SqlTimeRandom(Timestamp.class));
+        randomMap.put(Array.class, new ArrayRandom<>());
     }
 
     public static RandomType getRandom(Class type) {
@@ -42,6 +44,9 @@ public class RandomFactory {
         }
         if(BasicType.isCollection(type)){
             return randomMap.get(List.class);
+        }
+        if(type.getComponentType()!= null){
+            return randomMap.get(Array.class);
         }
         return randomMap.get(type);
     }

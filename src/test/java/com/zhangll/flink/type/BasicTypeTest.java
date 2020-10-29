@@ -29,11 +29,6 @@ public class BasicTypeTest {
 
     }
 
-    @Test
-    public void isArray() {
-        List list = new ArrayList();
-        assertTrue(BasicType.isArray(list));
-    }
 
     /**
      * 暂时不考虑泛型

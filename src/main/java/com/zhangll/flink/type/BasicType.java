@@ -45,7 +45,7 @@ public class BasicType {
                 Set.class.isAssignableFrom(type);
     }
 
-    public static boolean isArray(Object o) {
-        return o instanceof List;
+    public static boolean isArray(Class type) {
+        return type.getComponentType() != null;
     }
 }
