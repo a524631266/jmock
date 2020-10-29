@@ -36,4 +36,6 @@ public class Father {
 
     private Set<String> sonsNameSet;
 
+    private Son son;
+
 }

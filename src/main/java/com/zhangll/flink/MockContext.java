@@ -37,7 +37,7 @@ public abstract class MockContext {
             for (Field declaredField : declaredFields) {
                 declaredField.setAccessible(true);
                 // 根据 生成的对象和类型来设置值
-                assignRandom(o, declaredField, personClass);
+                assignRandom(o, declaredField, personClass, path);
             }
             return o;
         } catch ( InstantiationException e ) {
@@ -49,11 +49,16 @@ public abstract class MockContext {
 
     protected abstract void initMapping(Class<?> personClass, String path);
 
-    private static void assignRandom(Object o, Field declaredField, Class<?> type) throws IllegalAccessException {
+    private void assignRandom(Object o, Field declaredField, Class<?> type, String path) throws IllegalAccessException {
         RandomType random = RandomFactory.getRandom(declaredField.getType());
         if(random!=null){
             Rule rule = mappingStore.getRule(type, declaredField);
             random.updateField(o, declaredField, rule == null? random.getRule(): rule);
+        }else{
+            // other type 非自定义类型
+//            System.out.println(declaredField.getType());
+            Object subObject = doMock(declaredField.getType(), path);
+            declaredField.set(o, subObject);
         }
 
     }
