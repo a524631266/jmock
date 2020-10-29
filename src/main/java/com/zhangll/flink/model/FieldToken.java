@@ -50,7 +50,7 @@ public class FieldToken {
      *
      *
      */
-    private String value;
+    private String[] value = {};
     /**
      *
      */
@@ -81,7 +81,7 @@ public class FieldToken {
         private int dmax;
         private int dcount;
         private int step;
-        private String value;
+        private String[] value = {};
         private FieldToken subFieldToken = FieldTokenFactory.getDefaultFieldToken();
         public FieldToken build() {
             if(min > max) {
@@ -103,7 +103,7 @@ public class FieldToken {
         }
 
         public FieldTokenBuilder setCount(int count) {
-            if(count <= 0) {
+            if(count < 0) {
                 throw  new IllegalArgumentException("count must be positive");
             }
             this.count = count;
@@ -132,7 +132,7 @@ public class FieldToken {
             return this;
         }
 
-        public FieldTokenBuilder setValue(String value) {
+        public FieldTokenBuilder setValue(String[] value) {
             this.value = value;
             return this;
         }

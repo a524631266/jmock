@@ -272,8 +272,8 @@ public class StringRandom extends AbstractRandom{
          */
         @Override
         public String apply() {
-            String result = null;
-            if(fieldToken.getValue()!=null && !"".equals(fieldToken.getValue())){
+            String[] result = null;
+            if(fieldToken.getValue()!=null && (fieldToken.getValue().length > 0)){
 //                result = new ValueExpression(value).generate();
                 result = fieldToken.getValue();
             }

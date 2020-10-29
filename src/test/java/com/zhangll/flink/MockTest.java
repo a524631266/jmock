@@ -18,11 +18,12 @@ public class MockTest
      * Rigorous Test :-)
      */
     @Test
-    public void shouldAnswerWithTrue()
+    public void testAnnotation()
     {
-        assertTrue( true );
-        Father father = (Father) MockContext.mock(Father.class);
+        Father father = (Father) new AnnotationMockContext().mock(Father.class);
         System.out.println(father);
+        assertTrue(father.getAge() >=10 && father.getAge() < 100);
+
     }
 
     /**
@@ -33,6 +34,7 @@ public class MockTest
         for (Field declaredField : Father.class.getDeclaredFields()) {
             FieldTokenType annotation = declaredField.getAnnotation(FieldTokenType.class);
             System.out.println(annotation);
+
         }
     }
 

@@ -4,6 +4,7 @@ import java.lang.annotation.*;
 
 /**
  * 用于支持fileld类型
+ * @author zhangll
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

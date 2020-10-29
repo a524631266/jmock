@@ -11,32 +11,33 @@ import java.util.Properties;
  * 解析流程
  */
 public abstract class MockContext {
-    private static MappingStore mappingStore = new MappingStore();
-//    /**
-//     * 默认没有rule，使用默认的rule
-//     * @param personClass
-//     * @return
-//     */
-//    public static Object mock(Class<?> personClass) {
-//       return mock(personClass, null);
-//    }
-
+    protected static MappingStore mappingStore = new MappingStore();
     /**
+     * 默认没有rule，使用默认的rule
      * @param personClass
      * @return
      */
-    public static Object mock(Class<?> personClass ) {
+    public  Object mock(Class<?> personClass) {
+       return doMock(personClass, null);
+    }
+
+    /**
+     *
+     * @param personClass
+     * @param path
+     * @return
+     */
+    public Object doMock(Class<?> personClass , String path) {
         // 1.首先处理各种token，并设置到mappingStore
-//        proccessToken();
+        initMapping(personClass, path );
         try {
             // 2. 先通过一个构造函数来获取数据
             Object o = personClass.newInstance();
             Field[] declaredFields = personClass.getDeclaredFields();
             for (Field declaredField : declaredFields) {
                 declaredField.setAccessible(true);
-                Class<?> type = declaredField.getType();
                 // 根据 生成的对象和类型来设置值
-                assignRandom(o, declaredField, type);
+                assignRandom(o, declaredField, personClass);
             }
             return o;
         } catch ( InstantiationException e ) {
@@ -46,8 +47,10 @@ public abstract class MockContext {
         }
     }
 
+    protected abstract void initMapping(Class<?> personClass, String path);
+
     private static void assignRandom(Object o, Field declaredField, Class<?> type) throws IllegalAccessException {
-        RandomType random = RandomFactory.getRandom(type);
+        RandomType random = RandomFactory.getRandom(declaredField.getType());
         if(random!=null){
             Rule rule = mappingStore.getRule(type, declaredField);
             random.updateField(o, declaredField, rule == null? random.getRule(): rule);

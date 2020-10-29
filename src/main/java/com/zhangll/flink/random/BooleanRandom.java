@@ -13,7 +13,7 @@ public class BooleanRandom extends AbstractRandom{
             new FieldToken.FieldTokenBuilder()
                     .setMin(1)
                     .setMax(1)
-                    .setValue("true").build()
+                    .setValue(new String[]{"true"}).build()
     );
     // 返回 char类型数值
     public static boolean random() {

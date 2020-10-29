@@ -54,34 +54,19 @@ public class DoubleRandom extends AbstractRandom{
         public DefaultDoubleRule(FieldToken fieldToken) {
             this.fieldToken = fieldToken;
         }
-//        final int min;
-//        final int max;
-//        // 最小保留位数
-//        final int dmin;
-//        // 最小保留位数
-//        final int dmax;
-//        final String value;
-//
-//        public DefaultDoubleRule() {
-//            this(0,0,0,0,null);
-//        }
-//
-//        public DefaultDoubleRule(int min, int max, int dmin, int dmax, String value) {
-//            this.min = min;
-//            this.max = max;
-//            this.dmin = dmin;
-//            this.dmax = dmax;
-//            this.value = value;
-//        }
+
 
         @Override
         public Double apply() {
             // value 的值不为0 的时候，要根据value的小数位来设置小数点
+            if(fieldToken.getValue().length > 1) {
+                throw new  IllegalArgumentException("Double fieldToken value must be only one parameter");
+            }
             int integral = 0;
             int frac = 0;
             String fractional = "";
-            if (fieldToken.getValue() != null) {
-                fractional = fieldToken.getValue().split("\\.")[1];
+            if (fieldToken.getValue() != null && fieldToken.getValue().length > 0) {
+                fractional = fieldToken.getValue()[0].split("\\.")[1];
             }
             integral = RandomUtil.getMin2Max(fieldToken.getMin(), fieldToken.getMax());
             // 小数部分 计算方式

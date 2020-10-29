@@ -122,7 +122,14 @@ public class RandomTest {
         int dmin = 2;
         int dmax = 7;
         String value = "10.287";
-        FieldToken token = new FieldToken(min,max,count,dmin,dmax,0,0, value,null);
+        FieldToken token = new FieldToken.FieldTokenBuilder()
+                .setMin(min)
+                .setMax(max)
+                .setCount(count)
+                .setDmin(dmin)
+                .setDmax(dmax)
+                .setValue(new String[]{value})
+                .build();
         Rule rule = doubleRandom.getRule(token);
         for (int i = 0; i < 100; i++) {
             double res1 = (double) rule.apply();
@@ -157,7 +164,12 @@ public class RandomTest {
         int max = 15;
         int count = 0;
         String value = "false";
-        FieldToken token = new FieldToken(min,max,count,0,0,0,0, value,null);
+        FieldToken token = new FieldToken.FieldTokenBuilder()
+                .setMin(min)
+                .setMax(max)
+                .setCount(count)
+                .setValue(new String[]{value})
+                .build();
         Rule rule = booleanRandom.getRule(token);
         Map<Boolean, Integer>  map = new HashMap();
         for (int i = 0; i < 1000; i++) {
@@ -228,7 +240,11 @@ public class RandomTest {
         int min = 1;
         int max = 20;
         String value = "abc";
-        FieldToken token = new FieldToken(min,max,0,0,0,0,0, value,null);
+        FieldToken token = new FieldToken.FieldTokenBuilder()
+                .setMin(min)
+                .setMax(max)
+                .setValue(new String[]{value})
+                .build();
         Rule rule = stringRandom.getRule(token);
         for (int i = 0; i < 10000; i++) {
             String object = (String) rule.apply();
@@ -243,7 +259,12 @@ public class RandomTest {
         int max = 20;
         int count = 10;
         String value = "天是";
-        FieldToken token = new FieldToken(min,max,count,0,0,0,0, value,null);
+        FieldToken token = new FieldToken.FieldTokenBuilder()
+                .setMin(min)
+                .setMax(max)
+                .setCount(count)
+                .setValue(new String[]{value})
+                .build();
         Rule rule = stringRandom.getRule(token);
         for (int i = 0; i < 10000; i++) {
             String object = (String) rule.apply();
@@ -259,7 +280,12 @@ public class RandomTest {
         int max = 20;
         int count = 10;
         String value = "";
-        FieldToken token = new FieldToken(min,max,count,0,0,0,0, value,null);
+        FieldToken token = new FieldToken.FieldTokenBuilder()
+                .setMin(min)
+                .setMax(max)
+                .setCount(count)
+                .setValue(new String[]{value})
+                .build();
         Rule rule = stringRandom.getRule(token);
         for (int i = 0; i < 10000; i++) {
             String object = (String) rule.apply();
@@ -287,7 +313,7 @@ public class RandomTest {
                 .setMin(min)
                 .setMax(max)
                 .setCount(count)
-                .setValue(value).build()
+                .setValue(new String[]{value}).build()
         );
 
         for (int i = 0; i < 10000; i++) {
@@ -366,7 +392,7 @@ public class RandomTest {
         ListRandom.DefaultListRule rule = (ListRandom.DefaultListRule)listRandom.getRule(
                 new FieldToken.FieldTokenBuilder()
                         .setCount(10)
-                        .setValue("")
+                        .setValue(new String[]{""})
                         .setSubFieldToken(
                                 new FieldToken.FieldTokenBuilder()
                                         .setMin(1)
