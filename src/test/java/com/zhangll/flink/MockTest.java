@@ -20,12 +20,36 @@ public class MockTest
     @Test
     public void testAnnotation()
     {
-        Father father = (Father) new AnnotationMockContext().mock(Father.class);
-        System.out.println(father);
-        assertTrue(father.getAge() >=10 && father.getAge() < 100);
-
+        int count = 0;
+        while ((count ++) < 10000){
+            Father father = (Father) new AnnotationMockContext().mock(Father.class);
+//            System.out.println(father);
+            assertTrue(father.getAge() >=10 && father.getAge() < 100);
+        }
     }
 
+
+    /**
+     * Rigorous Test :-)
+     */
+    @Test
+    public void testAsyncAnnotation() throws InterruptedException {
+        long l = System.currentTimeMillis();
+        int count = 0;
+        while ((count ++) < 10000){
+            new Thread(){
+                @Override
+                public void run() {
+                    Father father = (Father) new AnnotationMockContext().mock(Father.class);
+//                    System.out.println(father);
+                    assertTrue(father.getAge() >= 10 && father.getAge() < 100);
+                    System.out.println("count:" + (System.currentTimeMillis() - l));
+                }
+            }.start();
+        }
+        System.out.println("end");
+        Thread.sleep(5000);
+    }
     /**
      * getDeclaredFields
      */
@@ -33,8 +57,7 @@ public class MockTest
     public void test(){
         for (Field declaredField : Father.class.getDeclaredFields()) {
             FieldTokenType annotation = declaredField.getAnnotation(FieldTokenType.class);
-            System.out.println(annotation);
-
+//            System.out.println(annotation);
         }
     }
 
