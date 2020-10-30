@@ -6,7 +6,9 @@ import com.zhangll.flink.uitl.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Stream;
 
 /**
  * 表达式生成器 以及 @FirstName等方式的应用
@@ -30,18 +32,12 @@ public class RulePostProcessor {
         if(BasicType.isCollection(object.getClass())){
             Collection cols = (Collection)object;
             Object[] objects = cols.toArray();
-            Collection result = null;
-            try {
-                result =(Collection) object.getClass().newInstance();
-            } catch ( InstantiationException e ) {
-                e.printStackTrace();
-            } catch ( IllegalAccessException e ) {
-                e.printStackTrace();
+            int size = cols.size();
+            cols.clear();
+            for (int i = 0; i < size; i++) {
+                cols.add(postProcessAfterCompute(objects[i]));
             }
-            for (int i = 0; i < objects.length; i++) {
-                result.add(postProcessAfterCompute(objects[i]));
-            }
-            return result;
+            return cols;
         }else {
            return handleOne(object);
         }
@@ -49,14 +45,14 @@ public class RulePostProcessor {
 
     /**
      * 词法分析 @first 不区分大小写
-     *  1. "134 @first "
+     *  1. "134 @first " =》 124
      * @param string
      * @return
      */
     private Object handleOne(Object string) {
         if(string instanceof String){
             // 小写
-            String middleStr = ((String) ((String) string).toLowerCase());
+            String middleStr = ((String) string).toLowerCase();
             if (middleStr.contains("@")) {
                 middleStr = middleStr.replace("@first", RandomUtil.getFirstName());
                 middleStr = middleStr.replace("@middle", RandomUtil.getFirstName());

@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -37,13 +38,15 @@ public class RulePostProcessorTest {
 
     @Test
     public void testMult() {
-        List<String> dataOne = new ArrayList<String>(){
-            {
-                add("@First");
-                add("@Last");
-            }
-        };
-
+//        List<String> dataOne = new ArrayList<String>(){
+//            {
+//                add("@First");
+//                add("@Last");
+//            }
+//        };
+        ArrayList<String> dataOne = new ArrayList<String>(){};
+        dataOne.add("@First");
+        dataOne.add("@last");
         Object o = new RulePostProcessor().postProcessAfterCompute(dataOne);
         System.out.println(o);
         if(o instanceof  String[]){

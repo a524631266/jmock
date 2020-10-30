@@ -2,17 +2,13 @@ package com.zhangll.flink.random;
 
 import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.rule.Rule;
-import org.apache.flink.api.common.typeinfo.SqlTimeTypeInfo;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Random;
 
-import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
  * 匹配flink的Date时间
@@ -43,21 +39,6 @@ public class SqlTimeRandom extends AbstractRandom {
         this.innerClass = cls;
     }
 
-
-    public static <X> SqlTimeTypeInfo<X> getInfoFor(Class<X> type) {
-        checkNotNull(type);
-
-        if (type == Date.class) {
-            return (SqlTimeTypeInfo<X>) DATE;
-        }
-        else if (type == Time.class) {
-            return (SqlTimeTypeInfo<X>) TIME;
-        }
-        else if (type == Timestamp.class) {
-            return (SqlTimeTypeInfo<X>) TIMESTAMP;
-        }
-        return null;
-    }
 
     public static void main(String[] args) {
         long ti = 1603890014000L;

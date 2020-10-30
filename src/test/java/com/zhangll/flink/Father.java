@@ -44,6 +44,7 @@ public class Father {
     // 男为1 女为0
     private boolean sex;
     private ArrayList<String> sonsNameList;
+    private List<String> sonsNameList2;
     private List<Integer> sonsAgeList;
     private LinkedList<Double> sonsMoneyList;
     private LinkedList<Long> sonsLongList;
