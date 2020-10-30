@@ -33,6 +33,11 @@ public class Father {
     private float money_f;
     private char char_1;
     private Character a = 'c';
+    private Short wShort;
+
+    @FieldTokenType(min = "1000", max = "2000")
+    private short uShort;
+
     private java.sql.Date date;
     private java.sql.Time time;
     private java.sql.Timestamp timestamp;
