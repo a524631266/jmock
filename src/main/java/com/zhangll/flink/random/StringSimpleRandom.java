@@ -87,7 +87,7 @@ public class StringSimpleRandom extends AbstractSimpleRandom {
             int num = fieldToken.getCount();
             if(num == 0) {
                 // 当获取count 为0,说明只设置了values
-                if(value!=null){
+                if(!isStringEmpty(value)){
                     num = 1;
                 }else{
                     num = RandomUtil.getMin2Max(fieldToken.getMin(), fieldToken.getMax());
