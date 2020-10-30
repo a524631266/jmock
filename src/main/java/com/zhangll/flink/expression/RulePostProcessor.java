@@ -47,19 +47,21 @@ public class RulePostProcessor {
         }
     }
 
+    /**
+     * 词法分析 @first 不区分大小写
+     *  1. "134 @first "
+     * @param string
+     * @return
+     */
     private Object handleOne(Object string) {
-
         if(string instanceof String){
-            String middleStr = ((String) string);
-            if (middleStr.startsWith("@")) {
-
-                if (middleStr.toLowerCase().contains("first")) {
-                    return RandomUtil.getFirstName();
-                } else if (middleStr.toLowerCase().contains("middle")) {
-                    return RandomUtil.getMiddleName();
-                } else if (middleStr.toLowerCase().contains("last")) {
-                    return RandomUtil.getLastName();
-                }
+            // 小写
+            String middleStr = ((String) ((String) string).toLowerCase());
+            if (middleStr.contains("@")) {
+                middleStr = middleStr.replace("@first", RandomUtil.getFirstName());
+                middleStr = middleStr.replace("@middle", RandomUtil.getFirstName());
+                middleStr = middleStr.replace("@last", RandomUtil.getFirstName());
+                return middleStr;
             } else if (middleStr.startsWith("/") && middleStr.endsWith("/")) {
                 return "正则表达式";
             }

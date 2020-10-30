@@ -19,10 +19,10 @@ public class Father {
     @FieldTokenType(min = "3", max = "5")
     private String name;
 
-    @FieldTokenType(count = "1", value = {"@First @Middle"})
+    @FieldTokenType(count = "1", value = {"@First @Middle @last"})
     private String firstName;
 
-    @FieldTokenType(value = {"张三", "李四" ,"王五" , "@First" , "@middle", "@Last"}, count = "1")
+    @FieldTokenType(value = {"张三", "李四" ,"王五" , "@First @Middle @last"}, count = "1")
     private String innerName;
 
     @FieldTokenType(min = "10", max = "20")
