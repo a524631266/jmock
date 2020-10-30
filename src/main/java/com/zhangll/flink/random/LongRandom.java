@@ -25,6 +25,9 @@ public class LongRandom extends AbstractRandom{
 
     @Override
     public Rule getRule(FieldToken fieldToken) {
+        if(fieldToken == null) {
+            return getRule();
+        }
         return new DefaultLongRule(fieldToken);
     }
 
