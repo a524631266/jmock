@@ -82,6 +82,9 @@ public class StringRandom extends AbstractRandom{
 //                result = new ValueExpression(value).generate();
                 value = fieldToken.getValue();
             }
+            if(value == null) {
+                value =new String[]{};
+            }
             int num = fieldToken.getCount();
             if(num == 0) {
                 // 当获取count 为0,说明只设置了values
@@ -91,12 +94,13 @@ public class StringRandom extends AbstractRandom{
                     num = RandomUtil.getMin2Max(fieldToken.getMin(), fieldToken.getMax());
                 }
 
-            } else if( num > 1 && value != null){
+            } else if( num > 1 && !isStringEmpty(value)){
+                // count >1 并且 value =非 ({}，{""}}
                 throw new IllegalArgumentException("should set String count be no more than 1:" + fieldToken);
             }
             StringBuilder result = new StringBuilder();
             for (int i = 0; i < num; i++) {
-                if(value != null){
+                if(!isStringEmpty(value)){
                     Collections.shuffle(Arrays.asList(value));
                     result.append(value[0]);
                 }else{
@@ -104,6 +108,10 @@ public class StringRandom extends AbstractRandom{
                 }
             }
             return result.toString();
+        }
+
+        private boolean isStringEmpty(String[] value) {
+            return value.length==0 || (value.length==1 && "".equals(value[0]) );
         }
     }
 

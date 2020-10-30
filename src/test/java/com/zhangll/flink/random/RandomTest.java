@@ -84,7 +84,7 @@ public class RandomTest {
         Rule rule = doubleRandom.getRule();
         for (int i = 0; i < 10000; i++) {
             Double value = (Double)rule.apply();
-            System.out.println(value);
+//            System.out.println(value);
 //            assertTrue(value >= 10 && value<1000);
         }
     }
@@ -96,7 +96,7 @@ public class RandomTest {
             Boolean value = (Boolean)rule.apply();
             map.put(value,map.getOrDefault(value, 0)+1);
         }
-        System.out.println(map);
+//        System.out.println(map);
     }
 
     @Test
@@ -141,7 +141,14 @@ public class RandomTest {
             assertTrue( dLength >= dmin && dLength <= dmax);
         }
 
-        FieldToken token2 = new FieldToken(min,max,count,dmin,dmax,0,0, null,null);
+//        FieldToken token2 = new FieldToken(min,max,count,dmin,dmax,0,0, null,null);
+        FieldToken token2 = new FieldToken.FieldTokenBuilder()
+                .setMin(min)
+                .setMax(max)
+                .setCount(count)
+                .setDmin(dmin)
+                .setDmax(dmax)
+                .build();
         Rule rule2 = doubleRandom.getRule(token2);
         for (int i = 0; i < 100; i++) {
             double res1 = (double) rule2.apply();
@@ -176,7 +183,7 @@ public class RandomTest {
             boolean bool = (boolean) rule.apply();
             map.put(bool,map.getOrDefault(bool, 0)+1);
         }
-        System.out.println("map:"+map);
+//        System.out.println("map:"+map);
     }
     /**
      * 检测规则是否正确
@@ -211,7 +218,7 @@ public class RandomTest {
 
         FieldToken token = new FieldToken(min,max,0,0,0,0,0, null,null);
         Rule rule = stringRandom.getRule(token);
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 200; i++) {
             String object = (String) rule.apply();
             assertTrue( object.length() >= min && object.length() < max);
         }
@@ -226,7 +233,7 @@ public class RandomTest {
         int count = 5;
         FieldToken token = new FieldToken(min,max,count,0,0,0,0, null,null);
         Rule rule = stringRandom.getRule(token);
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 200; i++) {
             String object = (String) rule.apply();
 //            System.out.println(object);
             assertTrue( object.length() == count);
@@ -246,7 +253,7 @@ public class RandomTest {
                 .setValue(new String[]{value})
                 .build();
         Rule rule = stringRandom.getRule(token);
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 200; i++) {
             String object = (String) rule.apply();
             assertTrue( object.length() >= value.length() * min && object.length() < max * value.length());
         }
@@ -257,19 +264,22 @@ public class RandomTest {
         // 定义规则
         int min = 1;
         int max = 20;
-        int count = 10;
+        int count = 1;
         String value = "天是";
+        String value2 = "天是2";
         FieldToken token = new FieldToken.FieldTokenBuilder()
                 .setMin(min)
                 .setMax(max)
                 .setCount(count)
-                .setValue(new String[]{value})
+                .setValue(new String[]{value, value2})
                 .build();
         Rule rule = stringRandom.getRule(token);
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 200; i++) {
             String object = (String) rule.apply();
-            System.out.println(object);
-            assertTrue( object.length() == value.length() * count);
+//            System.out.println(object);
+            assertTrue( object.length() == value.length() * count
+                    || object.length() == value2.length() * count
+            );
         }
     }
 
@@ -287,9 +297,9 @@ public class RandomTest {
                 .setValue(new String[]{value})
                 .build();
         Rule rule = stringRandom.getRule(token);
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 200; i++) {
             String object = (String) rule.apply();
-            System.out.println(object);
+//            System.out.println(object);
             assertTrue( object.length() == count);
         }
     }
@@ -316,9 +326,9 @@ public class RandomTest {
                 .setValue(new String[]{value}).build()
         );
 
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 200; i++) {
             List object = (List) rule.apply(Father.class.getDeclaredField("sonsNameList"));
-            System.out.println(object);
+//            System.out.println(object);
             assertTrue( object.size() == count);
         }
     }
@@ -331,7 +341,7 @@ public class RandomTest {
     public void testDefalutListRandomRuleForInteger() throws NoSuchFieldException {
         ListRandom.DefaultListRule rule = (ListRandom.DefaultListRule)listRandom.getRule();
         int count = 10;
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 200; i++) {
             List object = (List) rule.apply(Father.class.getDeclaredField("sonsAgeList"));
 //            System.out.println(object);
             assertTrue( object.size() == count);
@@ -347,9 +357,9 @@ public class RandomTest {
     public void testDefalutListRandomRuleForString() throws NoSuchFieldException {
         ListRandom.DefaultListRule rule = (ListRandom.DefaultListRule)listRandom.getRule();
         int count = 10;
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 200; i++) {
             List object = (List) rule.apply(Father.class.getDeclaredField("sonsNameList"));
-            System.out.println(object);
+//            System.out.println(object);
             assertTrue( object.size() == count);
         }
     }
@@ -362,9 +372,9 @@ public class RandomTest {
     public void testDefalutListRandomRuleForDouble() throws NoSuchFieldException {
         ListRandom.DefaultListRule rule = (ListRandom.DefaultListRule)listRandom.getRule();
         int count = 10;
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 200; i++) {
             List object = (List) rule.apply(Father.class.getDeclaredField("sonsMoneyList"));
-            System.out.println(object);
+//            System.out.println(object);
             assertTrue( object.size() == count);
         }
     }
@@ -377,9 +387,9 @@ public class RandomTest {
     public void testDefalutListRandomRuleForLong() throws NoSuchFieldException {
         ListRandom.DefaultListRule rule = (ListRandom.DefaultListRule)listRandom.getRule();
         int count = 10;
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 200; i++) {
             List object = (List) rule.apply(Father.class.getDeclaredField("sonsLongList"));
-            System.out.println(object);
+//            System.out.println(object);
             assertTrue( object.size() == count);
         }
     }
@@ -404,9 +414,9 @@ public class RandomTest {
                         .build()
         );
         int count = 10;
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 200; i++) {
             List object = (List) rule.apply(Father.class.getDeclaredField("sonsMoneyList"));
-            System.out.println(object);
+//            System.out.println(object);
             assertTrue( object.size() == count);
         }
     }

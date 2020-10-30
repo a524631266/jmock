@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 高并发测试
  */
 public class HighConcurrentTest {
-    @Test
+//    @Test
     public void testNomalHashMap(){
         Map<String, String> map = new HashMap(100000);
         for (int i = 0; i < 100000; i++) {
@@ -26,7 +26,7 @@ public class HighConcurrentTest {
         }
     }
 
-    @Test
+//    @Test
     public void testConcurrentHashMap(){
         Map<String, String> map = new ConcurrentHashMap<>(100000);
         for (int i = 0; i < 100000; i++) {
@@ -40,7 +40,7 @@ public class HighConcurrentTest {
         }
     }
 
-    @Test
+//    @Test
     public void testNomalHashTable(){
         Map<String, String> map = new Hashtable(100000);
         for (int i = 0; i < 100000; i++) {
