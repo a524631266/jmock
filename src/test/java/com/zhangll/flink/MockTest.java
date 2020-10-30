@@ -21,7 +21,7 @@ public class MockTest
     public void testAnnotation()
     {
         int count = 0;
-        while ((count ++) < 10000){
+        while ((count ++) < 200){
             Father father = (Father) new AnnotationMockContext().mock(Father.class);
 //            System.out.println(father);
             assertTrue(father.getAge() >=10 && father.getAge() < 100);
@@ -36,7 +36,7 @@ public class MockTest
     public void testAsyncAnnotation() throws InterruptedException {
         long l = System.currentTimeMillis();
         int count = 0;
-        while ((count ++) < 10000){
+        while ((count ++) < 200){
             new Thread(){
                 @Override
                 public void run() {
@@ -48,7 +48,7 @@ public class MockTest
             }.start();
         }
         System.out.println("end");
-        Thread.sleep(5000);
+//        Thread.sleep(5000);
     }
     /**
      * getDeclaredFields
