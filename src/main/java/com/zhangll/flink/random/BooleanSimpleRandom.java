@@ -37,6 +37,7 @@ public class BooleanSimpleRandom extends AbstractSimpleRandom {
 
     @Override
     public Rule getRule(FieldToken fieldToken) {
+        if(fieldToken==null) return defaultBooleanRule;
         return new DefaultBooleanRule(fieldToken);
     }
 

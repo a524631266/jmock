@@ -85,10 +85,13 @@ public class SqlTimeSimpleRandom extends AbstractSimpleRandom {
     @Override
     public Rule getRule(FieldToken fieldToken) {
         if(innerClass == Date.class){
+            if(fieldToken==null) return DATE;
             return new DefaultDateRule(fieldToken);
         }else if(innerClass == Time.class){
+            if(fieldToken==null) return TIME;
             return new DefaultDateRule(fieldToken);
-        }else if(innerClass == Timestamp.class){
+        } else if (innerClass == Timestamp.class) {
+            if(fieldToken==null) return TIMESTAMP;
             return new DefaultTimestampRule(fieldToken);
         }
         return null;

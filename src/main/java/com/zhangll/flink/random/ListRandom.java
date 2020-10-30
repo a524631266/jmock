@@ -42,6 +42,7 @@ public class ListRandom<T> extends AbstractComplexRandom {
 
     @Override
     public Rule getRule(FieldToken fieldToken) {
+        if(fieldToken == null) return defaultRule;
         return new DefaultListRule(fieldToken);
     }
 
