@@ -21,13 +21,14 @@ public interface RandomType {
     void updateField(Object o, Field declaredField, Rule rule) throws IllegalAccessException;
 
     /**
-     * 获取当前默认执行器的Rule
+     * 获取当前默认执行器的Rule，一般默认为单例模式
      * @return
      */
     Rule getRule();
 
     /**
      * 根据token结果集获取指定类型的rule
+     * 实时获取实例
      * @param fieldToken 词法分析结果
      * @return
      */

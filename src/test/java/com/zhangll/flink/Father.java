@@ -19,6 +19,9 @@ public class Father {
     @FieldTokenType(min = "3", max = "5")
     private String name;
 
+    @FieldTokenType(count = "1", value = {"@First @Middle"})
+    private String firstName;
+
     @FieldTokenType(value = {"张三", "李四" ,"王五" , "@First" , "@middle", "@Last"}, count = "1")
     private String innerName;
 
@@ -26,8 +29,9 @@ public class Father {
     private String Address;
     @FieldTokenType(min = "1000", max = "2000", dmin = "3", dmax = "8")
     private double money_d;
+    @FieldTokenType(min = "1000", max = "2000", dmin = "3", dmax = "8")
     private float money_f;
-    private char firstName;
+    private char char_1;
     private Character a = 'c';
     private java.sql.Date date;
     private java.sql.Time time;
