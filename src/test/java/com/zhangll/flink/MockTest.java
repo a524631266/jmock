@@ -71,4 +71,14 @@ public class MockTest
             assertTrue(father.getAge() >=10 && father.getAge() < 100);
         }
     }
+
+    @Test
+    public void testNestModel2()
+    {
+        AnnotationMockContext context = new AnnotationMockContext();
+        for (int i = 0; i < 2; i++) {
+            Object mock = context.mock(Father.class);
+            System.out.println(mock);
+        }
+    }
 }
