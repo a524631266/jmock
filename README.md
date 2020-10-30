@@ -108,3 +108,10 @@ for (int i = 0; i < 2; i++) {
 
 2. Father(age=96, id=616, money=7651289, name=倒, firstName=汪 暨 国, innerName=张三, Address=吗, money_d=1669.9100904, money_f=1670.301, char_1=Ə, a=˴, wShort=103, uShort=1942, date=2020-10-29, time=09:53:48, timestamp=2020-10-30 09:56:16.0, sex=true, sonsNameList=[夺, 画, 刑, 袋, 对, 端, 舌, 膨, 掩, 妄], sonsNameList2=[贵, 蛇, 罢, 剃, 另, 扯, 延, 削, 股, 穴], sonsAgeList=[377, 688, 492, 833, 572, 679, 261, 162, 743, 816], sonsMoneyList=[8.974, 2.8, 3.1843, 3.7751, 4.6, 3.069, 9.51, 8.473, 1.5364, 3.28], sonsLongList=[261, 604, 445, 731, 400, 593, 618, 627, 956, 146], sonsNameSet=[言, 攀, 窃, 米, 炉, 蕉, 孩, 配, 苏, 迟], son=Son(name=首, id=870, age=18, son=SonSon(name=剖, id=144, age=15)), stringArr=[型, 渠, 低, 胆, 杨, 魔, 桃, 扒, 晨, 因], doubleWrapperArr=[7.173, 3.519, 9.9, 3.018, 3.79, 8.825, 3.7, 6.542, 5.051, 5.8], doubleNoWrapperArr=[5.21, 8.61, 4.8, 8.813, 4.5921, 2.91, 6.5, 6.7, 7.361, 3.0755], intNoWrapperArr=[273, 61, 734, 572, 772, 871, 932, 266, 832, 625], intWrapperArr=[34, 205, 401, 223, 297, 21, 605, 945, 140, 812], charNoWrapperArr=[΃, Ü, ĭ, ͆, ʹ, ƥ, Ζ, ̂, c, ɸ], charWrapperArr=[Τ, Ǵ, ρ, Ȗ, Ɠ, ΀, ċ, ʘ, ², ͊])
 ```
+
+
+
+## 后续改进内容
+1. 添加正则文法匹配功能
+2. 增加（+step）功能
+3. 增加关联内容（一对多）
