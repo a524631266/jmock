@@ -17,14 +17,14 @@ public class ListRandom<T> extends AbstractRandom{
     public DefaultListRule defaultRule = new DefaultListRule(
             new FieldToken.FieldTokenBuilder()
                     .setCount(10)
-                    .setSubFieldToken(
-                            new FieldToken.FieldTokenBuilder()
-                            .setMin(1)
-                            .setMax(2)
-                            .setDmin(1)
-                            .setDmax(5)
-                            .build()
-                    )
+//                    .setSubFieldToken(
+//                            new FieldToken.FieldTokenBuilder()
+//                            .setMin(1)
+//                            .setMax(2)
+//                            .setDmin(1)
+//                            .setDmax(5)
+//                            .build()
+//                    )
                     .build()
     );
 

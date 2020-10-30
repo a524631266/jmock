@@ -84,7 +84,7 @@ public class FieldToken {
         private int dcount;
         private int step;
         private String[] value = {};
-        private FieldToken subFieldToken = FieldTokenFactory.getDefaultFieldToken();
+        private FieldToken subFieldToken; // = FieldTokenFactory.getDefaultFieldToken();
         public FieldToken build() {
             if(min > max) {
                 throw new IllegalArgumentException("min must not large than max");

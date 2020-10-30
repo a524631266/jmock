@@ -65,7 +65,7 @@ public class MockTest
     public void testNestModel()
     {
         int count = 0;
-        while ((count ++) < 100){
+        while ((count ++) < 1){
             Father father = (Father) new AnnotationMockContext().mock(Father.class);
             System.out.println(father);
             assertTrue(father.getAge() >=10 && father.getAge() < 100);

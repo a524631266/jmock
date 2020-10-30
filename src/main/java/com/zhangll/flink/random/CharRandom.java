@@ -6,24 +6,12 @@ import com.zhangll.flink.rule.Rule;
 import java.lang.reflect.Field;
 import java.util.Random;
 
-public class CharRandom implements RandomType{
-    // 返回 char类型数值
-    // char大小可以
-    public static char random() {
-        // 两个字节 0- 65535
-        char random = (char) new Random().nextInt(65535);
-        return random;
-    }
+public class CharRandom extends AbstractRandom{
+    public Rule<Character> defaultRule = new DefaultCharRule(
+            new FieldToken.FieldTokenBuilder()
+                    .setMin(1).setMax(1000).build()
+    );
 
-    /**
-     * 中文规则 19968 40869
-     * @return
-     */
-    public static char randomChinese() {
-        // 两个字节 0- 65535
-        char random = (char) (new Random().nextInt(45567) + 19968);
-        return random;
-    }
 
     @Override
     public boolean isCurrentType(Class<?> type) {
@@ -31,19 +19,57 @@ public class CharRandom implements RandomType{
     }
 
     @Override
-    public void updateField(Object o, Field declaredField, Rule rule) throws IllegalAccessException {
-        declaredField.set(o, CharRandom.random());
+    public Object compute(Field declaredField, Rule rule) {
+        if (rule == null){
+            return defaultRule.apply();
+        }else {
+            return rule.apply();
+        }
     }
 
     @Override
     public Rule getRule() {
         // TODO
-        return null;
+        return defaultRule;
     }
 
     @Override
     public Rule getRule(FieldToken fieldToken) {
-        // TODO
-        return null;
+        if(fieldToken == null){
+            return getRule();
+        }
+        return new DefaultCharRule(fieldToken);
+    }
+
+    /**
+     * 根据解析规则 name中的range进行匹配
+     * {
+     *     "name|10":[{"age|+1":10}]
+     * }
+     *
+     *
+     * 'name|min-max': number
+     *  1. 'name|1-10': 1  min-max为最大最小值， number = 1 表示是一个整数类型，不具有任何效应
+     *  2. 'name| 5'
+     * =>
+     */
+    public static class DefaultCharRule implements Rule<Character>{
+
+        private FieldToken fieldToken;
+
+        public DefaultCharRule(FieldToken fieldToken) {
+            this.fieldToken = fieldToken;
+        }
+
+        @Override
+        public Character apply() {
+
+            if(fieldToken.getCount() != 0){
+                return (char) fieldToken.getCount();
+            }
+            int gap = fieldToken.getMax() - fieldToken.getMin();
+            int i = new Random().nextInt(gap) + fieldToken.getMin();
+            return (char)i;
+        }
     }
 }

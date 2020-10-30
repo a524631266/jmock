@@ -18,17 +18,6 @@ public class StringRandom extends AbstractRandom{
     );
 
 
-    public static String random(){
-        // 1. 获取长度
-        int len = new Random().nextInt(10);
-        len = len ==0?1:len;
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < len; i++) {
-            sb.append(CharRandom.random());
-        }
-        return sb.toString();
-    }
-
 
 
 
@@ -51,6 +40,9 @@ public class StringRandom extends AbstractRandom{
     @Override
     public Rule getRule(FieldToken fieldToken) {
         //
+        if(fieldToken == null){
+            return defaultStringRule;
+        }
         return new DefaultStringRule(fieldToken);
     }
 

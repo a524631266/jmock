@@ -17,14 +17,6 @@ public class ArrayRandom<T> extends AbstractRandom {
     public DefaultArrayRule defaultRule = new DefaultArrayRule(
             new FieldToken.FieldTokenBuilder()
                     .setCount(10)
-                    .setSubFieldToken(
-                            new FieldToken.FieldTokenBuilder()
-                                    .setMin(1)
-                                    .setMax(2)
-                                    .setDmin(1)
-                                    .setDmax(5)
-                                    .build()
-                    )
                     .build()
     );
     @Override
