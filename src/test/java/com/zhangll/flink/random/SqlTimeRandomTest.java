@@ -12,25 +12,25 @@ import static org.junit.Assert.*;
 public class SqlTimeRandomTest {
     @Test
     public void testSqlTimeRandomByDifferentType(){
-        SqlTimeRandom dateSqlTimeRandom = new SqlTimeRandom(Date.class);
+        SqlTimeSimpleRandom dateSqlTimeRandom = new SqlTimeSimpleRandom(Date.class);
         Rule rule = dateSqlTimeRandom.getRule();
-        assertTrue(rule instanceof SqlTimeRandom.DefaultDateRule);
+        assertTrue(rule instanceof SqlTimeSimpleRandom.DefaultDateRule);
 
 
-        SqlTimeRandom timeSqlTimeRandom = new SqlTimeRandom(Time.class);
+        SqlTimeSimpleRandom timeSqlTimeRandom = new SqlTimeSimpleRandom(Time.class);
         Rule rule2 = timeSqlTimeRandom.getRule();
-        assertTrue(rule2 instanceof SqlTimeRandom.DefaultTimeRule);
+        assertTrue(rule2 instanceof SqlTimeSimpleRandom.DefaultTimeRule);
 
-        SqlTimeRandom timesSqlTimeRandom = new SqlTimeRandom(Timestamp.class);
+        SqlTimeSimpleRandom timesSqlTimeRandom = new SqlTimeSimpleRandom(Timestamp.class);
         Rule rule3 = timesSqlTimeRandom.getRule();
-        assertTrue(rule3 instanceof SqlTimeRandom.DefaultTimestampRule);
+        assertTrue(rule3 instanceof SqlTimeSimpleRandom.DefaultTimestampRule);
     }
 
     @Test
     public void testDate(){
-        SqlTimeRandom dateSqlTimeRandom = new SqlTimeRandom(Date.class);
+        SqlTimeSimpleRandom dateSqlTimeRandom = new SqlTimeSimpleRandom(Date.class);
         Rule rule = dateSqlTimeRandom.getRule();
-        if(rule instanceof SqlTimeRandom.DefaultDateRule){
+        if(rule instanceof SqlTimeSimpleRandom.DefaultDateRule){
             for (int i = 0; i <  100; i++) {
                 Date apply = (Date) rule.apply();
                 System.out.println(apply);
@@ -42,9 +42,9 @@ public class SqlTimeRandomTest {
 
     @Test
     public void testTime(){
-        SqlTimeRandom dateSqlTimeRandom = new SqlTimeRandom(Time.class);
+        SqlTimeSimpleRandom dateSqlTimeRandom = new SqlTimeSimpleRandom(Time.class);
         Rule rule = dateSqlTimeRandom.getRule();
-        if(rule instanceof SqlTimeRandom.DefaultTimeRule){
+        if(rule instanceof SqlTimeSimpleRandom.DefaultTimeRule){
             for (int i = 0; i <  100; i++) {
                 Time apply = (Time) rule.apply();
                 System.out.println(apply);
@@ -55,9 +55,9 @@ public class SqlTimeRandomTest {
 
     @Test
     public void testTimestamp(){
-        SqlTimeRandom dateSqlTimeRandom = new SqlTimeRandom(Timestamp.class);
+        SqlTimeSimpleRandom dateSqlTimeRandom = new SqlTimeSimpleRandom(Timestamp.class);
         Rule rule = dateSqlTimeRandom.getRule();
-        if(rule instanceof SqlTimeRandom.DefaultTimestampRule){
+        if(rule instanceof SqlTimeSimpleRandom.DefaultTimestampRule){
             for (int i = 0; i <  100; i++) {
                 Timestamp apply = (Timestamp) rule.apply();
                 System.out.println(apply);

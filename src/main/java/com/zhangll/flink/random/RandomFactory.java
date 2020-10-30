@@ -14,26 +14,26 @@ import java.util.Set;
 public class RandomFactory {
     private static Map<Class, RandomType> randomMap = new HashMap<Class, RandomType>();
     static {
-        randomMap.put(Integer.class, new IntegerRandom());
-        randomMap.put(int.class, new IntegerRandom());
-        randomMap.put(char.class, new CharRandom());
-        randomMap.put(Character.class, new CharRandom());
-        randomMap.put(Double.class, new DoubleRandom());
-        randomMap.put(double.class, new DoubleRandom());
-        randomMap.put(Float.class, new FloatRandom());
-        randomMap.put(float.class, new FloatRandom());
-        randomMap.put(Long.class, new LongRandom());
-        randomMap.put(long.class, new LongRandom());
-        randomMap.put(Short.class, new ShortRandom());
-        randomMap.put(short.class, new ShortRandom());
-        randomMap.put(Boolean.class, new BooleanRandom());
-        randomMap.put(boolean.class, new BooleanRandom());
-        randomMap.put(String.class, new StringRandom());
+        randomMap.put(Integer.class, new IntegerSimpleRandom());
+        randomMap.put(int.class, new IntegerSimpleRandom());
+        randomMap.put(char.class, new CharSimpleRandom());
+        randomMap.put(Character.class, new CharSimpleRandom());
+        randomMap.put(Double.class, new DoubleSimpleRandom());
+        randomMap.put(double.class, new DoubleSimpleRandom());
+        randomMap.put(Float.class, new FloatSimpleRandom());
+        randomMap.put(float.class, new FloatSimpleRandom());
+        randomMap.put(Long.class, new LongSimpleRandom());
+        randomMap.put(long.class, new LongSimpleRandom());
+        randomMap.put(Short.class, new ShortSimpleRandom());
+        randomMap.put(short.class, new ShortSimpleRandom());
+        randomMap.put(Boolean.class, new BooleanSimpleRandom());
+        randomMap.put(boolean.class, new BooleanSimpleRandom());
+        randomMap.put(String.class, new StringSimpleRandom());
         randomMap.put(List.class, new ListRandom<>());
         randomMap.put(Set.class, new ListRandom<>());
-        randomMap.put(Date.class, new SqlTimeRandom(Date.class));
-        randomMap.put(Time.class, new SqlTimeRandom(Time.class));
-        randomMap.put(Timestamp.class, new SqlTimeRandom(Timestamp.class));
+        randomMap.put(Date.class, new SqlTimeSimpleRandom(Date.class));
+        randomMap.put(Time.class, new SqlTimeSimpleRandom(Time.class));
+        randomMap.put(Timestamp.class, new SqlTimeSimpleRandom(Timestamp.class));
         randomMap.put(Array.class, new ArrayRandom<>());
     }
 

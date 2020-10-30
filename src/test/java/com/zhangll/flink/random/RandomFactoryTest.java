@@ -9,17 +9,17 @@ public class RandomFactoryTest {
     @Test
     public void getTypeRandom() {
         RandomType random = RandomFactory.getRandom(Integer.class);
-        assertTrue(random instanceof  IntegerRandom);
+        assertTrue(random instanceof IntegerSimpleRandom);
         RandomType longRandom = RandomFactory.getRandom(Long.class);
-        assertTrue(longRandom instanceof  LongRandom);
+        assertTrue(longRandom instanceof LongSimpleRandom);
         RandomType shortRandom = RandomFactory.getRandom(Short.class);
-        assertTrue(shortRandom instanceof  ShortRandom);
+        assertTrue(shortRandom instanceof ShortSimpleRandom);
         RandomType doubleRandom = RandomFactory.getRandom(Double.class);
-        assertTrue(doubleRandom instanceof  DoubleRandom);
+        assertTrue(doubleRandom instanceof DoubleSimpleRandom);
         RandomType floatRandom = RandomFactory.getRandom(Float.class);
-        assertTrue(floatRandom instanceof  FloatRandom);
+        assertTrue(floatRandom instanceof FloatSimpleRandom);
         RandomType boRandom = RandomFactory.getRandom(Boolean.class);
-        assertTrue(boRandom instanceof  BooleanRandom);
+        assertTrue(boRandom instanceof BooleanSimpleRandom);
 
     }
 }

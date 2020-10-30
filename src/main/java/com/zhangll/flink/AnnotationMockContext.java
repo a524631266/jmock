@@ -3,6 +3,7 @@ package com.zhangll.flink;
 import com.zhangll.flink.annotation.FieldTokenType;
 import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.random.RandomFactory;
+import com.zhangll.flink.random.RandomType;
 import com.zhangll.flink.rule.Rule;
 
 import java.lang.reflect.Field;
@@ -20,10 +21,10 @@ public class AnnotationMockContext extends MockContext {
      * path是用于给配置文件使用的
      *
      * @param personClass
-     * @param path
+     * @param token
      */
     @Override
-    protected void initMapping(Class<?> personClass, String path) {
+    protected void initMapping(Class<?> personClass,  FieldToken token) {
         Field[] declaredFields = personClass.getDeclaredFields();
         boolean hasClass = false;
 //        rwl.readLock().lock();
@@ -39,8 +40,9 @@ public class AnnotationMockContext extends MockContext {
             if(!hasClass){
                 for (Field declaredField : declaredFields) {
                     FieldTokenType annotation = declaredField.getAnnotation(FieldTokenType.class);
+                    FieldToken fieldToken = null;
                     if(annotation != null) {
-                        FieldToken fieldToken = new FieldToken.FieldTokenBuilder()
+                        fieldToken = new FieldToken.FieldTokenBuilder()
                                 .setMin(Integer.valueOf(annotation.min()))
                                 .setMax(Integer.valueOf(annotation.max()))
                                 .setDmin(Integer.valueOf(annotation.dmin()))
@@ -50,6 +52,13 @@ public class AnnotationMockContext extends MockContext {
                                 .setDcount(Integer.valueOf(annotation.dcount()))
                                 .setStep(Integer.valueOf(annotation.step()))
                                 .build();
+
+                    }
+                    if(token != null){
+                        fieldToken = token;
+                    }
+                    RandomType random = RandomFactory.getRandom(declaredField.getType());
+                    if(random!=null){
                         Rule rule = RandomFactory.getRandom(declaredField.getType()).getRule(fieldToken);
                         mappingStore.setRuleMap(personClass, declaredField, rule);
                     }

@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,11 +14,11 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 public class RandomTest {
-    private IntegerRandom integerRandom = new IntegerRandom();
-    private LongRandom longRandom = new LongRandom();
-    private DoubleRandom doubleRandom = new DoubleRandom();
-    private BooleanRandom booleanRandom = new BooleanRandom();
-    private StringRandom stringRandom = new StringRandom();
+    private IntegerSimpleRandom integerRandom = new IntegerSimpleRandom();
+    private LongSimpleRandom longRandom = new LongSimpleRandom();
+    private DoubleSimpleRandom doubleRandom = new DoubleSimpleRandom();
+    private BooleanSimpleRandom booleanRandom = new BooleanSimpleRandom();
+    private StringSimpleRandom stringRandom = new StringSimpleRandom();
     private ListRandom listRandom = new ListRandom<>();
 
     private Father father = new Father();

@@ -51,7 +51,7 @@ public class Father {
 
     private Set<String> sonsNameSet;
 
-    private Son son;
+//    private Son son;
 
     private String[] stringArr;
     private Double[] doubleWrapperArr;
@@ -62,4 +62,5 @@ public class Father {
     private char[] charNoWrapperArr;
     private Character[] charWrapperArr;
 
+//    private ArrayList<Son> sonslist;
 }

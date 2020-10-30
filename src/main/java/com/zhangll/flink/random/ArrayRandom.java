@@ -1,5 +1,6 @@
 package com.zhangll.flink.random;
 
+import com.zhangll.flink.MockContext;
 import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.rule.Rule;
 import com.zhangll.flink.type.BasicType;
@@ -7,12 +8,11 @@ import com.zhangll.flink.type.BasicType;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.util.Arrays;
 
 /**
  *
  */
-public class ArrayRandom<T> extends AbstractRandom {
+public class ArrayRandom<T> extends AbstractComplexRandom {
 
     public DefaultArrayRule defaultRule = new DefaultArrayRule(
             new FieldToken.FieldTokenBuilder()
@@ -20,11 +20,11 @@ public class ArrayRandom<T> extends AbstractRandom {
                     .build()
     );
     @Override
-    public Object compute(Field declaredField, Rule rule) {
+    public Object compute(Field declaredField, Rule rule, MockContext context) {
         if(rule == null){
-            return defaultRule.apply(declaredField);
+            return defaultRule.apply(declaredField, context);
         } else{
-            return ((DefaultArrayRule) rule).apply(declaredField);
+            return ((DefaultArrayRule) rule).apply(declaredField, context);
 //                return rule.apply();
         }
     }
@@ -84,7 +84,7 @@ public class ArrayRandom<T> extends AbstractRandom {
          * @param declaredField
          * @return
          */
-        public Object[] apply(Field declaredField) {
+        public Object[] apply(Field declaredField, MockContext context) {
             // 当前的list类型
             if(!BasicType.isArray(declaredField.getType())){
                 throw new IllegalArgumentException("must be array");
@@ -98,7 +98,7 @@ public class ArrayRandom<T> extends AbstractRandom {
             // 基本数据类型不能转化为Object[]
             Object[] o = (Object[]) Array.newInstance(
                     BasicType.primitiveToWarpper(listType), elementNum);
-            AbstractRandom random = (AbstractRandom) RandomFactory.getRandom(listType);
+            AbstractSimpleRandom random = (AbstractSimpleRandom) RandomFactory.getRandom(listType);
             for (int i = 0; i < elementNum; i++) {
                 // 通过子token规则获取subFiledToken内容
                 Rule rule = random.getRule(fieldToken.getSubFieldToken());

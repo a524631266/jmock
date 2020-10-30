@@ -1,5 +1,6 @@
 package com.zhangll.flink.random;
 
+import com.zhangll.flink.MockContext;
 import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.rule.Rule;
 import com.zhangll.flink.type.BasicType;
@@ -13,7 +14,7 @@ import java.util.*;
  * List => list + set
  * @param <T>
  */
-public class ListRandom<T> extends AbstractRandom{
+public class ListRandom<T> extends AbstractComplexRandom {
     public DefaultListRule defaultRule = new DefaultListRule(
             new FieldToken.FieldTokenBuilder()
                     .setCount(10)
@@ -46,7 +47,7 @@ public class ListRandom<T> extends AbstractRandom{
 
 
     @Override
-    public Object compute(Field declaredField, Rule rule) {
+    public Object compute(Field declaredField, Rule rule, MockContext context) {
 
         if(rule == null){
             return defaultRule.apply(declaredField);
@@ -120,7 +121,11 @@ public class ListRandom<T> extends AbstractRandom{
                     ;
             if(genericType instanceof ParameterizedType){
                 Class type = (Class)((ParameterizedType) genericType).getActualTypeArguments()[0];
-                AbstractRandom random = (AbstractRandom) RandomFactory.getRandom(type);
+                AbstractSimpleRandom random = (AbstractSimpleRandom) RandomFactory.getRandom(type);
+
+                if(random == null){
+                    throw new IllegalArgumentException("无法找到");
+                }
                 for (int i = 0; i < elementNum; i++) {
                     // 通过子token规则获取subFiledToken内容
                     Rule rule = random.getRule(fieldToken.getSubFieldToken());

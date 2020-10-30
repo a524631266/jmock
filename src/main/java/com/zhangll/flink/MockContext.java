@@ -1,5 +1,6 @@
 package com.zhangll.flink;
 
+import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.random.*;
 import com.zhangll.flink.rule.Rule;
 import com.zhangll.flink.type.BasicType;
@@ -24,12 +25,12 @@ public abstract class MockContext {
     /**
      *
      * @param personClass
-     * @param path
+     * @param token
      * @return
      */
-    public Object doMock(Class<?> personClass , String path) {
+    public Object doMock(Class<?> personClass , FieldToken token) {
         // 1.首先处理各种token，并设置到mappingStore
-        initMapping(personClass, path );
+        initMapping(personClass, token );
         try {
 
             // 2. 先通过一个构造函数来获取数据
@@ -38,7 +39,7 @@ public abstract class MockContext {
             for (Field declaredField : declaredFields) {
                 declaredField.setAccessible(true);
                 // 根据 生成的对象和类型来设置值
-                assignRandom(o, declaredField, personClass, path);
+                assignRandom(o, declaredField, personClass, token);
             }
             return o;
         } catch ( InstantiationException e ) {
@@ -48,18 +49,34 @@ public abstract class MockContext {
         }
     }
 
-    protected abstract void initMapping(Class<?> personClass, String path);
+    protected abstract void initMapping(Class<?> personClass, FieldToken token);
 
-    private void assignRandom(Object o, Field declaredField, Class<?> type, String path) throws IllegalAccessException {
+    private void assignRandom(Object o, Field declaredField, Class<?> type, FieldToken token) {
         RandomType random = RandomFactory.getRandom(declaredField.getType());
-        if(random!=null){
+        if (random != null) {
+            // 如果是
             Rule rule = mappingStore.getRule(type, declaredField);
-            random.updateField(o, declaredField, rule == null? random.getRule(): rule);
-        }else{
+            try {
+                if(random instanceof AbstractSimpleRandom){
+
+                    ((AbstractSimpleRandom)random).updateField(o, declaredField, rule == null ? random.getRule() : rule);
+
+                }else if (random instanceof  AbstractComplexRandom){
+                    ((AbstractComplexRandom)random).updateField(o, declaredField, rule == null ? random.getRule() : rule, this);
+                }
+            } catch ( IllegalAccessException e ) {
+                throw new IllegalArgumentException(declaredField.getName() + ":" + e.getMessage());
+            }
+
+        } else {
             // other type 非自定义类型
 //            System.out.println(declaredField.getType());
-            Object subObject = doMock(declaredField.getType(), path);
-            declaredField.set(o, subObject);
+            Object subObject = doMock(declaredField.getType(), token);
+            try {
+                declaredField.set(o, subObject);
+            } catch ( IllegalAccessException e ) {
+                e.printStackTrace();
+            }
         }
 
     }
