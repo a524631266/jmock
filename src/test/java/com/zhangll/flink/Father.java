@@ -63,4 +63,5 @@ public class Father {
     private Character[] charWrapperArr;
 
 //    private ArrayList<Son> sonslist;
+//    private Date date2;
 }

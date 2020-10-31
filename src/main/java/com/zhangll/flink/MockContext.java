@@ -1,15 +1,11 @@
 package com.zhangll.flink;
 
 import com.zhangll.flink.model.ASTNode;
-import com.zhangll.flink.model.ClassNode;
+import com.zhangll.flink.model.FieldNode;
 import com.zhangll.flink.model.FieldToken;
-import com.zhangll.flink.random.*;
-import com.zhangll.flink.rule.Rule;
-import com.zhangll.flink.type.BasicType;
 
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * 解析流程
@@ -22,7 +18,7 @@ public abstract class MockContext {
      * @return
      */
     public  Object mock(Class<?> cClass) {
-        ClassNode root = initNodeTree(cClass , null);
+        FieldNode root = initNodeTree(cClass , null);
 
         // 1. 创建一个对象,不过这个对象是
         Object resource = null;
@@ -34,7 +30,7 @@ public abstract class MockContext {
             e.printStackTrace();
         }
         if(resource == null){
-            throw new IllegalArgumentException("参数不可用");
+            throw new IllegalArgumentException(cClass.getCanonicalName() + ": 无法实例化");
         }
         return doObjectBindField(resource, root);
 //        return doMock(cClass, null);
@@ -43,14 +39,14 @@ public abstract class MockContext {
     /**
      * 给 resource 赋值 field
      * @param resource
-     * @param classNode
+     * @param fieldNode
      * @return
      */
-    private Object doObjectBindField(Object resource, ClassNode classNode) {
+    private Object doObjectBindField(Object resource, FieldNode fieldNode) {
         // 根据classNode初始化变量
         // 给当前节点设置值
-        classNode.assignObject(resource, this);
-        List<ASTNode> children = classNode.getChildren();
+        fieldNode.assignObject(resource, this);
+        List<ASTNode> children = fieldNode.getChildren();
         for (ASTNode child : children) {
             boolean childInnerType = child.isInnerType();
             // 如果子节点中的对象是内置的
@@ -70,16 +66,16 @@ public abstract class MockContext {
      * @param cClass
      * @return
      */
-    private ClassNode initNodeTree(Class<?> cClass, Field currentField) {
-        ClassNode parent = new ClassNode(cClass , currentField, initFieldToken(currentField));
+    private FieldNode initNodeTree(Class<?> cClass, Field currentField) {
+        FieldNode parent = new FieldNode(cClass , currentField, initFieldToken(currentField));
         Field[] declaredFields = cClass.getDeclaredFields();
         for (Field declaredField : declaredFields) {
             // 初始化的时候会解析是否为内置类型
-            ClassNode childNode = new ClassNode(declaredField.getType(), declaredField, initFieldToken(declaredField));
+            FieldNode childNode = new FieldNode(declaredField.getType(), declaredField, initFieldToken(declaredField));
             if (childNode.isInnerType()) { // 如果是内置类型就直接添加
                 parent.addChild(childNode);
             } else { // 否则递归调用初始化节点
-                ClassNode newChildNode = initNodeTree(childNode.getType(), declaredField);
+                FieldNode newChildNode = initNodeTree(childNode.getType(), declaredField);
                 parent.addChild(newChildNode);
             }
         }

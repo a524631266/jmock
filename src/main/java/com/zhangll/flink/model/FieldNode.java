@@ -12,7 +12,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassNode implements ASTNode{
+public class FieldNode implements ASTNode{
     final Class currentClass;
     final boolean isInnerType;
     private final RandomType executor;
@@ -23,7 +23,7 @@ public class ClassNode implements ASTNode{
     final private FieldToken fieldToken;
 
 
-    public ClassNode(Class currentClass, Field field, FieldToken fieldToken) {
+    public FieldNode(Class currentClass, Field field, FieldToken fieldToken) {
         this.currentClass = currentClass;
         this.executor = RandomFactory.getRandom(currentClass);
         this.isInnerType = this.executor != null;
@@ -53,15 +53,15 @@ public class ClassNode implements ASTNode{
         return executor;
     }
 
-    private Rule getRule(){
+    public Rule getRule(){
         return executor.getRule(fieldToken);
     }
     @Override
     public void assignObject(Object target, MockContext context) {
         if(executor instanceof AbstractSimpleRandom){
-            ((AbstractSimpleRandom) executor).updateField(target, declaredField, getRule());
+            ((AbstractSimpleRandom) executor).updateField(target,this);
         }else if(executor instanceof AbstractComplexRandom){
-            ((AbstractComplexRandom) executor).updateField(target, declaredField, getRule(), context);
+            ((AbstractComplexRandom) executor).updateField(target, context,this);
         }
     }
 
@@ -71,12 +71,16 @@ public class ClassNode implements ASTNode{
         declaredField.set(target, source);
     }
 
+    public Field getDeclaredField() {
+        return declaredField;
+    }
+
     @Override
     public boolean isInnerType() {
         return isInnerType;
     }
 
-    public void addChild(ClassNode child) {
+    public void addChild(FieldNode child) {
         children.add(child);
         child.parent = this;
     }

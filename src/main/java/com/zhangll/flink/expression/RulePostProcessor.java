@@ -22,7 +22,7 @@ public class RulePostProcessor {
      public static Logger LOG = LoggerFactory.getLogger(RulePostProcessor.class);
     /**
      * 在compute之后处理的结果
-     *
+     * 处理兼容问题比如 char[] 转化为 Char[]
      * @return
      */
     public Object postProcessAfterCompute(Object object) {

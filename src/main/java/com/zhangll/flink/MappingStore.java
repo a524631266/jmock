@@ -1,7 +1,6 @@
 package com.zhangll.flink;
 
-import com.zhangll.flink.model.ClassNode;
-import com.zhangll.flink.rule.Rule;
+import com.zhangll.flink.model.FieldNode;
 import com.zhangll.flink.uitl.KeyUtil;
 
 import java.lang.reflect.Field;
@@ -13,13 +12,13 @@ import java.util.Map;
  * 用来存储被设置过的 key 与 mapping 映射
  */
 public class MappingStore {
-    private Map<String , ClassNode> nodeMap = new HashMap<>();
+    private Map<String , FieldNode> nodeMap = new HashMap<>();
 
-    public void setRuleMap(String key, ClassNode node) {
+    public void setRuleMap(String key, FieldNode node) {
         this.nodeMap.put(key, node);
     }
 
-    public void setRuleMap(Class cls, Field field, ClassNode node) {
+    public void setRuleMap(Class cls, Field field, FieldNode node) {
 
         setRuleMap(KeyUtil.generateKey(cls, field), node);
     }
@@ -28,7 +27,7 @@ public class MappingStore {
      * 返回不可变对象
      * @return
      */
-    public Map<String, ClassNode> getNodeMap() {
+    public Map<String, FieldNode> getNodeMap() {
         return Collections.unmodifiableMap(nodeMap);
     }
 
@@ -37,12 +36,12 @@ public class MappingStore {
      * @param key
      * @return
      */
-    public ClassNode getRule(String key) {
-        ClassNode orDefault = nodeMap.getOrDefault(key, null);
+    public FieldNode getRule(String key) {
+        FieldNode orDefault = nodeMap.getOrDefault(key, null);
         return orDefault;
     }
 
-    public ClassNode getRule(Class cls, Field field) {
+    public FieldNode getRule(Class cls, Field field) {
         return getRule(KeyUtil.generateKey(cls, field));
     }
 }
