@@ -55,8 +55,8 @@ public class RulePostProcessor {
             String middleStr = ((String) string).toLowerCase();
             if (middleStr.contains("@")) {
                 middleStr = middleStr.replace("@first", RandomUtil.getFirstName());
-                middleStr = middleStr.replace("@middle", RandomUtil.getFirstName());
-                middleStr = middleStr.replace("@last", RandomUtil.getFirstName());
+                middleStr = middleStr.replace("@middle", RandomUtil.getMiddleName());
+                middleStr = middleStr.replace("@last", RandomUtil.getLastName());
                 return middleStr;
             } else if (middleStr.startsWith("/") && middleStr.endsWith("/")) {
                 return "正则表达式";

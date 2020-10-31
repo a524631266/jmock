@@ -82,8 +82,8 @@ public class CharRandomTest {
         System.out.println("Short test ====================");
         testBind(shortBindStrategy);
         System.out.println("Float test ====================");
-        FloatBindStrategy floatBindStrategy = new FloatBindStrategy();
-        testBind(floatBindStrategy);
+//        FloatBindStrategy floatBindStrategy = new FloatBindStrategy();
+//        testBind(floatBindStrategy);
     }
 
 

@@ -30,10 +30,13 @@ public class RulePostProcessorTest {
 
     @Test
     public void testLast() {
-        String dataOne = "@Last";
-        Object o = new RulePostProcessor().postProcessAfterCompute(dataOne);
-        System.out.println(o);
-        assertTrue(Arrays.asList(RandomUtil.word).contains(o));
+        for (int i = 0; i < 100; i++) {
+
+            String dataOne = "@Last";
+            Object o = new RulePostProcessor().postProcessAfterCompute(dataOne);
+//            System.out.println(o);
+            assertTrue(Arrays.asList(RandomUtil.word).contains(o));
+        }
     }
 
     @Test
