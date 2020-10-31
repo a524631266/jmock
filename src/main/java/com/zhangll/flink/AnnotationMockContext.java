@@ -18,26 +18,5 @@ public class AnnotationMockContext extends MockContext {
     final static ReentrantReadWriteLock rwl = new ReentrantReadWriteLock();
     static  Map<Class, Boolean> history = new HashMap<>();
 
-    @Override
-    protected FieldToken initFieldToken(Field field) {
-        if(field == null) {
-            return null;
-        }
-        FieldTokenType annotation = field.getAnnotation(FieldTokenType.class);
-        FieldToken fieldToken = null;
-        if(annotation != null) {
-            fieldToken = new FieldToken.FieldTokenBuilder()
-                    .setMin(Integer.valueOf(annotation.min()))
-                    .setMax(Integer.valueOf(annotation.max()))
-                    .setDmin(Integer.valueOf(annotation.dmin()))
-                    .setDmax(Integer.valueOf(annotation.dmax()))
-                    .setCount(Integer.valueOf(annotation.count()))
-                    .setValue(annotation.value())
-                    .setDcount(Integer.valueOf(annotation.dcount()))
-                    .setStep(Integer.valueOf(annotation.step()))
-                    .build();
 
-        }
-        return fieldToken;
-    }
 }

@@ -1,12 +1,16 @@
 package com.zhangll.flink.random;
 
+import com.zhangll.flink.AnnotationMockContext;
 import com.zhangll.flink.Father;
+import com.zhangll.flink.MockContext;
 import com.zhangll.flink.model.FieldToken;
+import com.zhangll.flink.parser.NodeParser;
 import com.zhangll.flink.rule.Rule;
 import org.junit.Before;
 import org.junit.Test;
 
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,17 +18,21 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 public class RandomTest {
-    private IntegerSimpleRandom integerRandom = new IntegerSimpleRandom();
-    private LongSimpleRandom longRandom = new LongSimpleRandom();
-    private DoubleSimpleRandom doubleRandom = new DoubleSimpleRandom();
-    private BooleanSimpleRandom booleanRandom = new BooleanSimpleRandom();
-    private StringSimpleRandom stringRandom = new StringSimpleRandom();
-    private ListRandom listRandom = new ListRandom<>();
+    private IntegerSimpleRandomExecutor integerRandom = new IntegerSimpleRandomExecutor();
+    private LongSimpleRandomExecutor longRandom = new LongSimpleRandomExecutor();
+    private DoubleSimpleRandomExecutor doubleRandom = new DoubleSimpleRandomExecutor();
+    private BooleanSimpleRandomExecutor booleanRandom = new BooleanSimpleRandomExecutor();
+    private StringSimpleRandomExecutor stringRandom = new StringSimpleRandomExecutor();
+    private ListRandomExecutor listRandom = new ListRandomExecutor<>();
 
     private Father father = new Father();
+    private MockContext mockContext;
+
+    private NodeParser nodeParser;
     @Before
     public void init(){
-
+        mockContext = new AnnotationMockContext();
+        nodeParser = new NodeParser();
     }
 
     /**
@@ -43,7 +51,7 @@ public class RandomTest {
                 .build()
         );
         for (int i = 0; i < 1000; i++) {
-            int res1 = (int) rule.apply();
+            int res1 = (int) rule.apply(mockContext, null);
             assertTrue( res1 >= min && res1 < max);
         }
         Rule rule2 = integerRandom.getRule(
@@ -54,7 +62,7 @@ public class RandomTest {
                         .build()
         );
         for (int i = 0; i < 1000; i++) {
-            int res2 = (int) rule2.apply();
+            int res2 = (int) rule2.apply(mockContext,null);
             assertTrue( res2 == count);
         }
     }
@@ -62,7 +70,7 @@ public class RandomTest {
     public void testDefaultIntegerRandom(){
         Rule rule = integerRandom.getRule();
         for (int i = 0; i < 10000; i++) {
-            Integer value = (Integer)rule.apply();
+            Integer value = (Integer)rule.apply(mockContext,null);
             assertTrue(value >= 1 && value < 1000);
         }
     }
@@ -71,7 +79,7 @@ public class RandomTest {
     public void testDefaultLongRandom(){
         Rule rule = longRandom.getRule();
         for (int i = 0; i < 10000; i++) {
-            Long value = (Long)rule.apply();
+            Long value = (Long)rule.apply(mockContext,null);
 //            System.out.println(value);
             assertTrue(value >= 10 && value<1000);
         }
@@ -82,7 +90,7 @@ public class RandomTest {
     public void testDefaultDoubleRandom(){
         Rule rule = doubleRandom.getRule();
         for (int i = 0; i < 10000; i++) {
-            Double value = (Double)rule.apply();
+            Double value = (Double)rule.apply(mockContext,null);
 //            System.out.println(value);
 //            assertTrue(value >= 10 && value<1000);
         }
@@ -92,7 +100,7 @@ public class RandomTest {
         Map<Boolean , Integer> map = new HashMap<Boolean, Integer>();
         Rule rule = booleanRandom.getRule();
         for (int i = 0; i < 10000; i++) {
-            Boolean value = (Boolean)rule.apply();
+            Boolean value = (Boolean)rule.apply(mockContext,null);
             map.put(value,map.getOrDefault(value, 0)+1);
         }
 //        System.out.println(map);
@@ -102,7 +110,7 @@ public class RandomTest {
     public void testDefaultStringRandom(){
         Rule rule = stringRandom.getRule();
         for (int i = 0; i < 10000; i++) {
-            String value = (String)rule.apply();
+            String value = (String)rule.apply(mockContext,null);
 //            System.out.println(value);
             assertTrue(value.length() >=1 && value.length() <3);
         }
@@ -131,7 +139,7 @@ public class RandomTest {
                 .build();
         Rule rule = doubleRandom.getRule(token);
         for (int i = 0; i < 100; i++) {
-            double res1 = (double) rule.apply();
+            double res1 = (double) rule.apply(mockContext,null);
 //            System.out.println(res1);
             //
             assertTrue( res1 >= min && res1 < max + (Integer.valueOf(value.split("\\.")[1])+1));
@@ -150,7 +158,7 @@ public class RandomTest {
                 .build();
         Rule rule2 = doubleRandom.getRule(token2);
         for (int i = 0; i < 100; i++) {
-            double res1 = (double) rule2.apply();
+            double res1 = (double) rule2.apply(mockContext,null);
             String s = String.valueOf(res1);
             int dLength = s.split("\\.")[1].length();
             int it = Integer.valueOf(s.split("\\.")[0]);
@@ -179,7 +187,7 @@ public class RandomTest {
         Rule rule = booleanRandom.getRule(token);
         Map<Boolean, Integer>  map = new HashMap();
         for (int i = 0; i < 1000; i++) {
-            boolean bool = (boolean) rule.apply();
+            boolean bool = (boolean) rule.apply(mockContext,null);
             map.put(bool,map.getOrDefault(bool, 0)+1);
         }
 //        System.out.println("map:"+map);
@@ -195,7 +203,7 @@ public class RandomTest {
         FieldToken token = new FieldToken(min,max,0,0,0,0,0, null,null);
         Rule rule = longRandom.getRule(token);
         for (int i = 0; i < 100; i++) {
-            long res1 = (Long) rule.apply();
+            long res1 = (Long) rule.apply(mockContext,null);
             assertTrue( res1 >= min && res1 < max);
         }
         int count = 600;
@@ -203,7 +211,7 @@ public class RandomTest {
         FieldToken token2 = new FieldToken(min , max,count,0,0,0,0, null,null);
         Rule rule2 = longRandom.getRule(token2);
         for (int i = 0; i < 100; i++) {
-            long res2 = (Long) rule2.apply();
+            long res2 = (Long) rule2.apply(mockContext,null);
             assertTrue( res2 == count);
         }
     }
@@ -218,7 +226,7 @@ public class RandomTest {
         FieldToken token = new FieldToken(min,max,0,0,0,0,0, null,null);
         Rule rule = stringRandom.getRule(token);
         for (int i = 0; i < 200; i++) {
-            String object = (String) rule.apply();
+            String object = (String) rule.apply(mockContext,null);
             assertTrue( object.length() >= min && object.length() < max);
         }
 
@@ -233,7 +241,7 @@ public class RandomTest {
         FieldToken token = new FieldToken(min,max,count,0,0,0,0, null,null);
         Rule rule = stringRandom.getRule(token);
         for (int i = 0; i < 200; i++) {
-            String object = (String) rule.apply();
+            String object = (String) rule.apply(mockContext,null);
 //            System.out.println(object);
             assertTrue( object.length() == count);
         }
@@ -253,7 +261,7 @@ public class RandomTest {
                 .build();
         Rule rule = stringRandom.getRule(token);
         for (int i = 0; i < 200; i++) {
-            String object = (String) rule.apply();
+            String object = (String) rule.apply(mockContext,null);
             assertTrue( object.length() >= value.length() * min && object.length() < max * value.length());
         }
     }
@@ -274,7 +282,7 @@ public class RandomTest {
                 .build();
         Rule rule = stringRandom.getRule(token);
         for (int i = 0; i < 200; i++) {
-            String object = (String) rule.apply();
+            String object = (String) rule.apply(mockContext,null);
 //            System.out.println(object);
             assertTrue( object.length() == value.length() * count
                     || object.length() == value2.length() * count
@@ -297,7 +305,7 @@ public class RandomTest {
                 .build();
         Rule rule = stringRandom.getRule(token);
         for (int i = 0; i < 200; i++) {
-            String object = (String) rule.apply();
+            String object = (String) rule.apply(mockContext,null);
 //            System.out.println(object);
             assertTrue( object.length() == count);
         }
@@ -317,16 +325,16 @@ public class RandomTest {
         int max = 0;
         int count = 10;
         String value = "";
-        ListRandom.DefaultListRule rule = (ListRandom.DefaultListRule)listRandom.getRule(
+        ListRandomExecutor.DefaultListRule rule = (ListRandomExecutor.DefaultListRule)listRandom.getRule(
                 new FieldToken.FieldTokenBuilder()
                 .setMin(min)
                 .setMax(max)
                 .setCount(count)
                 .setValue(new String[]{value}).build()
         );
-
+        Field sonsNameList = Father.class.getDeclaredField("sonsNameList");
         for (int i = 0; i < 200; i++) {
-            List object = (List) rule.apply(Father.class.getDeclaredField("sonsNameList"));
+            List object = (List) rule.apply(mockContext, nodeParser.initNodeTree(sonsNameList.getType(), sonsNameList));
 //            System.out.println(object);
             assertTrue( object.size() == count);
         }
@@ -338,10 +346,12 @@ public class RandomTest {
      */
     @Test
     public void testDefalutListRandomRuleForInteger() throws NoSuchFieldException {
-        ListRandom.DefaultListRule rule = (ListRandom.DefaultListRule)listRandom.getRule();
+        ListRandomExecutor.DefaultListRule rule = (ListRandomExecutor.DefaultListRule)listRandom.getRule();
         int count = 10;
+        Field field = Father.class.getDeclaredField("sonsAgeList");
+
         for (int i = 0; i < 200; i++) {
-            List object = (List) rule.apply(Father.class.getDeclaredField("sonsAgeList"));
+            List object = (List) rule.apply(mockContext, nodeParser.initNodeTree(field.getType(), field));
 //            System.out.println(object);
             assertTrue( object.size() == count);
         }
@@ -354,10 +364,11 @@ public class RandomTest {
      */
     @Test
     public void testDefalutListRandomRuleForString() throws NoSuchFieldException {
-        ListRandom.DefaultListRule rule = (ListRandom.DefaultListRule)listRandom.getRule();
+        ListRandomExecutor.DefaultListRule rule = (ListRandomExecutor.DefaultListRule)listRandom.getRule();
         int count = 10;
+        Field field = Father.class.getDeclaredField("sonsNameList");
         for (int i = 0; i < 200; i++) {
-            List object = (List) rule.apply(Father.class.getDeclaredField("sonsNameList"));
+            List object = (List) rule.apply(mockContext, nodeParser.initNodeTree(field.getType(), field));
 //            System.out.println(object);
             assertTrue( object.size() == count);
         }
@@ -369,10 +380,11 @@ public class RandomTest {
      */
     @Test
     public void testDefalutListRandomRuleForDouble() throws NoSuchFieldException {
-        ListRandom.DefaultListRule rule = (ListRandom.DefaultListRule)listRandom.getRule();
+        ListRandomExecutor.DefaultListRule rule = (ListRandomExecutor.DefaultListRule)listRandom.getRule();
         int count = 10;
+        Field field = Father.class.getDeclaredField("sonsMoneyList");
         for (int i = 0; i < 200; i++) {
-            List object = (List) rule.apply(Father.class.getDeclaredField("sonsMoneyList"));
+            List object = (List) rule.apply(mockContext, nodeParser.initNodeTree(field.getType(), field));
 //            System.out.println(object);
             assertTrue( object.size() == count);
         }
@@ -384,10 +396,11 @@ public class RandomTest {
      */
     @Test
     public void testDefalutListRandomRuleForLong() throws NoSuchFieldException {
-        ListRandom.DefaultListRule rule = (ListRandom.DefaultListRule)listRandom.getRule();
+        ListRandomExecutor.DefaultListRule rule = (ListRandomExecutor.DefaultListRule)listRandom.getRule();
         int count = 10;
+        Field field = Father.class.getDeclaredField("sonsLongList");
         for (int i = 0; i < 200; i++) {
-            List object = (List) rule.apply(Father.class.getDeclaredField("sonsLongList"));
+            List object = (List) rule.apply(mockContext, nodeParser.initNodeTree(field.getType(), field));
 //            System.out.println(object);
             assertTrue( object.size() == count);
         }
@@ -398,7 +411,7 @@ public class RandomTest {
      */
     @Test
     public void testDefalutListRandomRuleForStringByValue() throws NoSuchFieldException {
-        ListRandom.DefaultListRule rule = (ListRandom.DefaultListRule)listRandom.getRule(
+        ListRandomExecutor.DefaultListRule rule = (ListRandomExecutor.DefaultListRule)listRandom.getRule(
                 new FieldToken.FieldTokenBuilder()
                         .setCount(10)
                         .setValue(new String[]{""})
@@ -413,8 +426,9 @@ public class RandomTest {
                         .build()
         );
         int count = 10;
+        Field field = Father.class.getDeclaredField("sonsMoneyList");
         for (int i = 0; i < 200; i++) {
-            List object = (List) rule.apply(Father.class.getDeclaredField("sonsMoneyList"));
+            List object = (List) rule.apply(mockContext, nodeParser.initNodeTree(field.getType(), field));
 //            System.out.println(object);
             assertTrue( object.size() == count);
         }

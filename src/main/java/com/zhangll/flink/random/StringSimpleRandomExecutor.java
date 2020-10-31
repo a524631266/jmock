@@ -1,14 +1,15 @@
 package com.zhangll.flink.random;
 
+import com.zhangll.flink.MockContext;
+import com.zhangll.flink.model.FieldNode;
 import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.rule.Rule;
 import com.zhangll.flink.uitl.RandomUtil;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class StringSimpleRandom extends AbstractSimpleRandom {
+public class StringSimpleRandomExecutor extends AbstractRandomExecutor {
     private DefaultStringRule defaultStringRule = new DefaultStringRule(
             new FieldToken.FieldTokenBuilder()
                     .setMin(1)
@@ -45,16 +46,6 @@ public class StringSimpleRandom extends AbstractSimpleRandom {
         return new DefaultStringRule(fieldToken);
     }
 
-    @Override
-    public Object compute(Field declaredField, Rule rule) {
-
-        if(rule == null) {
-            return defaultStringRule.apply();
-        }else{
-            return rule.apply();
-        }
-    }
-
 
     /**
      * 属性值是字符串 String
@@ -74,7 +65,7 @@ public class StringSimpleRandom extends AbstractSimpleRandom {
          * @return
          */
         @Override
-        public String apply() {
+        public String apply(MockContext mockContext, FieldNode fieldNodeContext) {
             // 初始化value
             String[] value = null;
             if(fieldToken.getValue()!=null && (fieldToken.getValue().length > 0)){

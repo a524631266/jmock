@@ -6,16 +6,7 @@ import com.zhangll.flink.rule.Rule;
 
 import java.lang.reflect.Field;
 
-public interface ComplexRandomType extends RandomType{
-    /**
-     *
-     * @param target 要被赋值的对象
-     * @param declaredField 用来给对象赋值的field对象
-     * @param rule 根据规则定义的
-     * @param context
-     * @throws IllegalAccessException
-     */
-    void updateField(Object target, Field declaredField, Rule rule, MockContext context);
+public interface RandomExecutor extends RandomType{
 
     /**
      *

@@ -1,12 +1,13 @@
 package com.zhangll.flink.random;
 
+import com.zhangll.flink.MockContext;
+import com.zhangll.flink.model.FieldNode;
 import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.rule.Rule;
 
-import java.lang.reflect.Field;
 import java.util.Random;
 
-public class LongSimpleRandom extends AbstractSimpleRandom {
+public class LongSimpleRandomExecutor extends AbstractRandomExecutor {
     public Rule<Long> defaultRule = new DefaultLongRule(
             new FieldToken.FieldTokenBuilder()
                     .setMin(10)
@@ -30,15 +31,6 @@ public class LongSimpleRandom extends AbstractSimpleRandom {
         return new DefaultLongRule(fieldToken);
     }
 
-    @Override
-    public Object compute(Field declaredField, Rule rule) {
-        if (rule == null){
-            return defaultRule.apply();
-        }else {
-            return rule.apply();
-        }
-    }
-
     /**
      * 根据解析规则 name中的range进行匹配
      * {
@@ -58,7 +50,7 @@ public class LongSimpleRandom extends AbstractSimpleRandom {
         }
 
         @Override
-        public Long apply() {
+        public Long apply(MockContext mockContext, FieldNode fieldNodeContext) {
             if(fieldToken.getCount() != 0){
                 return Long.valueOf(fieldToken.getCount());
             }

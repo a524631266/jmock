@@ -3,6 +3,7 @@ package com.zhangll.flink;
 import com.zhangll.flink.model.ASTNode;
 import com.zhangll.flink.model.FieldNode;
 import com.zhangll.flink.model.FieldToken;
+import com.zhangll.flink.parser.NodeParser;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -12,14 +13,18 @@ import java.util.List;
  */
 public abstract class MockContext {
     protected static MappingStore mappingStore = new MappingStore();
+    protected static NodeParser nodeParser = new NodeParser();
     /**
      * 默认没有rule，使用默认的rule
      * @param cClass
      * @return
      */
     public  Object mock(Class<?> cClass) {
-        FieldNode root = initNodeTree(cClass , null);
-
+        FieldNode root = null;
+        if((root = mappingStore.getFieldNode(cClass, null))==null){
+            root = nodeParser.initNodeTree(cClass , null);
+            mappingStore.setRuleMap(cClass, null, root);
+        }
         // 1. 创建一个对象,不过这个对象是
         Object resource = null;
         try {
@@ -60,29 +65,6 @@ public abstract class MockContext {
         }
         return resource;
     }
-
-    /**
-     * 初始化一个Node节点树,用来保证数据成功实现内容
-     * @param cClass
-     * @return
-     */
-    private FieldNode initNodeTree(Class<?> cClass, Field currentField) {
-        FieldNode parent = new FieldNode(cClass , currentField, initFieldToken(currentField));
-        Field[] declaredFields = cClass.getDeclaredFields();
-        for (Field declaredField : declaredFields) {
-            // 初始化的时候会解析是否为内置类型
-            FieldNode childNode = new FieldNode(declaredField.getType(), declaredField, initFieldToken(declaredField));
-            if (childNode.isInnerType()) { // 如果是内置类型就直接添加
-                parent.addChild(childNode);
-            } else { // 否则递归调用初始化节点
-                FieldNode newChildNode = initNodeTree(childNode.getType(), declaredField);
-                parent.addChild(newChildNode);
-            }
-        }
-        return parent;
-    }
-
-    protected abstract FieldToken initFieldToken(Field field);
 
 
 }

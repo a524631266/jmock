@@ -47,6 +47,9 @@ public class BasicType {
     }
 
     public static boolean isArray(Class type) {
+        if (type == null){
+            return false;
+        }
         return type.getComponentType() != null;
     }
 

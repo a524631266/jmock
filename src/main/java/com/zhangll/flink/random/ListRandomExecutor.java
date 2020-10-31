@@ -1,11 +1,11 @@
 package com.zhangll.flink.random;
 
 import com.zhangll.flink.MockContext;
+import com.zhangll.flink.model.FieldNode;
 import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.rule.Rule;
 import com.zhangll.flink.type.BasicType;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
@@ -14,7 +14,7 @@ import java.util.*;
  * List => list + set
  * @param <T>
  */
-public class ListRandom<T> extends AbstractComplexRandom {
+public class ListRandomExecutor<T> extends AbstractRandomExecutor {
     public DefaultListRule defaultRule = new DefaultListRule(
             new FieldToken.FieldTokenBuilder()
                     .setCount(10)
@@ -47,16 +47,6 @@ public class ListRandom<T> extends AbstractComplexRandom {
     }
 
 
-    @Override
-    public Object compute(Field declaredField, Rule rule, MockContext context) {
-
-        if(rule == null){
-            return defaultRule.apply(declaredField);
-        } else{
-            return ((DefaultListRule) rule).apply(declaredField);
-//                return rule.apply();
-        }
-    }
 
     /**
      * 根据解析规则 name中的range进行匹配
@@ -89,19 +79,10 @@ public class ListRandom<T> extends AbstractComplexRandom {
             this.fieldToken = fieldToken;
         }
 
-        @Override
-        public Collection<T> apply() {
-            return defaultList;
-        }
-
-        /**
-         * @param declaredField
-         * @return
-         */
-        public Collection<T> apply(Field declaredField) {
+        public Collection<T> apply(MockContext mockContext, FieldNode fieldNodeContext) {
             // 当前的list类型
-            Class<?> listType = declaredField.getType();
-            Type genericType = declaredField.getGenericType();
+            Class<?> listType = fieldNodeContext.getType();
+            Type genericType = fieldNodeContext.getDeclaredField().getGenericType();
             Collection o = null;
             try {
                 if(listType == List.class){
@@ -122,16 +103,16 @@ public class ListRandom<T> extends AbstractComplexRandom {
                     ;
             if(genericType instanceof ParameterizedType){
                 Class type = (Class)((ParameterizedType) genericType).getActualTypeArguments()[0];
-                AbstractSimpleRandom random = (AbstractSimpleRandom) RandomFactory.getRandom(type);
+//                AbstractRandomExecutor random = (AbstractRandomExecutor) RandomFactory.getRandom(type);
 
-                if(random == null){
-                    throw new IllegalArgumentException("无法找到");
-                }
+//                if(random == null){
+//                    throw new IllegalArgumentException("无法找到");
+//                }
                 for (int i = 0; i < elementNum; i++) {
                     // 通过子token规则获取subFiledToken内容
-                    Rule rule = random.getRule(fieldToken.getSubFieldToken());
-                    Object randomValue = random.compute(null, rule);
-                    o.add(randomValue);
+//                    Rule rule = random.getRule(fieldToken.getSubFieldToken());
+//                    Object randomValue = random.compute(null, rule);
+                    o.add(mockContext.mock(type));
                 }
             } else{
                 throw  new IllegalArgumentException(" list must has type");

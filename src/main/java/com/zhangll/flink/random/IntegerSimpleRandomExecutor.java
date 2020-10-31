@@ -1,45 +1,39 @@
 package com.zhangll.flink.random;
 
+import com.zhangll.flink.MockContext;
+import com.zhangll.flink.model.FieldNode;
 import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.rule.Rule;
 
-import java.lang.reflect.Field;
 import java.util.Random;
 
-public class ShortSimpleRandom extends AbstractSimpleRandom {
-    public Rule<Short> defaultRule = new DefaultShortRule(
+public class IntegerSimpleRandomExecutor extends AbstractRandomExecutor {
+    public Rule<Integer> defaultRule = new DefaultIntegerRule(
             new FieldToken.FieldTokenBuilder()
-                    .setMin(1).setMax(1000).build()
+            .setMin(1).setMax(1000).build()
     );
-
-    @Override
-    public boolean isCurrentType(Class<?> type) {
-        return type == Short.class || type == short.class;
+    public static int random(){
+        int i = new Random().nextInt(100);
+        return i;
     }
 
 
     @Override
+    public boolean isCurrentType(Class<?> type) {
+        return type == Integer.class || type == int.class;
+    }
+
+    @Override
     public Rule getRule() {
-        // TODO
         return defaultRule;
     }
 
     @Override
     public Rule getRule(FieldToken fieldToken) {
-        // TODO
         if(fieldToken == null){
             return getRule();
         }
-        return new DefaultShortRule(fieldToken);
-    }
-
-    @Override
-    public Object compute(Field declaredField, Rule rule) {
-        if (rule == null){
-            return defaultRule.apply();
-        }else {
-            return rule.apply();
-        }
+        return new DefaultIntegerRule(fieldToken);
     }
 
 
@@ -55,23 +49,26 @@ public class ShortSimpleRandom extends AbstractSimpleRandom {
      *  2. 'name| 5'
      * =>
      */
-    public static class DefaultShortRule implements Rule<Short>{
+    public static class DefaultIntegerRule implements Rule<Integer>{
 
         private FieldToken fieldToken;
 
-        public DefaultShortRule(FieldToken fieldToken) {
+
+
+        public DefaultIntegerRule(FieldToken fieldToken) {
             this.fieldToken = fieldToken;
         }
 
         @Override
-        public Short apply() {
+        public Integer apply(MockContext mockContext, FieldNode fieldNodeContext) {
 
             if(fieldToken.getCount() != 0){
-                return (short) fieldToken.getCount();
+                return fieldToken.getCount();
             }
             int gap = fieldToken.getMax() - fieldToken.getMin();
             int i = new Random().nextInt(gap) + fieldToken.getMin();
-            return (short)i;
+            return i;
         }
+
     }
 }

@@ -36,12 +36,12 @@ public class MappingStore {
      * @param key
      * @return
      */
-    public FieldNode getRule(String key) {
+    public FieldNode getFieldNode(String key) {
         FieldNode orDefault = nodeMap.getOrDefault(key, null);
         return orDefault;
     }
 
-    public FieldNode getRule(Class cls, Field field) {
-        return getRule(KeyUtil.generateKey(cls, field));
+    public FieldNode getFieldNode(Class cls, Field field) {
+        return getFieldNode(KeyUtil.generateKey(cls, field));
     }
 }

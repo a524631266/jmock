@@ -1,33 +1,24 @@
 package com.zhangll.flink.random;
 
 import com.zhangll.flink.MockContext;
+import com.zhangll.flink.model.FieldNode;
 import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.rule.Rule;
 import com.zhangll.flink.type.BasicType;
 
 
 import java.lang.reflect.Array;
-import java.lang.reflect.Field;
 
 /**
  *
  */
-public class ArrayRandom<T> extends AbstractComplexRandom {
+public class ArrayRandomExecutor<T> extends AbstractRandomExecutor {
 
     public DefaultArrayRule defaultRule = new DefaultArrayRule(
             new FieldToken.FieldTokenBuilder()
                     .setCount(10)
                     .build()
     );
-    @Override
-    public Object compute(Field declaredField, Rule rule, MockContext context) {
-        if(rule == null){
-            return defaultRule.apply(declaredField, context);
-        } else{
-            return ((DefaultArrayRule) rule).apply(declaredField, context);
-//                return rule.apply();
-        }
-    }
 
     @Override
     public boolean isCurrentType(Class<?> type) {
@@ -76,35 +67,28 @@ public class ArrayRandom<T> extends AbstractComplexRandom {
             this.fieldToken = fieldToken;
         }
 
-        @Override
-        public Object[] apply() {
-            return defaultList;
-        }
 
-        /**
-         * @param declaredField
-         * @return
-         */
-        public Object[] apply(Field declaredField, MockContext context) {
+        public Object[] apply(MockContext context, FieldNode fieldNodeContext) {
+            assert(fieldNodeContext.getFieldToken() == fieldToken);
             // 当前的list类型
-            if(!BasicType.isArray(declaredField.getType())){
+            if(!fieldNodeContext.isArray()){
                 throw new IllegalArgumentException("must be array");
             }
-            Class<?> listType = declaredField.getType().getComponentType();
+            Class<?> listType = fieldNodeContext.getComponentType();
 
             // 元素数量
             int elementNum = (fieldToken.getMax() - fieldToken.getMin()) == 0 ?
                     fieldToken.getCount():fieldToken.getMax() - fieldToken.getMin()
                     ;
             // 基本数据类型不能转化为Object[]
+            // 在数组中没有
             Object[] o = (Object[]) Array.newInstance(
                     BasicType.primitiveToWarpper(listType), elementNum);
-            AbstractSimpleRandom random = (AbstractSimpleRandom) RandomFactory.getRandom(listType);
             for (int i = 0; i < elementNum; i++) {
                 // 通过子token规则获取subFiledToken内容
-                Rule rule = random.getRule(fieldToken.getSubFieldToken());
-                Object randomValue = random.compute(null, rule);
-                o[i] = randomValue;
+//                Rule rule = random.getRule(fieldToken.getSubFieldToken());
+//                Object randomValue = random.compute(null, rule);
+                o[i] = context.mock(listType);
             }
             return o;
         }

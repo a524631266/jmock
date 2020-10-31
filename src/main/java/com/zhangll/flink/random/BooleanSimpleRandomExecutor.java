@@ -1,13 +1,14 @@
 package com.zhangll.flink.random;
 
+import com.zhangll.flink.MockContext;
+import com.zhangll.flink.model.FieldNode;
 import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.rule.Rule;
 import com.zhangll.flink.uitl.RandomUtil;
 
-import java.lang.reflect.Field;
 import java.util.Random;
 
-public class BooleanSimpleRandom extends AbstractSimpleRandom {
+public class BooleanSimpleRandomExecutor extends AbstractRandomExecutor {
     private static DefaultBooleanRule defaultBooleanRule = new DefaultBooleanRule(
             new FieldToken.FieldTokenBuilder()
                     .setMin(1)
@@ -25,10 +26,6 @@ public class BooleanSimpleRandom extends AbstractSimpleRandom {
         return type == Boolean.class || type == boolean.class;
     }
 
-    @Override
-    public Object compute(Field declaredField, Rule rule) {
-        return rule.apply();
-    }
 
     @Override
     public Rule getRule() {
@@ -46,7 +43,7 @@ public class BooleanSimpleRandom extends AbstractSimpleRandom {
      * 'name|min-max': value
      * 随机生成一个布尔值，值为 value 的概率是 min / (min + max)，值为 !value 的概率是 max / (min + max)。
      */
-    public static class DefaultBooleanRule implements Rule<Boolean>{
+    public static class DefaultBooleanRule implements Rule<Boolean> {
 
         private final FieldToken fieldToken;
 
@@ -56,7 +53,7 @@ public class BooleanSimpleRandom extends AbstractSimpleRandom {
         }
 
         @Override
-        public Boolean apply() {
+        public Boolean apply(MockContext mockContext, FieldNode fieldNodeContext) {
             boolean leftResult = true;
             if (fieldToken.getValue().equals("true")) {
                 leftResult = true;

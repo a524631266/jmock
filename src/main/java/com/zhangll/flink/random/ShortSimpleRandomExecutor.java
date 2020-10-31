@@ -1,31 +1,23 @@
 package com.zhangll.flink.random;
 
+import com.zhangll.flink.MockContext;
+import com.zhangll.flink.model.FieldNode;
 import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.rule.Rule;
 
-import java.lang.reflect.Field;
 import java.util.Random;
 
-public class CharSimpleRandom extends AbstractSimpleRandom {
-    public Rule<Character> defaultRule = new DefaultCharRule(
+public class ShortSimpleRandomExecutor extends AbstractRandomExecutor {
+    public Rule<Short> defaultRule = new DefaultShortRule(
             new FieldToken.FieldTokenBuilder()
                     .setMin(1).setMax(1000).build()
     );
 
-
     @Override
     public boolean isCurrentType(Class<?> type) {
-        return type == char.class || type == Character.class;
+        return type == Short.class || type == short.class;
     }
 
-    @Override
-    public Object compute(Field declaredField, Rule rule) {
-        if (rule == null){
-            return defaultRule.apply();
-        }else {
-            return rule.apply();
-        }
-    }
 
     @Override
     public Rule getRule() {
@@ -35,11 +27,14 @@ public class CharSimpleRandom extends AbstractSimpleRandom {
 
     @Override
     public Rule getRule(FieldToken fieldToken) {
+        // TODO
         if(fieldToken == null){
             return getRule();
         }
-        return new DefaultCharRule(fieldToken);
+        return new DefaultShortRule(fieldToken);
     }
+
+
 
     /**
      * 根据解析规则 name中的range进行匹配
@@ -53,23 +48,23 @@ public class CharSimpleRandom extends AbstractSimpleRandom {
      *  2. 'name| 5'
      * =>
      */
-    public static class DefaultCharRule implements Rule<Character>{
+    public static class DefaultShortRule implements Rule<Short>{
 
         private FieldToken fieldToken;
 
-        public DefaultCharRule(FieldToken fieldToken) {
+        public DefaultShortRule(FieldToken fieldToken) {
             this.fieldToken = fieldToken;
         }
 
         @Override
-        public Character apply() {
+        public Short apply(MockContext mockContext, FieldNode fieldNodeContext) {
 
             if(fieldToken.getCount() != 0){
-                return (char) fieldToken.getCount();
+                return (short) fieldToken.getCount();
             }
             int gap = fieldToken.getMax() - fieldToken.getMin();
             int i = new Random().nextInt(gap) + fieldToken.getMin();
-            return (char)i;
+            return (short)i;
         }
     }
 }

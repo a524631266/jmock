@@ -1,5 +1,9 @@
 package com.zhangll.flink.rule;
 
+import com.sun.org.apache.bcel.internal.generic.MONITORENTER;
+import com.zhangll.flink.MockContext;
+import com.zhangll.flink.model.FieldNode;
+
 /**
  * 定义各种规则
  *  1. 属性名和生成规则之间 用| 分隔
@@ -15,5 +19,5 @@ package com.zhangll.flink.rule;
  *  'name|+step': value 一般用于列表集合数据
  */
 public interface Rule<T> {
-    T apply();
+    T apply(MockContext mockContext, FieldNode fieldNodeContext);
 }

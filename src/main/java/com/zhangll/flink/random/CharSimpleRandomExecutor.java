@@ -1,42 +1,27 @@
 package com.zhangll.flink.random;
 
+import com.zhangll.flink.MockContext;
+import com.zhangll.flink.model.FieldNode;
 import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.rule.Rule;
 
-import java.lang.reflect.Field;
 import java.util.Random;
 
-public class IntegerSimpleRandom extends AbstractSimpleRandom {
-    public Rule<Integer> defaultRule = new DefaultIntegerRule(
+public class CharSimpleRandomExecutor extends AbstractRandomExecutor {
+    public Rule<Character> defaultRule = new DefaultCharRule(
             new FieldToken.FieldTokenBuilder()
-            .setMin(1).setMax(1000).build()
+                    .setMin(1).setMax(1000).build()
     );
-    public static int random(){
-        int i = new Random().nextInt(100);
-        return i;
-    }
 
-    /**
-     * 根据rule计算
-     * @param rule
-     * @return
-     */
-    @Override
-    public Object compute(Field declaredField,Rule rule){
-        if (rule == null){
-            return defaultRule.apply();
-        }else {
-            return rule.apply();
-        }
-    }
 
     @Override
     public boolean isCurrentType(Class<?> type) {
-        return type == Integer.class || type == int.class;
+        return type == char.class || type == Character.class;
     }
 
     @Override
     public Rule getRule() {
+        // TODO
         return defaultRule;
     }
 
@@ -45,9 +30,8 @@ public class IntegerSimpleRandom extends AbstractSimpleRandom {
         if(fieldToken == null){
             return getRule();
         }
-        return new DefaultIntegerRule(fieldToken);
+        return new DefaultCharRule(fieldToken);
     }
-
 
     /**
      * 根据解析规则 name中的range进行匹配
@@ -61,25 +45,23 @@ public class IntegerSimpleRandom extends AbstractSimpleRandom {
      *  2. 'name| 5'
      * =>
      */
-    public static class DefaultIntegerRule implements Rule<Integer>{
+    public static class DefaultCharRule implements Rule<Character>{
 
         private FieldToken fieldToken;
 
-
-
-        public DefaultIntegerRule(FieldToken fieldToken) {
+        public DefaultCharRule(FieldToken fieldToken) {
             this.fieldToken = fieldToken;
         }
 
         @Override
-        public Integer apply() {
+        public Character apply(MockContext mockContext, FieldNode fieldNodeContext) {
 
             if(fieldToken.getCount() != 0){
-                return fieldToken.getCount();
+                return (char) fieldToken.getCount();
             }
             int gap = fieldToken.getMax() - fieldToken.getMin();
             int i = new Random().nextInt(gap) + fieldToken.getMin();
-            return i;
+            return (char)i;
         }
     }
 }

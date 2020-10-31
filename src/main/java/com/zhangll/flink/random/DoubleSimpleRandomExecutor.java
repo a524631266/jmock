@@ -1,62 +1,60 @@
 package com.zhangll.flink.random;
 
+import com.zhangll.flink.MockContext;
+import com.zhangll.flink.model.FieldNode;
 import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.rule.Rule;
 import com.zhangll.flink.uitl.RandomUtil;
 
-import java.lang.reflect.Field;
+import java.util.Random;
 
-public class FloatSimpleRandom extends AbstractSimpleRandom {
-    private static DefaultFloatRule defaultRule = new DefaultFloatRule(
+public class DoubleSimpleRandomExecutor extends AbstractRandomExecutor {
+    private static DefaultDoubleRule defaultDoubleRule = new DefaultDoubleRule(
             new FieldToken.FieldTokenBuilder()
                     .setMin(1).setMax(10)
                     .setDmin(1)
                     .setDmax(5).build()
     );
-
-    @Override
-    public boolean isCurrentType(Class<?> type) {
-        return type == Float.class || type == float.class;
+    // 返回 char类型数值
+    public static double random() {
+        double v = new Random().nextDouble();
+        return v;
     }
 
     @Override
+    public boolean isCurrentType(Class<?> type) {
+        return type == Double.class || type == double.class;
+    }
+
+
+    @Override
     public Rule getRule() {
-        // TODO
-        return defaultRule;
+        // TOCO
+        return defaultDoubleRule;
     }
 
     @Override
     public Rule getRule(FieldToken fieldToken) {
-        // TODO
         if(fieldToken == null){
             return getRule();
         }
-        return new DefaultFloatRule(fieldToken);
-    }
-
-    @Override
-    public Object compute(Field declaredField, Rule rule) {
-        if (rule == null){
-            return defaultRule.apply();
-        }else {
-            return rule.apply();
-        }
+        return new DefaultDoubleRule(fieldToken);
     }
 
     /**
      * 'name|min-max.dmin-dmax': number
      * 保留位数
      */
-    public static class DefaultFloatRule implements Rule<Float>{
+    public static class DefaultDoubleRule implements Rule<Double>{
         private final FieldToken fieldToken;
 
-        public DefaultFloatRule(FieldToken fieldToken) {
+        public DefaultDoubleRule(FieldToken fieldToken) {
             this.fieldToken = fieldToken;
         }
 
 
         @Override
-        public Float apply() {
+        public Double apply(MockContext mockContext, FieldNode fieldNodeContext) {
             // value 的值不为0 的时候，要根据value的小数位来设置小数点
             if(fieldToken.getValue().length > 1) {
                 throw new  IllegalArgumentException("Double fieldToken value must be only one parameter");
@@ -90,7 +88,8 @@ public class FloatSimpleRandom extends AbstractSimpleRandom {
 
             double result = Math.round(trueResult * Math.pow(10, digit)) / Math.pow(10, digit);
             // 消除位数
-            return (float)result;
+            return result;
         }
     }
+
 }

@@ -1,9 +1,10 @@
 package com.zhangll.flink.random;
 
+import com.zhangll.flink.MockContext;
+import com.zhangll.flink.model.FieldNode;
 import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.rule.Rule;
 
-import java.lang.reflect.Field;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -14,7 +15,7 @@ import java.util.Random;
  * 匹配flink的Date时间
  * 生成逻辑与long相关
  */
-public class SqlTimeSimpleRandom extends AbstractSimpleRandom {
+public class SqlTimeSimpleRandomExecutor extends AbstractRandomExecutor {
     public static Rule<Date> DATE = new DefaultDateRule(
             new FieldToken.FieldTokenBuilder()
                     .setMin(new Long(System.currentTimeMillis() / 1000 - 24 *60 *60).intValue())
@@ -32,10 +33,10 @@ public class SqlTimeSimpleRandom extends AbstractSimpleRandom {
                     .setMax(new Long(System.currentTimeMillis() / 1000 + 24 *60 *60).intValue()).build()
     );
     private final Class innerClass;
-    private SqlTimeSimpleRandom(){
+    private SqlTimeSimpleRandomExecutor(){
         this(null);
     }
-    public SqlTimeSimpleRandom(Class cls) {
+    public SqlTimeSimpleRandomExecutor(Class cls) {
         this.innerClass = cls;
     }
 
@@ -56,11 +57,6 @@ public class SqlTimeSimpleRandom extends AbstractSimpleRandom {
         int count = (int) (System.currentTimeMillis() / 1000);
         System.out.println(count);
 
-    }
-
-    @Override
-    public Object compute(Field declaredField, Rule rule) {
-        return rule.apply();
     }
 
     @Override
@@ -106,7 +102,7 @@ public class SqlTimeSimpleRandom extends AbstractSimpleRandom {
         }
 
         @Override
-        public Date apply() {
+        public Date apply(MockContext mockContext, FieldNode fieldNodeContext) {
             if(fieldToken.getCount() != 0){
                 return new Date(Long.valueOf(fieldToken.getCount()) * 1000);
             }
@@ -126,7 +122,7 @@ public class SqlTimeSimpleRandom extends AbstractSimpleRandom {
         }
 
         @Override
-        public Time apply() {
+        public Time apply(MockContext mockContext, FieldNode fieldNodeContext) {
             if(fieldToken.getCount() != 0){
                 return new Time(Long.valueOf(fieldToken.getCount())* 1000);
             }
@@ -146,7 +142,7 @@ public class SqlTimeSimpleRandom extends AbstractSimpleRandom {
         }
 
         @Override
-        public Timestamp apply() {
+        public Timestamp apply(MockContext mockContext, FieldNode fieldNodeContext) {
             if(fieldToken.getCount() != 0){
                 return new Timestamp(Long.valueOf(fieldToken.getCount())* 1000);
             }
