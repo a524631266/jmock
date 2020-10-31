@@ -16,7 +16,7 @@ public abstract class AbstractSimpleRandom implements SimpleRandomType {
     protected RulePostProcessor postProcessor = new RulePostProcessor();
 
     @Override
-    public void updateField(Object o, Field declaredField, Rule rule) throws IllegalAccessException {
+    public void updateField(Object o, Field declaredField, Rule rule) {
 
         Object compute = compute(declaredField, rule);
         Object result = postProcessor.postProcessAfterCompute(compute);
@@ -25,9 +25,17 @@ public abstract class AbstractSimpleRandom implements SimpleRandomType {
                 LOG.debug(declaredField.getName());
                 LOG.debug(result.getClass().getName());
             }
-            declaredField.set(o, BasicType.transWrapperArrayToBasicArray(declaredField.getType().getComponentType(), (Object[]) result));
+            try {
+                declaredField.set(o, BasicType.transWrapperArrayToBasicArray(declaredField.getType().getComponentType(), (Object[]) result));
+            }catch (IllegalAccessException e){
+                throw new RuntimeException(declaredField.getName() + ": 不能被赋值");
+            }
         }else{
-            declaredField.set(o, result);
+            try {
+                declaredField.set(o, result);
+            }catch (IllegalAccessException e){
+                throw new RuntimeException(declaredField.getName() + ": 不能被赋值");
+            }
         }
     }
 
