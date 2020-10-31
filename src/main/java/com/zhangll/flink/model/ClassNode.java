@@ -6,6 +6,7 @@ import com.zhangll.flink.random.AbstractSimpleRandom;
 import com.zhangll.flink.random.RandomFactory;
 import com.zhangll.flink.random.RandomType;
 import com.zhangll.flink.rule.Rule;
+import lombok.SneakyThrows;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -55,12 +56,19 @@ public class ClassNode implements ASTNode{
     private Rule getRule(){
         return executor.getRule(fieldToken);
     }
-    public void assignObject(Object object, MockContext context) {
+    @Override
+    public void assignObject(Object target, MockContext context) {
         if(executor instanceof AbstractSimpleRandom){
-            ((AbstractSimpleRandom) executor).updateField(object, declaredField, getRule());
+            ((AbstractSimpleRandom) executor).updateField(target, declaredField, getRule());
         }else if(executor instanceof AbstractComplexRandom){
-            ((AbstractComplexRandom) executor).updateField(object, declaredField, getRule(), context);
+            ((AbstractComplexRandom) executor).updateField(target, declaredField, getRule(), context);
         }
+    }
+
+    @SneakyThrows
+    @Override
+    public void assignObject(Object target, Object source) {
+        declaredField.set(target, source);
     }
 
     @Override

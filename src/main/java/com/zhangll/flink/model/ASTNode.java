@@ -9,5 +9,6 @@ public interface ASTNode {
     List<ASTNode> getChildren();
     Class getType();
     boolean isInnerType();
-    void assignObject(Object object, MockContext context);
+    void assignObject(Object target, MockContext context);
+    void assignObject(Object target, Object source);
 }

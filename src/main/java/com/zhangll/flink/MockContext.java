@@ -22,7 +22,7 @@ public abstract class MockContext {
      * @return
      */
     public  Object mock(Class<?> cClass) {
-        ClassNode root = initNodeTree(cClass);
+        ClassNode root = initNodeTree(cClass , null);
 
         // 1. 创建一个对象,不过这个对象是
         Object resource = null;
@@ -57,7 +57,9 @@ public abstract class MockContext {
             if(childInnerType){
                 child.assignObject(resource, this);
             }else{
-
+                Object mock = this.mock(child.getType());
+                child.assignObject(resource ,mock);
+//                return mock;
             }
         }
         return resource;
@@ -68,16 +70,16 @@ public abstract class MockContext {
      * @param cClass
      * @return
      */
-    private ClassNode initNodeTree(Class<?> cClass) {
-        ClassNode parent = new ClassNode(cClass , null, initFieldToken(null));
+    private ClassNode initNodeTree(Class<?> cClass, Field currentField) {
+        ClassNode parent = new ClassNode(cClass , currentField, initFieldToken(currentField));
         Field[] declaredFields = cClass.getDeclaredFields();
         for (Field declaredField : declaredFields) {
             // 初始化的时候会解析是否为内置类型
-            ClassNode childNode = new ClassNode(declaredField.getClass(), declaredField, initFieldToken(declaredField));
+            ClassNode childNode = new ClassNode(declaredField.getType(), declaredField, initFieldToken(declaredField));
             if (childNode.isInnerType()) { // 如果是内置类型就直接添加
                 parent.addChild(childNode);
             } else { // 否则递归调用初始化节点
-                ClassNode newChildNode = initNodeTree(childNode.getType());
+                ClassNode newChildNode = initNodeTree(childNode.getType(), declaredField);
                 parent.addChild(newChildNode);
             }
         }

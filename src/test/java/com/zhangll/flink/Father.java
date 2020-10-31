@@ -51,7 +51,7 @@ public class Father {
 
     private Set<String> sonsNameSet;
 
-//    private Son son;
+    private Son son;
 
     private String[] stringArr;
     private Double[] doubleWrapperArr;
