@@ -12,6 +12,9 @@ public class KeyUtil {
      * @return com.zhangll.flink.Father#sonsNameList1
      */
     public static String generateKey(Class cls, Field field){
+        if (field ==null) {
+            return cls.getName();
+        }
         return cls.getName() +"#"+ field.getName();
     }
 }

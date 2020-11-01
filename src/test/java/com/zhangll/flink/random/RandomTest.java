@@ -3,6 +3,7 @@ package com.zhangll.flink.random;
 import com.zhangll.flink.AnnotationMockContext;
 import com.zhangll.flink.Father;
 import com.zhangll.flink.MockContext;
+import com.zhangll.flink.model.FieldNode;
 import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.parser.NodeParser;
 import com.zhangll.flink.rule.Rule;
@@ -334,7 +335,7 @@ public class RandomTest {
         );
         Field sonsNameList = Father.class.getDeclaredField("sonsNameList");
         for (int i = 0; i < 200; i++) {
-            List object = (List) rule.apply(mockContext, nodeParser.initNodeTree(sonsNameList.getType(), sonsNameList));
+            List object = (List) rule.apply(mockContext, getFieldNodeContext(sonsNameList));
 //            System.out.println(object);
             assertTrue( object.size() == count);
         }
@@ -351,7 +352,7 @@ public class RandomTest {
         Field field = Father.class.getDeclaredField("sonsAgeList");
 
         for (int i = 0; i < 200; i++) {
-            List object = (List) rule.apply(mockContext, nodeParser.initNodeTree(field.getType(), field));
+            List object = (List) rule.apply(mockContext, getFieldNodeContext(field));
 //            System.out.println(object);
             assertTrue( object.size() == count);
         }
@@ -368,7 +369,7 @@ public class RandomTest {
         int count = 10;
         Field field = Father.class.getDeclaredField("sonsNameList");
         for (int i = 0; i < 200; i++) {
-            List object = (List) rule.apply(mockContext, nodeParser.initNodeTree(field.getType(), field));
+            List object = (List) rule.apply(mockContext, getFieldNodeContext(field));
 //            System.out.println(object);
             assertTrue( object.size() == count);
         }
@@ -384,7 +385,7 @@ public class RandomTest {
         int count = 10;
         Field field = Father.class.getDeclaredField("sonsMoneyList");
         for (int i = 0; i < 200; i++) {
-            List object = (List) rule.apply(mockContext, nodeParser.initNodeTree(field.getType(), field));
+            List object = (List) rule.apply(mockContext, getFieldNodeContext(field));
 //            System.out.println(object);
             assertTrue( object.size() == count);
         }
@@ -400,11 +401,17 @@ public class RandomTest {
         int count = 10;
         Field field = Father.class.getDeclaredField("sonsLongList");
         for (int i = 0; i < 200; i++) {
-            List object = (List) rule.apply(mockContext, nodeParser.initNodeTree(field.getType(), field));
+            List object = (List) rule.apply(mockContext, getFieldNodeContext(field));
 //            System.out.println(object);
             assertTrue( object.size() == count);
         }
     }
+
+    private FieldNode getFieldNodeContext(Field field) {
+        FieldNode fieldNode = nodeParser.initNodeTree(field.getType(), field);
+        return fieldNode;
+    }
+
     /**
      * 默认为10
      * @throws NoSuchFieldException
@@ -428,7 +435,7 @@ public class RandomTest {
         int count = 10;
         Field field = Father.class.getDeclaredField("sonsMoneyList");
         for (int i = 0; i < 200; i++) {
-            List object = (List) rule.apply(mockContext, nodeParser.initNodeTree(field.getType(), field));
+            List object = (List) rule.apply(mockContext, getFieldNodeContext(field));
 //            System.out.println(object);
             assertTrue( object.size() == count);
         }

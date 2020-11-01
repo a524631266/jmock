@@ -18,5 +18,4 @@ public @interface FieldTokenType {
     String dcount() default "0";
     String step() default "0";
     String[] value() default {};
-//    FieldTokenType subFieldToken() default @FieldTokenType;
 }

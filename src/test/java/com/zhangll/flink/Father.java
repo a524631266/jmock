@@ -1,6 +1,8 @@
 package com.zhangll.flink;
 
 import com.zhangll.flink.annotation.FieldTokenType;
+import com.zhangll.flink.annotation.TokenMapping;
+import com.zhangll.flink.annotation.InnerTokens;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -8,6 +10,9 @@ import java.util.*;
 
 @Getter
 @ToString
+@InnerTokens(value = {
+        @TokenMapping(field = "wShort", fieldTokenType = @FieldTokenType(min = "12", max = "13"))
+})
 public class Father {
 
     @FieldTokenType(min = "10", max = "100")
@@ -62,6 +67,13 @@ public class Father {
     private char[] charNoWrapperArr;
     private Character[] charWrapperArr;
 
-//    private ArrayList<Son> sonslist;
+    @InnerTokens(
+        value = {
+            @TokenMapping(field = "id", fieldTokenType = @FieldTokenType(min = "1", max = "10")),
+            @TokenMapping(field = "age", fieldTokenType = @FieldTokenType(min = "40", max = "50"))
+        }
+    )
+    @FieldTokenType(min = "1", max = "10")
+    private ArrayList<Son> sonslist;
 //    private Date date2;
 }

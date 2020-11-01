@@ -1,11 +1,10 @@
 package com.zhangll.flink;
 
+import com.zhangll.flink.annotation.InnerTokens;
 import com.zhangll.flink.model.ASTNode;
 import com.zhangll.flink.model.FieldNode;
-import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.parser.NodeParser;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -20,10 +19,15 @@ public abstract class MockContext {
      * @return
      */
     public  Object mock(Class<?> cClass) {
+        return mock(cClass, null);
+    }
+
+    public  Object mock(Class<?> cClass, InnerTokens mappings) {
+
         FieldNode root = null;
-        if((root = mappingStore.getFieldNode(cClass, null))==null){
-            root = nodeParser.initNodeTree(cClass , null);
-            mappingStore.setRuleMap(cClass, null, root);
+        if((root = mappingStore.getFieldNode(cClass, field))==null){
+            root = nodeParser.initNodeTree(cClass , field, );
+            mappingStore.setRuleMap(cClass, field, root);
         }
         // 1. 创建一个对象,不过这个对象是
         Object resource = null;

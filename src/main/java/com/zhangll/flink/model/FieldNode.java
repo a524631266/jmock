@@ -21,7 +21,9 @@ public class FieldNode implements ASTNode{
     private final  Field declaredField;
     final List<ASTNode> children = new ArrayList<>();
     final private FieldToken fieldToken;
+
     private Class componentType;
+
 
     public Class getComponentType() {
         return componentType;
