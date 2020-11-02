@@ -115,7 +115,7 @@ public class ListRandomExecutor<T> extends AbstractRandomExecutor {
                     if(fieldNodeContext.innerContainerIsInnerType()) {
                         o.add(executor.getRule(fieldNodeContext.getInnerBasicTokens()).apply(mockContext, null));
                     }else{
-                        o.add(mockContext.mock((Class<?>) actualTypeArguments[0]));
+                        o.add(mockContext.mock((Class<?>) actualTypeArguments[0], fieldNodeContext.getInnerPojoTokens()));
                     }
                     // 判断子类型是否是innerType
                 }

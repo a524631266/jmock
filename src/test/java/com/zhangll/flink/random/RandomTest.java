@@ -3,7 +3,6 @@ package com.zhangll.flink.random;
 import com.zhangll.flink.AnnotationMockContext;
 import com.zhangll.flink.Father;
 import com.zhangll.flink.MockContext;
-import com.zhangll.flink.annotation.PojoTokenInfo;
 import com.zhangll.flink.model.FieldNode;
 import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.parser.NodeParser;
@@ -409,7 +408,7 @@ public class RandomTest {
     }
 
     private FieldNode getFieldNodeContext(Field field) {
-        FieldNode fieldNode = nodeParser.initNodeTree(field.getType(),field);
+        FieldNode fieldNode = nodeParser.initNodeTree(field.getType(),field, innerPojoTokens);
         return fieldNode;
     }
 

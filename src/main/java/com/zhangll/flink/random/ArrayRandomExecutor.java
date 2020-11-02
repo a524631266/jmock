@@ -90,7 +90,7 @@ public class ArrayRandomExecutor<T> extends AbstractRandomExecutor {
 
                     o[i] = executor.getRule(fieldNodeContext.getInnerBasicTokens()).apply(mockContext, fieldNodeContext);
                 } else{
-                    o[i] = mockContext.mock(listType);
+                    o[i] = mockContext.mock(listType, fieldNodeContext.getInnerPojoTokens());
                 }
             }
             return o;

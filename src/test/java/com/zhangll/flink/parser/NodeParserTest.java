@@ -20,9 +20,9 @@ public class NodeParserTest {
     }
     @Test
     public void get3TokenByNull() {
-        FieldToken currentBasicToken = nodeParser.getCurrentBasicToken(null);
+        FieldToken currentBasicToken = nodeParser.getCurrentBasicToken(null, pojoTokenMap);
         // 2. 获取innercurrnetToken，一般是在Contain中（id，为列名）
-        Map<String, FieldToken> innerPojoTokens = nodeParser.getInnerPojoTokens(null);
+        Map<String, FieldToken> innerPojoTokens = nodeParser.getInnerPojoTokens(null, pojoTokenMap);
         FieldToken innerBasicToken = nodeParser.getInnerBasicToken(null);
         // 这里的含义是 都返回空，表示没有实际数据
         assertTrue(currentBasicToken == null);
@@ -35,8 +35,8 @@ public class NodeParserTest {
         Class<Father> fatherClass = Father.class;
         Field[] declaredFields = fatherClass.getDeclaredFields();
         Field money = fatherClass.getDeclaredField("money");
-        FieldToken currentBasicToken = nodeParser.getCurrentBasicToken(money);
-        Map<String, FieldToken> innerPojoTokens = nodeParser.getInnerPojoTokens(money);
+        FieldToken currentBasicToken = nodeParser.getCurrentBasicToken(money, pojoTokenMap);
+        Map<String, FieldToken> innerPojoTokens = nodeParser.getInnerPojoTokens(money, pojoTokenMap);
         FieldToken innerBasicToken = nodeParser.getInnerBasicToken(money);
         assertTrue(currentBasicToken != null);
         assertTrue(innerPojoTokens.isEmpty());
@@ -49,8 +49,8 @@ public class NodeParserTest {
     @Test
     public void testContainerForBasicType() throws NoSuchFieldException {
         Field sonsNameSet = Father.class.getDeclaredField("sonsNameSet");
-        FieldToken currentBasicToken = nodeParser.getCurrentBasicToken(sonsNameSet);
-        Map<String, FieldToken> innerPojoTokens = nodeParser.getInnerPojoTokens(sonsNameSet);
+        FieldToken currentBasicToken = nodeParser.getCurrentBasicToken(sonsNameSet, pojoTokenMap);
+        Map<String, FieldToken> innerPojoTokens = nodeParser.getInnerPojoTokens(sonsNameSet, pojoTokenMap);
         FieldToken innerBasicToken = nodeParser.getInnerBasicToken(sonsNameSet);
 
         assertTrue(currentBasicToken == null);
@@ -64,8 +64,8 @@ public class NodeParserTest {
     public void testContainerForPojoType() throws NoSuchFieldException {
 
         Field sonsNameSet = Father.class.getDeclaredField("sonslist");
-        FieldToken currentBasicToken = nodeParser.getCurrentBasicToken(sonsNameSet);
-        Map<String, FieldToken> innerPojoTokens = nodeParser.getInnerPojoTokens(sonsNameSet);
+        FieldToken currentBasicToken = nodeParser.getCurrentBasicToken(sonsNameSet, pojoTokenMap);
+        Map<String, FieldToken> innerPojoTokens = nodeParser.getInnerPojoTokens(sonsNameSet, pojoTokenMap);
         FieldToken innerBasicToken = nodeParser.getInnerBasicToken(sonsNameSet);
 
         assertTrue(currentBasicToken == null);
@@ -81,7 +81,7 @@ public class NodeParserTest {
 
     @Test
     public void testParseClass(){
-        FieldNode node = nodeParser.initNodeTree(Father.class, null);
+        FieldNode node = nodeParser.initNodeTree(Father.class, null, innerPojoTokens);
         System.out.println(node);
     }
 }

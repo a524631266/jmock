@@ -22,13 +22,14 @@ public class NodeParser {
      *
      * @param cClass
      * @param currentField
+     * @param pojoTokenMap 一般是通过 pojo的方式注入的
      * @return
      */
-    public FieldNode initNodeTree(Class<?> cClass, Field currentField) {
+    public FieldNode initNodeTree(Class<?> cClass, Field currentField, Map<String, FieldToken> pojoTokenMap) {
         // 1.获取当前的currentFieldToken
         FieldToken currentBasicToken = getCurrentBasicToken(currentField);
         // 2. 获取innercurrnetToken，一般是在Contain中（id，为列名）
-        Map<String, FieldToken> innerPojoTokens = getInnerPojoTokens(currentField);
+        Map<String, FieldToken> innerPojoTokens = getInnerPojoTokens(currentField, pojoTokenMap);
         FieldToken innerBasicToken = getInnerBasicToken(currentField);
         FieldNode parent = initParentNode(cClass, currentField, currentBasicToken, innerPojoTokens, innerBasicToken);
         // 如果是内置类型，就停止直接返回节点
@@ -37,7 +38,7 @@ public class NodeParser {
         }
         Field[] declaredFields = cClass.getDeclaredFields();
         for (Field declaredField : declaredFields) {
-            FieldNode node = initNodeTree(declaredField.getType(), declaredField);
+            FieldNode node = initNodeTree(declaredField.getType(), declaredField, innerPojoTokens);
             parent.addChild(node);
         }
         return parent;
@@ -74,9 +75,10 @@ public class NodeParser {
     /**
      * 根据field获取FieldTokens信息
      * @param field
+     * @param pojoTokenMap
      * @return
      */
-    protected static Map<String, FieldToken> getInnerPojoTokens(Field field) {
+    protected static Map<String, FieldToken> getInnerPojoTokens(Field field, Map<String, FieldToken> pojoTokenMap) {
         if(field == null) {
             return new HashMap<>(1);
         }
@@ -90,17 +92,34 @@ public class NodeParser {
         for (TokenMapping tokenMapping : value) {
             BasicTokenInfo basicTokenInfo = tokenMapping.basicTokenInfo();
             String fieldName = tokenMapping.field();
-            FieldToken fieldToken = new FieldToken.FieldTokenBuilder()
-                    .setMin(Integer.valueOf(basicTokenInfo.min()))
-                    .setMax(Integer.valueOf(basicTokenInfo.max()))
-                    .setDmin(Integer.valueOf(basicTokenInfo.dmin()))
-                    .setDmax(Integer.valueOf(basicTokenInfo.dmax()))
-                    .setCount(Integer.valueOf(basicTokenInfo.count()))
-                    .setValue(basicTokenInfo.value())
-                    .setDcount(Integer.valueOf(basicTokenInfo.dcount()))
-                    .setStep(Integer.valueOf(basicTokenInfo.step()))
-                    .build();
-            result.put(fieldName, fieldToken);
+            FieldToken pojo = null;
+            if(pojoTokenMap!=null && (pojo = pojoTokenMap.get(fieldName))!=null){
+                FieldToken fieldToken = new FieldToken.FieldTokenBuilder()
+                        .setMin(pojo.getMin())
+                        .setMax(pojo.getMax())
+                        .setDmin(pojo.getDmin())
+                        .setDmax(pojo.getDmax())
+                        .setCount(pojo.getCount())
+                        .setValue(pojo.getValue())
+                        .setDcount(pojo.getDcount())
+                        .setStep(pojo.getStep())
+                        .setSubFieldToken(pojo.getSubFieldToken())
+                        .build();
+                result.put(fieldName, fieldToken);
+            }else{
+
+                FieldToken fieldToken = new FieldToken.FieldTokenBuilder()
+                        .setMin(Integer.valueOf(basicTokenInfo.min()))
+                        .setMax(Integer.valueOf(basicTokenInfo.max()))
+                        .setDmin(Integer.valueOf(basicTokenInfo.dmin()))
+                        .setDmax(Integer.valueOf(basicTokenInfo.dmax()))
+                        .setCount(Integer.valueOf(basicTokenInfo.count()))
+                        .setValue(basicTokenInfo.value())
+                        .setDcount(Integer.valueOf(basicTokenInfo.dcount()))
+                        .setStep(Integer.valueOf(basicTokenInfo.step()))
+                        .build();
+                result.put(fieldName, fieldToken);
+            }
         }
 
         return result;
@@ -136,15 +155,15 @@ public class NodeParser {
     }
 
 
-
     /**
      * 1. 先获取默认的fieldToken
      * 2. 获取注解中fieldToken
+     *
      * @param field
      * @return
      */
     protected static FieldToken getCurrentBasicToken(Field field) {
-        if(field == null) {
+        if (field == null) {
             return null;
         }
         BasicTokenInfo basicTokenInfo = field.getAnnotation(BasicTokenInfo.class);

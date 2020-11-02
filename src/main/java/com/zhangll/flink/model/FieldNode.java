@@ -196,4 +196,8 @@ public class FieldNode implements ASTNode{
         }
         return false;
     }
+
+    public Map<String, FieldToken> getInnerPojoTokens() {
+        return innerPojoTokens;
+    }
 }

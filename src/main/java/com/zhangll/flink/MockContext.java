@@ -3,12 +3,14 @@ package com.zhangll.flink;
 import com.zhangll.flink.annotation.PojoTokenInfo;
 import com.zhangll.flink.model.ASTNode;
 import com.zhangll.flink.model.FieldNode;
+import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.parser.NodeParser;
 import com.zhangll.flink.random.ExecutorStore;
 import com.zhangll.flink.random.RandomType;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 解析流程
@@ -39,24 +41,19 @@ public abstract class MockContext {
 
     public  Object mock(Class<?> cClass) {
 
-        FieldNode root = null;
-        // 暂时先不上mapping
-        root = initMappingStore(cClass);
-        // 1. 创建一个对象,不过这个对象是
-        Object resource = createObject(cClass, root);
-        return doObjectBindField(resource, root);
-//        return doMock(cClass, null);
+        return this.mock(cClass, null);
     }
 
     /**
      * 初始化 mappingStore
      * @param cClass
+     * @param innerPojoTokens
      * @return
      */
-    private FieldNode initMappingStore(Class<?> cClass) {
+    private FieldNode initMappingStore(Class<?> cClass, Map<String, FieldToken> innerPojoTokens) {
         FieldNode root;
 //        if((root = mappingStore.getFieldNode(cClass, mappings))==null){
-        root = nodeParser.initNodeTree(cClass, null);
+        root = nodeParser.initNodeTree(cClass, null, innerPojoTokens);
 //            mappingStore.setNodeMap(cClass, mappings, root);
 //        }
         return root;
@@ -114,4 +111,20 @@ public abstract class MockContext {
         return executor;
     }
 
+    /**
+     * 一般为 mock对象
+     * @param cClass
+     * @param pojoTokens
+     * @return
+     */
+    public Object mock(Class<?> cClass, Map<String, FieldToken> pojoTokens) {
+        FieldNode root = null;
+        // 暂时先不上mapping
+        root = initMappingStore(cClass, pojoTokens);
+        // 1. 创建一个对象,不过这个对象是
+        Object resource = createObject(cClass, root);
+        return doObjectBindField(resource, root);
+//        return doMock(cClass, null);
+//        return null;
+    }
 }
