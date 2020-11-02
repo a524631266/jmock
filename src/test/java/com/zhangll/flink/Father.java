@@ -62,14 +62,14 @@ public class Father {
 
     private Son son;
 
-//    private String[] stringArr;
-//    private Double[] doubleWrapperArr;
-//    private double[] doubleNoWrapperArr;
-//    private int[] intNoWrapperArr;
-//    private Integer[] intWrapperArr;
-//
-//    private char[] charNoWrapperArr;
-//    private Character[] charWrapperArr;
+    private String[] stringArr;
+    private Double[] doubleWrapperArr;
+    private double[] doubleNoWrapperArr;
+    private int[] intNoWrapperArr;
+    private Integer[] intWrapperArr;
+
+    private char[] charNoWrapperArr;
+    private Character[] charWrapperArr;
 //
 //    @ContainerTokenInfo(
 //            innerPojoType =  @PojoTokenInfo(
@@ -79,6 +79,7 @@ public class Father {
 //            )
 //            innerBasicType = @BasicTokenInfo(min = "1233", max = "12324")
 //    )
-//    private ArrayList<Son> sonslist;
+    private ArrayList<Son> sonslist;
+    private Son[] sonlist2;
 ////    private Date date2;
 }

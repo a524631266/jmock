@@ -40,6 +40,7 @@ public class FieldNode implements ASTNode{
     // 泛型参数实际类型
     private Type[] actualTypeArguments;
 
+
     public Class getComponentType() {
         return componentType;
     }
@@ -156,5 +157,43 @@ public class FieldNode implements ASTNode{
 
     public FieldToken getInnerBasicTokens() {
         return innerBasicTokens;
+    }
+
+    /**
+     * 是容器[list] 并且genrate范型是内置
+     */
+    public boolean innerContainerIsInnerType(){
+        if(componentType == null && actualTypeArguments == null){
+            return false;
+        }
+        if(actualTypeArguments !=null){
+            if(actualTypeArguments.length > 1){
+                return false;
+            }else{
+                boolean isInner = false;
+                for (int i = 0; i < actualTypeArguments.length; i++) {
+                    RandomType random = RandomExecutorFactory.getRandom((Class) actualTypeArguments[i]);
+                    if (random != null) {
+                        isInner = true;
+                        break;
+                    }
+                }
+                return isInner;
+            }
+        }
+
+        if(componentType != null){
+            boolean isInner = false;
+
+            RandomType random = RandomExecutorFactory.getRandom(componentType);
+            if (random != null) {
+                isInner = true;
+
+            }
+
+            return isInner;
+
+        }
+        return false;
     }
 }

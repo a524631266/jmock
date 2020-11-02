@@ -6,7 +6,6 @@ import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.rule.Rule;
 import com.zhangll.flink.type.BasicType;
 
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
 
@@ -109,10 +108,15 @@ public class ListRandomExecutor<T> extends AbstractRandomExecutor {
                 if(actualTypeArguments.length > 1 ){
                     throw new IllegalArgumentException("list generate type must be no more than 1");
                 }
-                RandomType exectuor = mockContext.getExectuor((Class) actualTypeArguments[0]);
+                RandomType executor = mockContext.getExecutor((Class) actualTypeArguments[0]);
                 for (int i = 0; i < elementNum; i++) {
                     // 通过子token规则获取subFiledToken内容
-                    o.add(exectuor.getRule(fieldNodeContext.getInnerBasicTokens()).apply(mockContext, null));
+
+                    if(fieldNodeContext.innerContainerIsInnerType()) {
+                        o.add(executor.getRule(fieldNodeContext.getInnerBasicTokens()).apply(mockContext, null));
+                    }else{
+                        o.add(mockContext.mock((Class<?>) actualTypeArguments[0]));
+                    }
                     // 判断子类型是否是innerType
                 }
             } else{

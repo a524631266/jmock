@@ -68,8 +68,8 @@ public class ArrayRandomExecutor<T> extends AbstractRandomExecutor {
         }
 
 
-        public Object[] apply(MockContext context, FieldNode fieldNodeContext) {
-            assert(fieldNodeContext.getCurrentTokenInfo() == fieldToken);
+        public Object[] apply(MockContext mockContext, FieldNode fieldNodeContext) {
+//            assert(fieldNodeContext.getCurrentTokenInfo() == fieldToken);
             // 当前的list类型
             if(!fieldNodeContext.isArray()){
                 throw new IllegalArgumentException("must be array");
@@ -84,11 +84,14 @@ public class ArrayRandomExecutor<T> extends AbstractRandomExecutor {
             // 在数组中没有
             Object[] o = (Object[]) Array.newInstance(
                     BasicType.primitiveToWarpper(listType), elementNum);
+            RandomType executor = mockContext.getExecutor(listType);
             for (int i = 0; i < elementNum; i++) {
-                // 通过子token规则获取subFiledToken内容
-//                Rule rule = random.getRule(fieldToken.getSubFieldToken());
-//                Object randomValue = random.compute(null, rule);
-                o[i] = context.mock(listType);
+                if(fieldNodeContext.innerContainerIsInnerType()){
+
+                    o[i] = executor.getRule(fieldNodeContext.getInnerBasicTokens()).apply(mockContext, fieldNodeContext);
+                } else{
+                    o[i] = mockContext.mock(listType);
+                }
             }
             return o;
         }

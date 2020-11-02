@@ -109,7 +109,7 @@ public abstract class MockContext {
         return target;
     }
 
-    public RandomType getExectuor(Class cClass){
+    public RandomType getExecutor(Class cClass){
         RandomType executor = executorStore.getExecutor(cClass);
         return executor;
     }
