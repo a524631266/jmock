@@ -69,7 +69,7 @@ public class ArrayRandomExecutor<T> extends AbstractRandomExecutor {
 
 
         public Object[] apply(MockContext context, FieldNode fieldNodeContext) {
-            assert(fieldNodeContext.getFieldToken() == fieldToken);
+            assert(fieldNodeContext.getCurrentTokenInfo() == fieldToken);
             // 当前的list类型
             if(!fieldNodeContext.isArray()){
                 throw new IllegalArgumentException("must be array");

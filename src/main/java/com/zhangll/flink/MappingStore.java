@@ -1,5 +1,6 @@
 package com.zhangll.flink;
 
+import com.zhangll.flink.annotation.PojoTokenInfo;
 import com.zhangll.flink.model.FieldNode;
 import com.zhangll.flink.uitl.KeyUtil;
 
@@ -14,13 +15,13 @@ import java.util.Map;
 public class MappingStore {
     private Map<String , FieldNode> nodeMap = new HashMap<>();
 
-    public void setRuleMap(String key, FieldNode node) {
+    public void setNodeMap(String key, FieldNode node) {
         this.nodeMap.put(key, node);
     }
 
-    public void setRuleMap(Class cls, Field field, FieldNode node) {
+    public void setNodeMap(Class cls, Field field, FieldNode node) {
 
-        setRuleMap(KeyUtil.generateKey(cls, field), node);
+        setNodeMap(KeyUtil.generateKey(cls, field), node);
     }
 
     /**
@@ -44,4 +45,13 @@ public class MappingStore {
     public FieldNode getFieldNode(Class cls, Field field) {
         return getFieldNode(KeyUtil.generateKey(cls, field));
     }
+
+    public void setNodeMap(Class cls, PojoTokenInfo pojoTokenInfo, FieldNode node) {
+
+        setNodeMap(KeyUtil.generateKey(cls, pojoTokenInfo, node.getDeclaredField().getName()), node);
+    }
+
+//    public FieldNode getFieldNode(Class<?> cClass, PojoTokenInfo mappings) {
+//
+//    }
 }

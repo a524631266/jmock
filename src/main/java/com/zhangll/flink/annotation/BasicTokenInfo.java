@@ -8,8 +8,8 @@ import java.lang.annotation.*;
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-public @interface FieldTokenType {
+@Target({ElementType.FIELD, ElementType.ANNOTATION_TYPE})
+public @interface BasicTokenInfo {
     String min() default "0";
     String max() default "0";
     String count() default "0";

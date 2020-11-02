@@ -16,6 +16,7 @@ public abstract class AbstractRandomExecutor implements RandomExecutor {
 
     @Override
     public void updateField(Object target, MockContext context, FieldNode fieldNodeContext) {
+        // 获取当前上下文中的执行器来计算
         Object compute = fieldNodeContext.getRule().apply(context, fieldNodeContext);
         Object result = postProcessor.postProcessAfterCompute(compute);
         if (BasicType.isArray(result.getClass())) {

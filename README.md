@@ -14,7 +14,7 @@
 ```java
 package com.zhangll.flink;
 
-import com.zhangll.flink.annotation.FieldTokenType;
+import com.zhangll.flink.annotation.BasicTokenInfo;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -110,8 +110,27 @@ for (int i = 0; i < 2; i++) {
 ```
 
 
+```java
+class Person{
+    @FieldTokenType()
+    @InnerTokens()
+    List<String> listString;
+}
+```
+
 
 ## 后续改进内容
 1. 添加正则文法匹配功能
 2. 增加（+step）功能
 3. 增加关联内容（一对多）
+
+
+## 注意： 注解的表达能力有限
+在开发的过程中，注解无法嵌套定义，会出现 cyclic annotation element type 编译错误
+
+即，在使用注解的时候，一般表达的是一层含义，无法嵌套使用
+
+不过在平时使用的时候，一般都是比较简单的pojo类来定义，因此也不会出现嵌套内嵌套的关系。
+
+本项目的目的是基于满足最基本所需。
+

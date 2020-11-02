@@ -1,10 +1,11 @@
 package com.zhangll.flink;
 
-import com.zhangll.flink.annotation.InnerTokens;
+import com.zhangll.flink.annotation.PojoTokenInfo;
 import com.zhangll.flink.model.ASTNode;
 import com.zhangll.flink.model.FieldNode;
 import com.zhangll.flink.parser.NodeParser;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -13,23 +14,57 @@ import java.util.List;
 public abstract class MockContext {
     protected static MappingStore mappingStore = new MappingStore();
     protected static NodeParser nodeParser = new NodeParser();
+//    /**
+//     * 默认没有rule，使用默认的rule
+//     * @param cClass
+//     * @return
+//     */
+//    public  Object mock(Class<?> cClass) {
+//        return mock(cClass, cClass.getAnnotation(PojoTokenInfo.class));
+//    }
+//
+//    /**
+//     * 默认没有rule，使用默认的rule
+//     * @param field 以当前的Field做为参数传递，可以分析处结果来
+//     *              field.getType String.class / Object.class / Pojo.class
+//     * @return
+//     */
+//    public  Object mock( Field field) {
+//        return mock(field.getType(), field.getAnnotation(PojoTokenInfo.class));
+//    }
+
+    public  Object mock(Class<?> cClass) {
+
+        FieldNode root = null;
+        // 暂时先不上mapping
+        root = initMappingStore(cClass);
+        // 1. 创建一个对象,不过这个对象是
+        Object resource = createObject(cClass, root);
+        return doObjectBindField(resource, root);
+//        return doMock(cClass, null);
+    }
+
     /**
-     * 默认没有rule，使用默认的rule
+     * 初始化 mappingStore
      * @param cClass
      * @return
      */
-    public  Object mock(Class<?> cClass) {
-        return mock(cClass, null);
+    private FieldNode initMappingStore(Class<?> cClass) {
+        FieldNode root;
+//        if((root = mappingStore.getFieldNode(cClass, mappings))==null){
+        root = nodeParser.initNodeTree(cClass, null);
+//            mappingStore.setNodeMap(cClass, mappings, root);
+//        }
+        return root;
     }
 
-    public  Object mock(Class<?> cClass, InnerTokens mappings) {
-
-        FieldNode root = null;
-        if((root = mappingStore.getFieldNode(cClass, field))==null){
-            root = nodeParser.initNodeTree(cClass , field, );
-            mappingStore.setRuleMap(cClass, field, root);
-        }
-        // 1. 创建一个对象,不过这个对象是
+    /**
+     * 创建一个对象
+     * @param cClass
+     * @param root
+     * @return
+     */
+    private Object createObject(Class<?> cClass, FieldNode root) {
         Object resource = null;
         try {
             resource = root.getType().newInstance();
@@ -41,33 +76,32 @@ public abstract class MockContext {
         if(resource == null){
             throw new IllegalArgumentException(cClass.getCanonicalName() + ": 无法实例化");
         }
-        return doObjectBindField(resource, root);
-//        return doMock(cClass, null);
+        return resource;
     }
 
     /**
-     * 给 resource 赋值 field
-     * @param resource
+     * 给 target 赋值 field
+     * @param target
      * @param fieldNode
      * @return
      */
-    private Object doObjectBindField(Object resource, FieldNode fieldNode) {
+    private Object doObjectBindField(Object target, FieldNode fieldNode) {
         // 根据classNode初始化变量
         // 给当前节点设置值
-        fieldNode.assignObject(resource, this);
+        fieldNode.assignInnerObject(target, this);
         List<ASTNode> children = fieldNode.getChildren();
         for (ASTNode child : children) {
             boolean childInnerType = child.isInnerType();
             // 如果子节点中的对象是内置的
             if(childInnerType){
-                child.assignObject(resource, this);
+                child.assignInnerObject(target, this);
             }else{
                 Object mock = this.mock(child.getType());
-                child.assignObject(resource ,mock);
+                child.assignObject(target ,mock);
 //                return mock;
             }
         }
-        return resource;
+        return target;
     }
 
 

@@ -1,11 +1,9 @@
 package com.zhangll.flink;
 
-import com.zhangll.flink.annotation.FieldTokenType;
+import com.zhangll.flink.annotation.BasicTokenInfo;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
 
@@ -56,7 +54,7 @@ public class MockTest
     @Test
     public void test(){
         for (Field declaredField : Father.class.getDeclaredFields()) {
-            FieldTokenType annotation = declaredField.getAnnotation(FieldTokenType.class);
+            BasicTokenInfo annotation = declaredField.getAnnotation(BasicTokenInfo.class);
 //            System.out.println(annotation);
         }
     }

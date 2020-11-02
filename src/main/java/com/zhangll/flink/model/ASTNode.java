@@ -9,6 +9,12 @@ public interface ASTNode {
     List<ASTNode> getChildren();
     Class getType();
     boolean isInnerType();
-    void assignObject(Object target, MockContext context);
+
+    /**
+     * 如果是内置对象，那么就根据内置执行器执行计算
+     * @param target
+     * @param context
+     */
+    void assignInnerObject(Object target, MockContext context);
     void assignObject(Object target, Object source);
 }

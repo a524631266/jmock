@@ -1,8 +1,9 @@
 package com.zhangll.flink;
 
-import com.zhangll.flink.annotation.FieldTokenType;
+import com.zhangll.flink.annotation.BasicTokenInfo;
+import com.zhangll.flink.annotation.PojoTokenInfo;
+import com.zhangll.flink.annotation.ContainerTokenInfo;
 import com.zhangll.flink.annotation.TokenMapping;
-import com.zhangll.flink.annotation.InnerTokens;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -10,37 +11,34 @@ import java.util.*;
 
 @Getter
 @ToString
-@InnerTokens(value = {
-        @TokenMapping(field = "wShort", fieldTokenType = @FieldTokenType(min = "12", max = "13"))
-})
 public class Father {
 
-    @FieldTokenType(min = "10", max = "100")
+    @BasicTokenInfo(min = "10", max = "100")
     private int age;
-    @FieldTokenType(min = "100", max = "1000")
+    @BasicTokenInfo(min = "100", max = "1000")
     private Integer id;
-    @FieldTokenType(min = "1000000", max = "10000000")
+    @BasicTokenInfo(min = "1000000", max = "10000000")
     private Long money;
-    @FieldTokenType(min = "3", max = "5")
+    @BasicTokenInfo(min = "3", max = "5")
     private String name;
 
-    @FieldTokenType(count = "1", value = {"@First @Middle @last"})
+    @BasicTokenInfo(count = "1", value = {"@First @Middle @last"})
     private String firstName;
 
-    @FieldTokenType(value = {"张三", "李四" ,"王五" , "@First @Middle @last"}, count = "1")
+    @BasicTokenInfo(value = {"张三", "李四" ,"王五" , "@First @Middle @last"}, count = "1")
     private String innerName;
 
-    @FieldTokenType(min = "10", max = "20")
+    @BasicTokenInfo(min = "10", max = "20")
     private String Address;
-    @FieldTokenType(min = "1000", max = "2000", dmin = "3", dmax = "8")
+    @BasicTokenInfo(min = "1000", max = "2000", dmin = "3", dmax = "8")
     private double money_d;
-    @FieldTokenType(min = "1000", max = "2000", dmin = "3", dmax = "8")
+    @BasicTokenInfo(min = "1000", max = "2000", dmin = "3", dmax = "8")
     private float money_f;
     private char char_1;
     private Character a = 'c';
     private Short wShort;
 
-    @FieldTokenType(min = "1000", max = "2000")
+    @BasicTokenInfo(min = "1000", max = "2000")
     private short uShort;
 
     private java.sql.Date date;
@@ -54,6 +52,9 @@ public class Father {
     private LinkedList<Double> sonsMoneyList;
     private LinkedList<Long> sonsLongList;
 
+    @ContainerTokenInfo(
+            innerBasicType =  @BasicTokenInfo(min = "1", max = "2")
+    )
     private Set<String> sonsNameSet;
 
     private Son son;
@@ -67,13 +68,14 @@ public class Father {
     private char[] charNoWrapperArr;
     private Character[] charWrapperArr;
 
-    @InnerTokens(
-        value = {
-            @TokenMapping(field = "id", fieldTokenType = @FieldTokenType(min = "1", max = "10")),
-            @TokenMapping(field = "age", fieldTokenType = @FieldTokenType(min = "40", max = "50"))
-        }
+    @ContainerTokenInfo(
+            innerPojoType =  @PojoTokenInfo(
+                    {
+                            @TokenMapping(field = "id", basicTokenInfo = @BasicTokenInfo(min = "1", max = "10"))
+                    }
+            ),
+            innerBasicType = @BasicTokenInfo(max = "1233", min = "12324")
     )
-    @FieldTokenType(min = "1", max = "10")
     private ArrayList<Son> sonslist;
 //    private Date date2;
 }
