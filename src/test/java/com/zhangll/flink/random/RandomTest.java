@@ -30,6 +30,8 @@ public class RandomTest {
     private MockContext mockContext;
 
     private NodeParser nodeParser;
+    private Map<String, FieldToken> pojoToken;
+
     @Before
     public void init(){
         mockContext = new AnnotationMockContext();
@@ -408,7 +410,7 @@ public class RandomTest {
     }
 
     private FieldNode getFieldNodeContext(Field field) {
-        FieldNode fieldNode = nodeParser.initNodeTree(field.getType(),field, innerPojoTokens);
+        FieldNode fieldNode = nodeParser.initNodeTree(field.getType(),field, pojoToken);
         return fieldNode;
     }
 

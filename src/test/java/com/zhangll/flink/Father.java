@@ -71,14 +71,14 @@ public class Father {
     private char[] charNoWrapperArr;
     private Character[] charWrapperArr;
 //
-//    @ContainerTokenInfo(
-//            innerPojoType =  @PojoTokenInfo(
-//                    {
-//                            @TokenMapping(field = "id", basicTokenInfo = @BasicTokenInfo(min = "1", max = "10"))
-//                    }
-//            )
-//            innerBasicType = @BasicTokenInfo(min = "1233", max = "12324")
-//    )
+    @ContainerTokenInfo(
+            innerPojoType =  @PojoTokenInfo(
+                    {
+                            @TokenMapping(field = "id", basicTokenInfo = @BasicTokenInfo(min = "1", max = "10"))
+                    }
+            ),
+            innerBasicType = @BasicTokenInfo(min = "1233", max = "12324")
+    )
     private ArrayList<Son> sonslist;
     private Son[] sonlist2;
 ////    private Date date2;
