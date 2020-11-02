@@ -79,6 +79,7 @@ public class Father {
             ),
             innerBasicType = @BasicTokenInfo(min = "1233", max = "12324")
     )
+    @BasicTokenInfo(min = "1", max = "2")
     private ArrayList<Son> sonslist;
     private Son[] sonlist2;
 ////    private Date date2;

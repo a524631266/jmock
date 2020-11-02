@@ -3,13 +3,42 @@
 
 ### 使用注解方式设置
 支持嵌套model
-> 概念1: 注解FieldTokenType
-用来表达每个字段的取值的约束条件
+> 概念1: 注解BasicTokenInfo
+用来表达每个内置基本类型字段的取值的约束条件
+```text
+Integer.class, 
+int.class
+char.class
+Character.class
+Double.class
+double.class
+Float.class
+float.class
+Long.class 
+long.class 
+Short.class
+short.class
+Boolean.class
+boolean.class
+String.class
+时间类型
+sql.Date.class
+sql.Time.class
+sql.Timestamp.class
+数组类型
+Array.class
+集合类型
+List.class
+Set.class 
+```
 
 >概念2: mockContext
 用来构建一个mock对象的上下文
 #### 创建两个model，一个Father，一个Son
 
+> 概念3: ContainerTokenInfo
+就是容器的类型约束条件
+见如下的sonslist 使用方式
 
 ```java
 package com.zhangll.flink;
@@ -24,32 +53,32 @@ import java.util.*;
 @ToString
 public class Father {
 
-    @FieldTokenType(min = "10", max = "100")
+    @BasicTokenInfo(min = "10", max = "100")
     private int age;
-    @FieldTokenType(min = "100", max = "1000")
+    @BasicTokenInfo(min = "100", max = "1000")
     private Integer id;
-    @FieldTokenType(min = "1000000", max = "10000000")
+    @BasicTokenInfo(min = "1000000", max = "10000000")
     private Long money;
-    @FieldTokenType(min = "3", max = "5")
+    @BasicTokenInfo(min = "3", max = "5")
     private String name;
 
-    @FieldTokenType(count = "1", value = {"@First @Middle @last"})
+    @BasicTokenInfo(count = "1", value = {"@First @Middle @last"})
     private String firstName;
 
-    @FieldTokenType(value = {"张三", "李四" ,"王五" , "@First @Middle @last"}, count = "1")
+    @BasicTokenInfo(value = {"张三", "李四" ,"王五" , "@First @Middle @last"}, count = "1")
     private String innerName;
 
-    @FieldTokenType(min = "10", max = "20")
+    @BasicTokenInfo(min = "10", max = "20")
     private String Address;
-    @FieldTokenType(min = "1000", max = "2000", dmin = "3", dmax = "8")
+    @BasicTokenInfo(min = "1000", max = "2000", dmin = "3", dmax = "8")
     private double money_d;
-    @FieldTokenType(min = "1000", max = "2000", dmin = "3", dmax = "8")
+    @BasicTokenInfo(min = "1000", max = "2000", dmin = "3", dmax = "8")
     private float money_f;
     private char char_1;
     private Character a = 'c';
     private Short wShort;
 
-    @FieldTokenType(min = "1000", max = "2000")
+    @BasicTokenInfo(min = "1000", max = "2000")
     private short uShort;
 
     private java.sql.Date date;
@@ -57,14 +86,20 @@ public class Father {
     private java.sql.Timestamp timestamp;
     // 男为1 女为0
     private boolean sex;
+    @ContainerTokenInfo(
+            innerBasicType = @BasicTokenInfo(min = "4", max = "7")
+    )
     private ArrayList<String> sonsNameList;
     private List<String> sonsNameList2;
     private List<Integer> sonsAgeList;
     private LinkedList<Double> sonsMoneyList;
     private LinkedList<Long> sonsLongList;
 
+    @ContainerTokenInfo(
+            innerBasicType =  @BasicTokenInfo(min = "15", max = "30")
+    )
     private Set<String> sonsNameSet;
-    // 嵌套儿子
+
     private Son son;
 
     private String[] stringArr;
@@ -75,7 +110,19 @@ public class Father {
 
     private char[] charNoWrapperArr;
     private Character[] charWrapperArr;
-
+//
+    @ContainerTokenInfo(
+            innerPojoType =  @PojoTokenInfo(
+                    {
+                            @TokenMapping(field = "id", basicTokenInfo = @BasicTokenInfo(min = "1", max = "10"))
+                    }
+            ),
+            innerBasicType = @BasicTokenInfo(min = "1233", max = "12324")
+    )
+    @BasicTokenInfo(min = "1", max = "2")
+    private ArrayList<Son> sonslist;
+    private Son[] sonlist2;
+////    private Date date2;
 }
 
 ```
@@ -122,7 +169,6 @@ class Person{
 ## 后续改进内容
 1. 添加正则文法匹配功能
 2. 增加（+step）功能
-3. 增加关联内容（一对多）
 
 
 ## 注意： 注解的表达能力有限
