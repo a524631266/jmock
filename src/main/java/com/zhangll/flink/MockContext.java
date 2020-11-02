@@ -4,6 +4,8 @@ import com.zhangll.flink.annotation.PojoTokenInfo;
 import com.zhangll.flink.model.ASTNode;
 import com.zhangll.flink.model.FieldNode;
 import com.zhangll.flink.parser.NodeParser;
+import com.zhangll.flink.random.ExecutorStore;
+import com.zhangll.flink.random.RandomType;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -14,6 +16,8 @@ import java.util.List;
 public abstract class MockContext {
     protected static MappingStore mappingStore = new MappingStore();
     protected static NodeParser nodeParser = new NodeParser();
+    protected static ExecutorStore executorStore = new ExecutorStore();
+
 //    /**
 //     * 默认没有rule，使用默认的rule
 //     * @param cClass
@@ -105,5 +109,9 @@ public abstract class MockContext {
         return target;
     }
 
+    public RandomType getExectuor(Class cClass){
+        RandomType executor = executorStore.getExecutor(cClass);
+        return executor;
+    }
 
 }

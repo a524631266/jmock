@@ -105,10 +105,14 @@ public class ListRandomExecutor<T> extends AbstractRandomExecutor {
                     ;
 
             if(fieldNodeContext.hasGenericType()){
-
+                Type[] actualTypeArguments = fieldNodeContext.getActualTypeArguments();
+                if(actualTypeArguments.length > 1 ){
+                    throw new IllegalArgumentException("list generate type must be no more than 1");
+                }
+                RandomType exectuor = mockContext.getExectuor((Class) actualTypeArguments[0]);
                 for (int i = 0; i < elementNum; i++) {
                     // 通过子token规则获取subFiledToken内容
-                    o.add(fieldNodeContext.assign(type));
+                    o.add(exectuor.getRule(fieldNodeContext.getInnerBasicTokens()).apply(mockContext, null));
                     // 判断子类型是否是innerType
                 }
             } else{

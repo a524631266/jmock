@@ -38,7 +38,7 @@ public class FieldNode implements ASTNode{
     // 数组类型的类型
     private Class componentType;
     // 泛型参数实际类型
-    private Class[] actualTypeArguments;
+    private Type[] actualTypeArguments;
 
     public Class getComponentType() {
         return componentType;
@@ -69,7 +69,7 @@ public class FieldNode implements ASTNode{
 
             Type genericType = field.getGenericType();
             if(genericType instanceof ParameterizedType){
-                Class[] actualTypeArguments =(Class[]) ((ParameterizedType) genericType).getActualTypeArguments();
+                this.actualTypeArguments =(Type[]) ((ParameterizedType) genericType).getActualTypeArguments();
             }
         }
         this.declaredField = field;
@@ -148,5 +148,13 @@ public class FieldNode implements ASTNode{
     }
     public boolean hasGenericType() {
         return actualTypeArguments!=null && actualTypeArguments.length > 0;
+    }
+
+    public Type[] getActualTypeArguments() {
+        return actualTypeArguments;
+    }
+
+    public FieldToken getInnerBasicTokens() {
+        return innerBasicTokens;
     }
 }

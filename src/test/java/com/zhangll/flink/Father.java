@@ -46,6 +46,9 @@ public class Father {
     private java.sql.Timestamp timestamp;
     // 男为1 女为0
     private boolean sex;
+    @ContainerTokenInfo(
+            innerBasicType = @BasicTokenInfo(min = "4", max = "7")
+    )
     private ArrayList<String> sonsNameList;
     private List<String> sonsNameList2;
     private List<Integer> sonsAgeList;
@@ -59,23 +62,23 @@ public class Father {
 
     private Son son;
 
-    private String[] stringArr;
-    private Double[] doubleWrapperArr;
-    private double[] doubleNoWrapperArr;
-    private int[] intNoWrapperArr;
-    private Integer[] intWrapperArr;
-
-    private char[] charNoWrapperArr;
-    private Character[] charWrapperArr;
-
-    @ContainerTokenInfo(
-            innerPojoType =  @PojoTokenInfo(
-                    {
-                            @TokenMapping(field = "id", basicTokenInfo = @BasicTokenInfo(min = "1", max = "10"))
-                    }
-            )
+//    private String[] stringArr;
+//    private Double[] doubleWrapperArr;
+//    private double[] doubleNoWrapperArr;
+//    private int[] intNoWrapperArr;
+//    private Integer[] intWrapperArr;
+//
+//    private char[] charNoWrapperArr;
+//    private Character[] charWrapperArr;
+//
+//    @ContainerTokenInfo(
+//            innerPojoType =  @PojoTokenInfo(
+//                    {
+//                            @TokenMapping(field = "id", basicTokenInfo = @BasicTokenInfo(min = "1", max = "10"))
+//                    }
+//            )
 //            innerBasicType = @BasicTokenInfo(min = "1233", max = "12324")
-    )
-    private ArrayList<Son> sonslist;
-//    private Date date2;
+//    )
+//    private ArrayList<Son> sonslist;
+////    private Date date2;
 }
