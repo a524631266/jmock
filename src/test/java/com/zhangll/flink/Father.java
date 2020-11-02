@@ -53,7 +53,7 @@ public class Father {
     private LinkedList<Long> sonsLongList;
 
     @ContainerTokenInfo(
-            innerBasicType =  @BasicTokenInfo(min = "1", max = "2")
+            innerBasicType =  @BasicTokenInfo(min = "15", max = "30")
     )
     private Set<String> sonsNameSet;
 
@@ -73,8 +73,8 @@ public class Father {
                     {
                             @TokenMapping(field = "id", basicTokenInfo = @BasicTokenInfo(min = "1", max = "10"))
                     }
-            ),
-            innerBasicType = @BasicTokenInfo(max = "1233", min = "12324")
+            )
+//            innerBasicType = @BasicTokenInfo(min = "1233", max = "12324")
     )
     private ArrayList<Son> sonslist;
 //    private Date date2;

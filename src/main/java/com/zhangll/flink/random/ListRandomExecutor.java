@@ -42,7 +42,9 @@ public class ListRandomExecutor<T> extends AbstractRandomExecutor {
 
     @Override
     public Rule getRule(FieldToken fieldToken) {
-        if(fieldToken == null) return defaultRule;
+        if(fieldToken == null) {
+            return defaultRule;
+        }
         return new DefaultListRule(fieldToken);
     }
 
@@ -78,7 +80,7 @@ public class ListRandomExecutor<T> extends AbstractRandomExecutor {
         public DefaultListRule(FieldToken fieldToken) {
             this.fieldToken = fieldToken;
         }
-
+        @Override
         public Collection<T> apply(MockContext mockContext, FieldNode fieldNodeContext) {
             // 当前的list类型
             Class<?> listType = fieldNodeContext.getType();
@@ -103,15 +105,9 @@ public class ListRandomExecutor<T> extends AbstractRandomExecutor {
                     ;
             if(genericType instanceof ParameterizedType){
                 Class type = (Class)((ParameterizedType) genericType).getActualTypeArguments()[0];
-//                AbstractRandomExecutor random = (AbstractRandomExecutor) RandomFactory.getRandom(type);
 
-//                if(random == null){
-//                    throw new IllegalArgumentException("无法找到");
-//                }
                 for (int i = 0; i < elementNum; i++) {
                     // 通过子token规则获取subFiledToken内容
-//                    Rule rule = random.getRule(fieldToken.getSubFieldToken());
-//                    Object randomValue = random.compute(null, rule);
                     o.add(mockContext.mock(type));
                 }
             } else{

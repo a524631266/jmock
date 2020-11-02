@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class RandomFactory {
+public class RandomExecutorFactory {
     private static Map<Class, RandomType> randomMap = new HashMap<Class, RandomType>();
     static {
         randomMap.put(Integer.class, new IntegerSimpleRandomExecutor());

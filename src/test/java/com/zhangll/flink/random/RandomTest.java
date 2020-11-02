@@ -409,7 +409,7 @@ public class RandomTest {
     }
 
     private FieldNode getFieldNodeContext(Field field) {
-        FieldNode fieldNode = nodeParser.initNodeTree(field.getType(),field, field.getType().getAnnotation(PojoTokenInfo.class));
+        FieldNode fieldNode = nodeParser.initNodeTree(field.getType(),field);
         return fieldNode;
     }
 

@@ -2,7 +2,7 @@ package com.zhangll.flink.model;
 
 import com.zhangll.flink.MockContext;
 import com.zhangll.flink.random.AbstractRandomExecutor;
-import com.zhangll.flink.random.RandomFactory;
+import com.zhangll.flink.random.RandomExecutorFactory;
 import com.zhangll.flink.random.RandomType;
 import com.zhangll.flink.rule.Rule;
 import com.zhangll.flink.type.BasicType;
@@ -58,7 +58,7 @@ public class FieldNode implements ASTNode{
                      Map<String, FieldToken> innerPojoTokens,
                      FieldToken innerBasicTokens) {
         this.currentClass = currentClass;
-        this.executor = RandomFactory.getRandom(currentClass);
+        this.executor = RandomExecutorFactory.getRandom(currentClass);
         this.isInnerType = this.executor != null;
         if(field != null){
             field.setAccessible(true);

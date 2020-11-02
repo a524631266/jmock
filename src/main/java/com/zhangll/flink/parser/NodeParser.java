@@ -1,11 +1,9 @@
 package com.zhangll.flink.parser;
 
-import com.zhangll.flink.annotation.ContainerTokenInfo;
-import com.zhangll.flink.annotation.PojoTokenInfo;
-import com.zhangll.flink.annotation.BasicTokenInfo;
-import com.zhangll.flink.annotation.TokenMapping;
+import com.zhangll.flink.annotation.*;
 import com.zhangll.flink.model.FieldNode;
 import com.zhangll.flink.model.FieldToken;
+
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +14,7 @@ import java.util.Map;
  * 1. 用户传入的配置文件
  * 2. 用户自定义的注解
  * 3. 默认选项
+ * @author zhangll
  */
 public class NodeParser {
     /**
@@ -53,6 +52,7 @@ public class NodeParser {
      * @param innerBasicToken
      * @return
      */
+    @VisibleForTesting
     private FieldNode initParentNode(Class<?> cClass,
                                      Field currentField,
                                      FieldToken currentFieldToken,
@@ -76,10 +76,16 @@ public class NodeParser {
      * @param field
      * @return
      */
-    private static Map<String, FieldToken> getInnerPojoTokens(Field field) {
-        ContainerTokenInfo annotation = field.getAnnotation(ContainerTokenInfo.class);
-        PojoTokenInfo pojoTokenInfo = annotation.innerPojoType();
-        Map<String, FieldToken> result = new HashMap<>();
+    protected static Map<String, FieldToken> getInnerPojoTokens(Field field) {
+        if(field == null) {
+            return new HashMap<>(1);
+        }
+        ContainerTokenInfo containerInfo = field.getAnnotation(ContainerTokenInfo.class);
+        if(containerInfo == null){
+            return new HashMap<>(1);
+        }
+        PojoTokenInfo pojoTokenInfo = containerInfo.innerPojoType();
+        Map<String, FieldToken> result = new HashMap<>(1);
         TokenMapping[] value = pojoTokenInfo.value();
         for (TokenMapping tokenMapping : value) {
             BasicTokenInfo basicTokenInfo = tokenMapping.basicTokenInfo();
@@ -101,12 +107,21 @@ public class NodeParser {
     }
     /**
      * 根据field获取FieldTokens信息
+     * 这里语义有些问题，
      * @param field
      * @return
      */
-    private static FieldToken getInnerBasicToken(Field field) {
-        ContainerTokenInfo annotation = field.getAnnotation(ContainerTokenInfo.class);
-        BasicTokenInfo basicTokenInfo = annotation.innerBasicType();
+    @VisibleForTesting
+    public static FieldToken getInnerBasicToken(Field field) {
+        // 没有field那么就可以理解为是 class类型的。
+        if(field == null){
+            return null;
+        }
+        ContainerTokenInfo containerInfo = field.getAnnotation(ContainerTokenInfo.class);
+        if(containerInfo == null){
+            return null;
+        }
+        BasicTokenInfo basicTokenInfo = containerInfo.innerBasicType();
         FieldToken result = new FieldToken.FieldTokenBuilder()
                 .setMin(Integer.valueOf(basicTokenInfo.min()))
                 .setMax(Integer.valueOf(basicTokenInfo.max()))
@@ -128,15 +143,15 @@ public class NodeParser {
      * @param field
      * @return
      */
-    protected FieldToken getCurrentBasicToken(Field field) {
+    protected static FieldToken getCurrentBasicToken(Field field) {
         if(field == null) {
             return null;
         }
         BasicTokenInfo basicTokenInfo = field.getAnnotation(BasicTokenInfo.class);
-        if(basicTokenInfo == null) {
+        if (basicTokenInfo == null) {
+            // 判断是否为空
             return null;
         }
-        FieldToken fieldToken = null;
         FieldToken result = new FieldToken.FieldTokenBuilder()
                 .setMin(Integer.valueOf(basicTokenInfo.min()))
                 .setMax(Integer.valueOf(basicTokenInfo.max()))
@@ -147,7 +162,7 @@ public class NodeParser {
                 .setDcount(Integer.valueOf(basicTokenInfo.dcount()))
                 .setStep(Integer.valueOf(basicTokenInfo.step()))
                 .build();
-        return fieldToken;
+        return result;
     }
 
     private FieldToken.FieldTokenBuilder getFieldTokenBuilder(BasicTokenInfo annotation) {
@@ -161,4 +176,6 @@ public class NodeParser {
                         .setDcount(Integer.valueOf(annotation.dcount()))
                         .setStep(Integer.valueOf(annotation.step()));
     }
+
+
 }

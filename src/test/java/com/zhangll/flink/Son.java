@@ -9,6 +9,5 @@ public class Son {
     private int id;
     @BasicTokenInfo(min = "10", max = "20")
     private int age;
-
     private SonSon son;
 }

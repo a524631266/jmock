@@ -1,14 +1,8 @@
 package com.zhangll.flink;
 
-import com.zhangll.flink.random.RandomFactory;
-import com.zhangll.flink.random.RandomType;
-import com.zhangll.flink.rule.Rule;
 import org.junit.Before;
-import org.junit.Test;
 
 import java.lang.reflect.Field;
-
-import static org.junit.Assert.*;
 
 public class MappingStoreTest {
     private Class testClass;
@@ -26,7 +20,7 @@ public class MappingStoreTest {
 //    @Test
 //    public void setRuleMap() {
 //        for (Field field : fields) {
-//            RandomType random = RandomFactory.getRandom(field.getType());
+//            RandomType random = RandomExecutorFactory.getRandom(field.getType());
 //            if(random != null){
 //                mappingStore.setRuleMap(testClass, field, random.getRule());
 //            }
