@@ -9,6 +9,8 @@ import com.zhangll.flink.type.BasicType;
 import lombok.SneakyThrows;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,9 +35,10 @@ public class FieldNode implements ASTNode{
     private Map<String, FieldToken> innerPojoTokens = new HashMap<>(1);
     private FieldToken innerBasicTokens;
 
-
+    // 数组类型的类型
     private Class componentType;
-
+    // 泛型参数实际类型
+    private Class[] actualTypeArguments;
 
     public Class getComponentType() {
         return componentType;
@@ -63,6 +66,11 @@ public class FieldNode implements ASTNode{
         if(field != null){
             field.setAccessible(true);
             this.componentType = field.getType().getComponentType();
+
+            Type genericType = field.getGenericType();
+            if(genericType instanceof ParameterizedType){
+                Class[] actualTypeArguments =(Class[]) ((ParameterizedType) genericType).getActualTypeArguments();
+            }
         }
         this.declaredField = field;
         this.currentTokenInfo = currentTokenInfo;
@@ -72,6 +80,7 @@ public class FieldNode implements ASTNode{
         }
         this.innerPojoTokens = innerPojoTokens;
         this.innerBasicTokens = innerBasicTokens;
+    
     }
 
 
@@ -136,5 +145,8 @@ public class FieldNode implements ASTNode{
     public void addChild(FieldNode child) {
         children.add(child);
         child.parent = this;
+    }
+    public boolean hasGenericType() {
+        return actualTypeArguments!=null && actualTypeArguments.length > 0;
     }
 }

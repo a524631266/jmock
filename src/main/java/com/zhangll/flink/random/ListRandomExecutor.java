@@ -103,12 +103,13 @@ public class ListRandomExecutor<T> extends AbstractRandomExecutor {
             int elementNum = (fieldToken.getMax() - fieldToken.getMin()) == 0 ?
                     fieldToken.getCount():fieldToken.getMax() - fieldToken.getMin()
                     ;
-            if(genericType instanceof ParameterizedType){
-                Class type = (Class)((ParameterizedType) genericType).getActualTypeArguments()[0];
+
+            if(fieldNodeContext.hasGenericType()){
 
                 for (int i = 0; i < elementNum; i++) {
                     // 通过子token规则获取subFiledToken内容
-                    o.add(mockContext.mock(type));
+                    o.add(fieldNodeContext.assign(type));
+                    // 判断子类型是否是innerType
                 }
             } else{
                 throw  new IllegalArgumentException(" list must has type");

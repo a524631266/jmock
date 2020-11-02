@@ -80,15 +80,16 @@ public abstract class MockContext {
     }
 
     /**
-     * 给 target 赋值 field
+     * 给 target 赋值 field,
+     * 对这颗树中的节点进行遍历
      * @param target
      * @param fieldNode
      * @return
      */
     private Object doObjectBindField(Object target, FieldNode fieldNode) {
         // 根据classNode初始化变量
-        // 给当前节点设置值
-        fieldNode.assignInnerObject(target, this);
+        // 给当前节点设置值, 根据之前的状态来
+//        fieldNode.assignInnerObject(target, this);
         List<ASTNode> children = fieldNode.getChildren();
         for (ASTNode child : children) {
             boolean childInnerType = child.isInnerType();
