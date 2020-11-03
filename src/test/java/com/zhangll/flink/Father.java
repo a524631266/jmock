@@ -83,7 +83,7 @@ public class Father {
     private ArrayList<Son> sonslist;
     private Son[] sonlist2;
 
-    @BasicTokenInfo(value = {"/\\d{ 1, 3}  abcd\\/ \\d/"})
+    @BasicTokenInfo(value = {"/\\d{ 1, 3}  abcd\\/ \\d/ [a-bA-H1-4]{1,5}/"})
     private String regrex;
 ////    private Date date2;
 }

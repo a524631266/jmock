@@ -122,6 +122,9 @@ public class Father {
     @BasicTokenInfo(min = "1", max = "2")
     private ArrayList<Son> sonslist;
     private Son[] sonlist2;
+    // 正则表达式生成
+    @BasicTokenInfo(value = {"/\\d{ 1, 3}  abcd\\/ \\d/ [a-bA-H1-4]{1,5}/"})
+    private String regrex;
 ////    private Date date2;
 }
 
@@ -167,8 +170,8 @@ class Person{
 
 
 ## 后续改进内容
-1. 添加正则文法匹配功能
-2. 增加（+step）功能
+1. 添加正则文法匹配功能 （has done）
+2. 增加（+step）功能 
 
 
 ## 注意： 注解的表达能力有限
