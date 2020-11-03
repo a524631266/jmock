@@ -82,5 +82,8 @@ public class Father {
     @BasicTokenInfo(min = "1", max = "2")
     private ArrayList<Son> sonslist;
     private Son[] sonlist2;
+
+    @BasicTokenInfo(value = {"/\\d/"})
+    private String regrex;
 ////    private Date date2;
 }
