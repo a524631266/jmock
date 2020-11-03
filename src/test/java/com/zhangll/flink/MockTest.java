@@ -74,11 +74,23 @@ public class MockTest
     public void testNestModel2()
     {
         AnnotationMockContext context = new AnnotationMockContext();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1; i++) {
             Father mock = (Father)context.mock(Father.class);
             System.out.println(mock.getRegrex());
 //            System.out.println(mock);
             assertTrue(mock != null);
         }
     }
+    @Test
+    public void testStep()
+    {
+        AnnotationMockContext context = new AnnotationMockContext();
+        for (int i = 0; i < 10; i++) {
+            Father mock = (Father)context.mock(Father.class);
+            System.out.println(mock.getSonsNameList());
+//            System.out.println(mock);
+            assertTrue(mock != null);
+        }
+    }
+
 }

@@ -185,6 +185,7 @@ class Person{
 ```
 
 2. 增加（+step）功能 
+目前用于 集合类型（list.class, Array.class)
 
 
 ## 注意： 注解的表达能力有限

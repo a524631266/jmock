@@ -49,6 +49,7 @@ public class Father {
     @ContainerTokenInfo(
             innerBasicType = @BasicTokenInfo(min = "4", max = "7")
     )
+    @BasicTokenInfo(step = "4", value = {"张三", "李四" ,"王五" , "@First @Middle @last", "/\\d{ 1, 3}  abcd\\/ \\d/"}, count = "10")
     private ArrayList<String> sonsNameList;
     private List<String> sonsNameList2;
     private List<Integer> sonsAgeList;

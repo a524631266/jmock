@@ -86,11 +86,11 @@ public class ListRandomExecutor<T> extends AbstractRandomExecutor {
             Type genericType = fieldNodeContext.getDeclaredField().getGenericType();
             Collection o = null;
             try {
-                if(listType == List.class){
+                if (listType == List.class) {
                     o = new ArrayList();
-                } else if(listType == Set.class){
+                } else if (listType == Set.class) {
                     o = new HashSet();
-                }else{
+                } else {
                     o = (List) listType.newInstance();
                 }
             } catch ( InstantiationException e ) {
@@ -98,31 +98,47 @@ public class ListRandomExecutor<T> extends AbstractRandomExecutor {
             } catch ( IllegalAccessException e ) {
                 e.printStackTrace();
             }
+
             // 元素数量
             int elementNum = (fieldToken.getMax() - fieldToken.getMin()) == 0 ?
-                    fieldToken.getCount():fieldToken.getMax() - fieldToken.getMin()
-                    ;
-
-            if(fieldNodeContext.hasGenericType()){
-                Type[] actualTypeArguments = fieldNodeContext.getActualTypeArguments();
-                if(actualTypeArguments.length > 1 ){
-                    throw new IllegalArgumentException("list generate type must be no more than 1");
-                }
-                RandomType executor = mockContext.getExecutor((Class) actualTypeArguments[0]);
+                    fieldToken.getCount() : fieldToken.getMax() - fieldToken.getMin();
+            // 当用户的step有值且value长度大于0
+            if(fieldNodeContext.getCurrentTokenInfo() != null
+                    && fieldNodeContext.getCurrentTokenInfo().getStep()>0
+                    && fieldNodeContext.getCurrentTokenInfo().getValue().length>0
+                    ){
+                int step = fieldNodeContext.getCurrentTokenInfo().getStep();
+                String[] value = fieldNodeContext.getCurrentTokenInfo().getValue();
+                int valueLength = value.length;
+                int count = 0;
                 for (int i = 0; i < elementNum; i++) {
-                    // 通过子token规则获取subFiledToken内容
-
-                    if(fieldNodeContext.innerContainerIsInnerType()) {
-                        o.add(executor.getRule(fieldNodeContext.getInnerBasicTokens()).apply(mockContext, null));
-                    }else{
-                        o.add(mockContext.mock((Class<?>) actualTypeArguments[0], fieldNodeContext.getInnerPojoTokens()));
-                    }
-                    // 判断子类型是否是innerType
+                    o.add(value[(count)  % valueLength]);
+                    count+= step;
                 }
-            } else{
-                throw  new IllegalArgumentException(" list must has type");
+                return o;
+            } else {
+
+                if (fieldNodeContext.hasGenericType()) {
+                    Type[] actualTypeArguments = fieldNodeContext.getActualTypeArguments();
+                    if (actualTypeArguments.length > 1) {
+                        throw new IllegalArgumentException("list generate type must be no more than 1");
+                    }
+                    RandomType executor = mockContext.getExecutor((Class) actualTypeArguments[0]);
+                    for (int i = 0; i < elementNum; i++) {
+                        // 通过子token规则获取subFiledToken内容
+
+                        if (fieldNodeContext.innerContainerIsInnerType()) {
+                            o.add(executor.getRule(fieldNodeContext.getInnerBasicTokens()).apply(mockContext, null));
+                        } else {
+                            o.add(mockContext.mock((Class<?>) actualTypeArguments[0], fieldNodeContext.getInnerPojoTokens()));
+                        }
+                        // 判断子类型是否是innerType
+                    }
+                } else {
+                    throw new IllegalArgumentException(" list must has type");
+                }
+                return o;
             }
-            return o;
         }
     }
 }
