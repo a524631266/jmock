@@ -171,6 +171,19 @@ class Person{
 
 ## 后续改进内容
 1. 添加正则文法匹配功能 （has done）
+> input
+```java
+ @BasicTokenInfo(value = {"/\\d{ 1, 3}  abcd\\/ \\d/ [a-bA-H1-4]{1,5}/" , "/[a-z][A-Z][0-9]/", "/\\w\\W\\s\\S\\d\\D/", "/\\d{5,10}/"})
+    private String regrex;
+```
+> result 会选取其中一个作为regrex
+```text
+"regexp1": "55  abcd/ 3/ h13a2"
+"regexp2": "pJ7",
+"regexp3": "F)\fp1G",
+"regexp4": "561659409"
+```
+
 2. 增加（+step）功能 
 
 

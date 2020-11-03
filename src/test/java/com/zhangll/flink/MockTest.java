@@ -76,8 +76,8 @@ public class MockTest
         AnnotationMockContext context = new AnnotationMockContext();
         for (int i = 0; i < 10; i++) {
             Father mock = (Father)context.mock(Father.class);
-//            System.out.println(mock.getInnerName());
-            System.out.println(mock);
+            System.out.println(mock.getRegrex());
+//            System.out.println(mock);
             assertTrue(mock != null);
         }
     }
