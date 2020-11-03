@@ -25,7 +25,7 @@ public class Father {
     @BasicTokenInfo(count = "1", value = {"@First @Middle @last"})
     private String firstName;
 
-    @BasicTokenInfo(value = {"张三", "李四" ,"王五" , "@First @Middle @last"}, count = "1")
+    @BasicTokenInfo(value = {"张三", "李四" ,"王五" , "@First @Middle @last", "/\\d{ 1, 3}  abcd\\/ \\d/"}, count = "1")
     private String innerName;
 
     @BasicTokenInfo(min = "10", max = "20")
@@ -83,7 +83,7 @@ public class Father {
     private ArrayList<Son> sonslist;
     private Son[] sonlist2;
 
-    @BasicTokenInfo(value = {"/\\d/"})
+    @BasicTokenInfo(value = {"/\\d{ 1, 3}  abcd\\/ \\d/"})
     private String regrex;
 ////    private Date date2;
 }

@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 class RegexNormalizer {
   // for repetition quantifier, e.g. {1,4}
   private static final Pattern REPETITION_QUANTIFIER_RE = Pattern
-      .compile("([^\\\\])\\{([0-9]+),\\s*([0-9]+)?\\}");
+      .compile("([^\\\\])\\{\\s*([0-9]+),\\s*([0-9]+)?\\}");
   private static final Pattern ASTERISK_QUANTIFIER_RE = Pattern.compile("([^\\\\])\\*");
   private static final Pattern PLUS_QUANTIFIER_RE = Pattern.compile("([^\\\\])\\+");
   private static final Pattern QUESTION_QUANTIFIER_RE = Pattern.compile("([^\\\\])\\?");

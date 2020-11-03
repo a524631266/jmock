@@ -1,6 +1,7 @@
 package com.zhangll.flink.expression;
 
 
+import com.zhangll.flink.expression.regrex.RandomStringGenerator;
 import com.zhangll.flink.type.BasicType;
 import com.zhangll.flink.uitl.RandomUtil;
 import org.slf4j.Logger;
@@ -20,6 +21,7 @@ import java.util.stream.Stream;
  */
 public class RulePostProcessor {
      public static Logger LOG = LoggerFactory.getLogger(RulePostProcessor.class);
+    RandomStringGenerator regrexGenerater = new RandomStringGenerator();
     /**
      * 在compute之后处理的结果
      * 处理兼容问题比如 char[] 转化为 Char[]
@@ -59,7 +61,8 @@ public class RulePostProcessor {
                 middleStr = middleStr.replace("@last", RandomUtil.getLastName());
                 return middleStr;
             } else if (middleStr.startsWith("/") && middleStr.endsWith("/")) {
-                return "正则表达式";
+                String replace = middleStr.substring(1,middleStr.length()-1 );
+                return regrexGenerater.generateByRegex(replace);
             }
         }
         return string;
