@@ -117,7 +117,7 @@ public class MockTest
         String arrayValueRegrex = "\\d{1,3}  abcd\\/ \\d";
         for (int i = 0; i < 10; i++) {
             Father mock = (Father)context.mock(Father.class);
-            Son son = mock.getSon();
+            Son son = mock.getSonff();
             int length = son.getName().length();
             System.out.println(son);
             assertTrue(length >=3 && length < 7);

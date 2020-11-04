@@ -63,7 +63,7 @@ public class Father {
     @PojoTokenInfo(
             @TokenMapping(field = "name", basicTokenInfo = @BasicTokenInfo(min = "3", max = "7"))
     )
-    private Son son;
+    private Son sonff;
 
     @BasicTokenInfo(step = "4", value = {"张三", "李四" ,"王五" , "@First @Middle @last", "/\\d{ 1, 3}  abcd\\/ \\d/"}, count = "10")
     private String[] stringArr;

@@ -114,7 +114,7 @@ public class FieldNode implements ASTNode{
             ((AbstractRandomExecutor) executor).updateField(target, context,this);
         }else{
             Object source = context.mockWithContext(this.currentClass, this);
-            this.assignObject(target, source);
+            this.swap(target, source);
         }
 
     }
@@ -126,7 +126,7 @@ public class FieldNode implements ASTNode{
      */
     @SneakyThrows
     @Override
-    public void assignObject(Object target, Object source) {
+    public void swap(Object target, Object source) {
         declaredField.set(target, source);
     }
 

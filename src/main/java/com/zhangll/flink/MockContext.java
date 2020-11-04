@@ -49,7 +49,8 @@ public abstract class MockContext {
     private Object createObject(Class<?> cClass, FieldNode root) {
         Object resource = null;
         try {
-            resource = root.getType().newInstance();
+//            resource = root.getType().newInstance();
+            resource = cClass.newInstance();
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
