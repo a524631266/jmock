@@ -20,25 +20,6 @@ public abstract class MockContext {
     protected static NodeParser nodeParser = new NodeParser();
     protected static ExecutorStore executorStore = new ExecutorStore();
 
-//    /**
-//     * 默认没有rule，使用默认的rule
-//     * @param cClass
-//     * @return
-//     */
-//    public  Object mock(Class<?> cClass) {
-//        return mock(cClass, cClass.getAnnotation(PojoTokenInfo.class));
-//    }
-//
-//    /**
-//     * 默认没有rule，使用默认的rule
-//     * @param field 以当前的Field做为参数传递，可以分析处结果来
-//     *              field.getType String.class / Object.class / Pojo.class
-//     * @return
-//     */
-//    public  Object mock( Field field) {
-//        return mock(field.getType(), field.getAnnotation(PojoTokenInfo.class));
-//    }
-
     public  Object mock(Class<?> cClass) {
 
         return this.mock(cClass, null);
@@ -90,18 +71,9 @@ public abstract class MockContext {
     private Object doObjectBindField(Object target, FieldNode fieldNode) {
         // 根据classNode初始化变量
         // 给当前节点设置值, 根据之前的状态来
-//        fieldNode.assignInnerObject(target, this);
         List<ASTNode> children = fieldNode.getChildren();
         for (ASTNode child : children) {
-            boolean childInnerType = child.isInnerType();
-            // 如果子节点中的对象是内置的
-            if(childInnerType){
-                child.assignInnerObject(target, this);
-            }else{
-                Object mock = this.mock(child.getType());
-                child.assignObject(target ,mock);
-//                return mock;
-            }
+            child.assignInnerObject(target, this);
         }
         return target;
     }
@@ -124,7 +96,10 @@ public abstract class MockContext {
         // 1. 创建一个对象,不过这个对象是
         Object resource = createObject(cClass, root);
         return doObjectBindField(resource, root);
-//        return doMock(cClass, null);
-//        return null;
     }
+
+    public Object mockWithContext(Class currentClass, FieldNode fieldNode){
+        Object object = createObject(currentClass, fieldNode);
+        return doObjectBindField(object, fieldNode);
+    };
 }
