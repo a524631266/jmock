@@ -24,7 +24,7 @@ public class FieldNode implements ASTNode{
     final Class currentClass;
     final boolean isInnerType;
     private final RandomType executor;
-    private Map<String, FieldToken> fieldTokens = new HashMap<>();
+//    private Map<String, FieldToken> fieldTokens = new HashMap<>();
     // 默认为null
     ASTNode parent;
     private final  Field declaredField;
@@ -40,6 +40,8 @@ public class FieldNode implements ASTNode{
     // 泛型参数实际类型
     private Type[] actualTypeArguments;
 
+    private int count = 0;
+    private Object beforeValue = null;
 
     public Class getComponentType() {
         return componentType;
@@ -76,9 +78,6 @@ public class FieldNode implements ASTNode{
         this.declaredField = field;
         this.currentTokenInfo = currentTokenInfo;
 
-        if(fieldTokens!=null){
-            this.fieldTokens = fieldTokens;
-        }
         this.innerPojoTokens = innerPojoTokens;
         this.innerBasicTokens = innerBasicTokens;
     
@@ -100,9 +99,9 @@ public class FieldNode implements ASTNode{
         return currentClass;
     }
 
-    public RandomType getExecutor() {
-        return executor;
-    }
+//    public RandomType getExecutor() {
+//        return executor;
+//    }
 
     public Rule getRule(){
         return executor.getRule(currentTokenInfo);
@@ -203,4 +202,6 @@ public class FieldNode implements ASTNode{
     public Map<String, FieldToken> getInnerPojoTokens() {
         return innerPojoTokens;
     }
+
+
 }

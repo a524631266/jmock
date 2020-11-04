@@ -17,4 +17,5 @@ public interface ASTNode {
      */
     void assignInnerObject(Object target, MockContext context);
     void swap(Object target, Object source);
+
 }

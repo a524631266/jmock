@@ -46,12 +46,4 @@ public class MappingStore {
         return getFieldNode(KeyUtil.generateKey(cls, field));
     }
 
-    public void setNodeMap(Class cls, PojoTokenInfo pojoTokenInfo, FieldNode node) {
-
-        setNodeMap(KeyUtil.generateKey(cls, pojoTokenInfo, node.getDeclaredField().getName()), node);
-    }
-
-//    public FieldNode getFieldNode(Class<?> cClass, PojoTokenInfo mappings) {
-//
-//    }
 }

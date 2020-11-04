@@ -37,6 +37,28 @@ public class IntegerSimpleRandomExecutor extends AbstractRandomExecutor {
         return new DefaultIntegerRule(fieldToken);
     }
 
+    /**
+     * @BasicTokenInfo(min="1", step = "2"), 后续所有数据均以[1 ,3, 5...] 递增
+     *
+     * @BasicTokenInfo(min="1" , max="5", step = "2"), 后续所有数据均以[1 ,3, 5, 1, 3 ,5 循环递增] 递增
+     *
+     * @BasicTokenInfo( step = "2", value ={ "1", "10" , "20"}), ==> 1 , 20 , 10, 1循环
+     *
+     * @param context
+     * @param fieldNodeContext
+     * @return
+     */
+    @Override
+    protected Object doHandleStep(MockContext context, FieldNode fieldNodeContext) {
+        // TODO
+        FieldToken currentTokenInfo = fieldNodeContext.getCurrentTokenInfo();
+        int step = currentTokenInfo.getStep();
+        String[] value = currentTokenInfo.getValue();
+        int min = currentTokenInfo.getMin();
+        int min1 = currentTokenInfo.getMin();
+        return null;
+    }
+
 
     /**
      * 根据解析规则 name中的range进行匹配

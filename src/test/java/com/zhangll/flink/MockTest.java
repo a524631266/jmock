@@ -146,7 +146,7 @@ public class MockTest
     public void testListPojo()
     {
         AnnotationMockContext context = new AnnotationMockContext();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 2; i++) {
             Father mock = (Father)context.mock(Father.class);
             ArrayList<Son> sonslist = mock.getSonslist();
             for (Son son : sonslist) {
