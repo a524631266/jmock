@@ -32,7 +32,9 @@ public class ArrayRandomExecutor<T> extends AbstractRandomExecutor {
 
     @Override
     public Rule getRule(FieldToken fieldToken) {
-        if(fieldToken == null) return defaultRule;
+        if(fieldToken == null) {
+            return defaultRule;
+        }
         return new DefaultArrayRule(fieldToken);
     }
 
@@ -67,7 +69,7 @@ public class ArrayRandomExecutor<T> extends AbstractRandomExecutor {
             this.fieldToken = fieldToken;
         }
 
-
+        @Override
         public Object[] apply(MockContext mockContext, FieldNode fieldNodeContext) {
 //            assert(fieldNodeContext.getCurrentTokenInfo() == fieldToken);
             // 当前的list类型
@@ -84,16 +86,32 @@ public class ArrayRandomExecutor<T> extends AbstractRandomExecutor {
             // 在数组中没有
             Object[] o = (Object[]) Array.newInstance(
                     BasicType.primitiveToWarpper(listType), elementNum);
-            RandomType executor = mockContext.getExecutor(listType);
-            for (int i = 0; i < elementNum; i++) {
-                if(fieldNodeContext.innerContainerIsInnerType()){
-
-                    o[i] = executor.getRule(fieldNodeContext.getInnerBasicTokens()).apply(mockContext, fieldNodeContext);
-                } else{
-                    o[i] = mockContext.mock(listType, fieldNodeContext.getInnerPojoTokens());
+            if(fieldNodeContext.getCurrentTokenInfo() != null
+                    && fieldNodeContext.getCurrentTokenInfo().getStep()>0
+                    && fieldNodeContext.getCurrentTokenInfo().getValue().length>0
+                    ){
+                int step = fieldNodeContext.getCurrentTokenInfo().getStep();
+                String[] value = fieldNodeContext.getCurrentTokenInfo().getValue();
+                int valueLength = value.length;
+                int count = 0;
+                for (int i = 0; i < elementNum; i++) {
+                    o[i] = value[(count)  % valueLength];
+                    count+= step;
                 }
+                return o;
+            }else {
+
+                RandomType executor = mockContext.getExecutor(listType);
+                for (int i = 0; i < elementNum; i++) {
+                    if (fieldNodeContext.innerContainerIsInnerType()) {
+
+                        o[i] = executor.getRule(fieldNodeContext.getInnerBasicTokens()).apply(mockContext, fieldNodeContext);
+                    } else {
+                        o[i] = mockContext.mock(listType, fieldNodeContext.getInnerPojoTokens());
+                    }
+                }
+                return o;
             }
-            return o;
         }
     }
 

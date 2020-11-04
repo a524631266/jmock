@@ -25,7 +25,7 @@ public class Father {
     @BasicTokenInfo(count = "1", value = {"@First @Middle @last"})
     private String firstName;
 
-    @BasicTokenInfo(value = {"张三", "李四" ,"王五" , "@First @Middle @last", "/\\d{ 1, 3}  abcd\\/ \\d/"}, count = "1")
+    @BasicTokenInfo(value = {"张三", "李四" ,"王五" , "@First @Middle @last", "/\\d{5,6}\\w+\\d/"}, count = "1")
     private String innerName;
 
     @BasicTokenInfo(min = "10", max = "20")
@@ -49,7 +49,7 @@ public class Father {
     @ContainerTokenInfo(
             innerBasicType = @BasicTokenInfo(min = "4", max = "7")
     )
-    @BasicTokenInfo(step = "4", value = {"张三", "李四" ,"王五" , "@First @Middle @last", "/\\d{ 1, 3}  abcd\\/ \\d/"}, count = "10")
+    @BasicTokenInfo(step = "4", value = {"张三", "李四" ,"王五" , "@First @Middle @last", "/\\d{5,6}\\w+\\d/"}, count = "10")
     private ArrayList<String> sonsNameList;
     private List<String> sonsNameList2;
     private List<Integer> sonsAgeList;
@@ -63,6 +63,7 @@ public class Father {
 
     private Son son;
 
+    @BasicTokenInfo(step = "4", value = {"张三", "李四" ,"王五" , "@First @Middle @last", "/\\d{ 1, 3}  abcd\\/ \\d/"}, count = "10")
     private String[] stringArr;
     private Double[] doubleWrapperArr;
     private double[] doubleNoWrapperArr;

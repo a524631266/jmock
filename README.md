@@ -187,7 +187,6 @@ class Person{
 2. 增加（+step）功能 
 目前用于 集合类型（list.class, Array.class)
 
-
 ## 注意： 注解的表达能力有限
 在开发的过程中，注解无法嵌套定义，会出现 cyclic annotation element type 编译错误
 
@@ -196,4 +195,5 @@ class Person{
 不过在平时使用的时候，一般都是比较简单的pojo类来定义，因此也不会出现嵌套内嵌套的关系。
 
 本项目的目的是基于满足最基本所需。
+
 

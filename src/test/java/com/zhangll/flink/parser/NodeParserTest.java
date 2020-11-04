@@ -71,7 +71,7 @@ public class NodeParserTest {
         Map<String, FieldToken> innerPojoTokens = nodeParser.getInnerPojoTokens(sonsNameSet, pojoTokenMap);
         FieldToken innerBasicToken = nodeParser.getInnerBasicToken(sonsNameSet);
 
-        assertTrue(currentBasicToken == null);
+        assertTrue(currentBasicToken != null);
         assertTrue(!innerPojoTokens.isEmpty());
          // 一旦定义了ContainerTokenInfo 内部均不为空
         assertTrue(innerBasicToken!= null);

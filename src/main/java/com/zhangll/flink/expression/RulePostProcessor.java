@@ -40,8 +40,15 @@ public class RulePostProcessor {
                 cols.add(postProcessAfterCompute(objects[i]));
             }
             return cols;
-        }else {
-           return handleOne(object);
+        } else if (BasicType.isArray(object.getClass())) {
+            Object[] newObject = (Object[]) object;
+            int size = newObject.length;
+            for (int i = 0; i < size; i++) {
+                newObject[i] = postProcessAfterCompute(newObject[i]);
+            }
+            return newObject;
+        } else {
+            return handleOne(object);
         }
     }
 

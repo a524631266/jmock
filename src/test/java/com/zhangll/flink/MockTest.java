@@ -1,10 +1,15 @@
 package com.zhangll.flink;
 
 import com.zhangll.flink.annotation.BasicTokenInfo;
+import com.zhangll.flink.enumt.RegrexDemo;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -41,21 +46,9 @@ public class MockTest
                     Father father = (Father) new AnnotationMockContext().mock(Father.class);
 //                    System.out.println(father);
                     assertTrue(father.getAge() >= 10 && father.getAge() < 100);
-                    System.out.println("count:" + (System.currentTimeMillis() - l));
+//                    System.out.println("count:" + (System.currentTimeMillis() - l));
                 }
             }.start();
-        }
-        System.out.println("end");
-//        Thread.sleep(5000);
-    }
-    /**
-     * getDeclaredFields
-     */
-    @Test
-    public void test(){
-        for (Field declaredField : Father.class.getDeclaredFields()) {
-            BasicTokenInfo annotation = declaredField.getAnnotation(BasicTokenInfo.class);
-//            System.out.println(annotation);
         }
     }
 
@@ -65,7 +58,7 @@ public class MockTest
         int count = 0;
         while ((count ++) < 1){
             Father father = (Father) new AnnotationMockContext().mock(Father.class);
-            System.out.println(father);
+//            System.out.println(father);
             assertTrue(father.getAge() >=10 && father.getAge() < 100);
         }
     }
@@ -76,20 +69,45 @@ public class MockTest
         AnnotationMockContext context = new AnnotationMockContext();
         for (int i = 0; i < 1; i++) {
             Father mock = (Father)context.mock(Father.class);
-            System.out.println(mock.getRegrex());
+//            System.out.println(mock.getRegrex());
 //            System.out.println(mock);
             assertTrue(mock != null);
         }
     }
     @Test
-    public void testStep()
+    public void testListStep()
     {
         AnnotationMockContext context = new AnnotationMockContext();
+        String arrayValueRegrex = "\\d{5,6}\\w+\\d";
+        Pattern compile = Pattern.compile(arrayValueRegrex);
         for (int i = 0; i < 10; i++) {
             Father mock = (Father)context.mock(Father.class);
-            System.out.println(mock.getSonsNameList());
-//            System.out.println(mock);
-            assertTrue(mock != null);
+//            System.out.println(mock.getSonsNameList());
+            assertEquals(10,mock.getSonsNameList().size());
+            assertEquals("张三",mock.getSonsNameList().get(0));
+            assertTrue(compile.matcher(mock.getSonsNameList().get(1)).find());
+            assertEquals("王五",mock.getSonsNameList().get(3));
+            assertEquals("李四",mock.getSonsNameList().get(4));
+        }
+    }
+
+    @Test
+    public void testArrayStep()
+    {
+        AnnotationMockContext context = new AnnotationMockContext();
+        String arrayValueRegrex = "\\d{1,3}  abcd\\/ \\d";
+        Pattern compile = Pattern.compile(arrayValueRegrex);
+        for (int i = 0; i < 10; i++) {
+            Father mock = (Father)context.mock(Father.class);
+//            System.out.println(Arrays.stream(mock.getStringArr())
+//                    .map(ele -> ele + "],[")
+//                    .collect(Collectors.joining()));
+
+            assertEquals(10,mock.getStringArr().length);
+            assertEquals("张三",mock.getStringArr()[0]);
+            assertTrue(compile.matcher(mock.getStringArr()[1]).find());
+            assertEquals("王五",mock.getStringArr()[3]);
+            assertEquals("李四",mock.getStringArr()[4]);
         }
     }
 
