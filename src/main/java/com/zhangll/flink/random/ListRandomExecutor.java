@@ -5,6 +5,7 @@ import com.zhangll.flink.model.FieldNode;
 import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.rule.Rule;
 import com.zhangll.flink.type.BasicType;
+import com.zhangll.flink.uitl.RandomUtil;
 
 import java.lang.reflect.Type;
 import java.util.*;
@@ -100,8 +101,10 @@ public class ListRandomExecutor<T> extends AbstractRandomExecutor {
             }
 
             // 元素数量
-            int elementNum = (fieldToken.getMax() - fieldToken.getMin()) == 0 ?
-                    fieldToken.getCount() : fieldToken.getMax() - fieldToken.getMin();
+
+            int elementNum =fieldToken.getCount() == 0
+                    ? RandomUtil.getMin2Max(fieldToken.getMin(),fieldToken.getMax())
+                    :fieldToken.getCount();
             // 当用户的step有值且value长度大于0
             if(fieldNodeContext.getCurrentTokenInfo() != null
                     && fieldNodeContext.getCurrentTokenInfo().getStep()>0

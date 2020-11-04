@@ -15,6 +15,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import static org.junit.Assert.*;
 
@@ -55,7 +56,7 @@ public class RandomTest {
         );
         for (int i = 0; i < 1000; i++) {
             int res1 = (int) rule.apply(mockContext, null);
-            assertTrue( res1 >= min && res1 < max);
+            assertTrue( res1 >= min && res1 <= max);
         }
         Rule rule2 = integerRandom.getRule(
                 new FieldToken.FieldTokenBuilder()
@@ -74,7 +75,7 @@ public class RandomTest {
         Rule rule = integerRandom.getDefaultRule();
         for (int i = 0; i < 10000; i++) {
             Integer value = (Integer)rule.apply(mockContext,null);
-            assertTrue(value >= 1 && value < 1000);
+            assertTrue(value >= 1 && value <= 1000);
         }
     }
 
@@ -84,7 +85,7 @@ public class RandomTest {
         for (int i = 0; i < 10000; i++) {
             Long value = (Long)rule.apply(mockContext,null);
 //            System.out.println(value);
-            assertTrue(value >= 10 && value<1000);
+            assertTrue(value >= 10 && value<= 1000);
         }
     }
 
@@ -96,6 +97,20 @@ public class RandomTest {
             Double value = (Double)rule.apply(mockContext,null);
 //            System.out.println(value);
 //            assertTrue(value >= 10 && value<1000);
+        }
+    }
+
+    @Test
+    public void testDouble() {
+        for (int i = 0; i < 1000; i++) {
+            double p = 0.99;
+            int gap = 1000 - i;
+            Double d = gap * p;
+            System.out.println("########");
+            System.out.println(gap);
+            System.out.println(d);
+            System.out.println(Math.round(d));
+            System.out.println("########");
         }
     }
     @Test
@@ -115,7 +130,7 @@ public class RandomTest {
         for (int i = 0; i < 10000; i++) {
             String value = (String)rule.apply(mockContext,null);
 //            System.out.println(value);
-            assertTrue(value.length() >=1 && value.length() <3);
+            assertTrue(value.length() >=1 && value.length() <= 3);
         }
     }
     /**
@@ -230,7 +245,7 @@ public class RandomTest {
         Rule rule = stringRandom.getRule(token);
         for (int i = 0; i < 200; i++) {
             String object = (String) rule.apply(mockContext,null);
-            assertTrue( object.length() >= min && object.length() < max);
+            assertTrue( object.length() >= min && object.length() <= max);
         }
 
     }

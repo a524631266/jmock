@@ -27,7 +27,7 @@ public class MockTest
         while ((count ++) < 200){
             Father father = (Father) new AnnotationMockContext().mock(Father.class);
 //            System.out.println(father);
-            assertTrue(father.getAge() >=10 && father.getAge() < 100);
+            assertTrue(father.getAge() >=10 && father.getAge() <= 100);
         }
     }
 
@@ -56,10 +56,10 @@ public class MockTest
     public void testNestModel()
     {
         int count = 0;
-        while ((count ++) < 1){
+        while ((count ++) < 100){
             Father father = (Father) new AnnotationMockContext().mock(Father.class);
 //            System.out.println(father);
-            assertTrue(father.getAge() >=10 && father.getAge() < 100);
+            assertTrue(father.getAge() >=10 && father.getAge() <= 100);
         }
     }
 
@@ -120,7 +120,26 @@ public class MockTest
             Son son = mock.getSonff();
             int length = son.getName().length();
             System.out.println(son);
-            assertTrue(length >=3 && length < 7);
+            assertTrue(length >=3 && length <= 7);
+        }
+    }
+
+
+    @Test
+    public void testArrayPojo()
+    {
+        AnnotationMockContext context = new AnnotationMockContext();
+        for (int i = 0; i < 10; i++) {
+            Father mock = (Father)context.mock(Father.class);
+            Son[] sonlist2 = mock.getSonlist2();
+            System.out.println("#########");
+            for (int i1 = 0; i1 < sonlist2.length; i1++) {
+                System.out.println(sonlist2[i1]);
+                Son son = sonlist2[i1];
+                assertTrue(son.getId() >= 1 && son.getId() <= 10);
+            }
+            assertTrue(sonlist2.length >= 3 && sonlist2.length <= 4);
+            System.out.println("#########");
         }
     }
 }

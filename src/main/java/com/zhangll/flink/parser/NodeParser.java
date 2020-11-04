@@ -154,11 +154,17 @@ public class NodeParser {
      */
     protected static Map<String, FieldToken> getInnerPojoTokens(Field field, Map<String, FieldToken> pojoTokenMap) {
         if(field == null) {
-            return new HashMap<>(1);
+            if(pojoTokenMap == null){
+                return new HashMap<>(1);
+            }
+            return pojoTokenMap;
         }
         ContainerTokenInfo containerInfo = field.getAnnotation(ContainerTokenInfo.class);
         if(containerInfo == null){
-            return new HashMap<>(1);
+            if(pojoTokenMap == null){
+                return new HashMap<>(1);
+            }
+            return pojoTokenMap;
         }
         PojoTokenInfo pojoTokenInfo = containerInfo.innerPojoType();
         Map<String, FieldToken> result = new HashMap<>(1);

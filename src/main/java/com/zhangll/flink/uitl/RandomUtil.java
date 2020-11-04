@@ -171,13 +171,13 @@ public class RandomUtil {
             "燥","臂","翼","骤","鞭","覆","蹦","镰","翻","鹰","警","攀","蹲","颤","瓣","爆","疆","壤","耀",
             "躁","嚼","嚷","籍","魔","灌","蠢","霸","露","囊","罐"};
     /**
-     * [min, max)
+     * [min, max]
      * @param min
      * @param max
      * @return
      */
     public static Integer getMin2Max(int min, int max){
-        int gap = max - min;
+        int gap = max - min + 1;
         return new Random().nextInt(gap) + min;
     }
 

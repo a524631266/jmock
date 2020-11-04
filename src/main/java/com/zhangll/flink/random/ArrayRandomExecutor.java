@@ -5,6 +5,7 @@ import com.zhangll.flink.model.FieldNode;
 import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.rule.Rule;
 import com.zhangll.flink.type.BasicType;
+import com.zhangll.flink.uitl.RandomUtil;
 
 
 import java.lang.reflect.Array;
@@ -79,9 +80,9 @@ public class ArrayRandomExecutor<T> extends AbstractRandomExecutor {
             Class<?> componentType = fieldNodeContext.getComponentType();
 
             // 元素数量
-            int elementNum = (fieldToken.getMax() - fieldToken.getMin()) == 0 ?
-                    fieldToken.getCount():fieldToken.getMax() - fieldToken.getMin()
-                    ;
+            int elementNum =fieldToken.getCount() == 0
+                    ? RandomUtil.getMin2Max(fieldToken.getMin(),fieldToken.getMax())
+                    :fieldToken.getCount();
             // 基本数据类型不能转化为Object[]
             // 在数组中没有
             Object[] o = (Object[]) Array.newInstance(

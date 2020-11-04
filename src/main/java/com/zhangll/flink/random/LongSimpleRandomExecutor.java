@@ -54,24 +54,11 @@ public class LongSimpleRandomExecutor extends AbstractRandomExecutor {
             if(fieldToken.getCount() != 0){
                 return Long.valueOf(fieldToken.getCount());
             }
-            // 概率
+            // 概率 能为1
             double p = new Random().nextDouble();
             Double len = (fieldToken.getMax() - fieldToken.getMin()) * p;
 
-            return  len.longValue() + fieldToken.getMin();
-//            BigDecimal i = new BigDecimal(new Random().nextLong());
-//            BigDecimal max = new BigDecimal(this.max);
-//            BigDecimal min = new BigDecimal(this.min);
-//            BigDecimal a = min.subtract(i);
-//            BigDecimal b = max.subtract(i).add(min.subtract(i));
-//            Double aDouble = (Long.valueOf(a.toString()) / Math.pow(2, 32));
-//            Double bDouble = (Long.valueOf(b.toString()) / Math.pow(2, 32));
-//            BigDecimal p = min.subtract(i).divide(max.subtract(i).add(min.subtract(i)));
-//
-//            BigDecimal multiply = max.subtract(min).multiply(p);
-//            BigInteger bigInteger = multiply.add(min).toBigInteger();
-//            Long aLong = Long.valueOf(bigInteger.toString());
-//            return aLong;
+            return  Math.round(len) + fieldToken.getMin();
         }
     }
 }
