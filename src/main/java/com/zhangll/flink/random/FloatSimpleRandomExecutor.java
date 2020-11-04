@@ -20,7 +20,7 @@ public class FloatSimpleRandomExecutor extends AbstractRandomExecutor {
     }
 
     @Override
-    public Rule getRule() {
+    public Rule getDefaultRule() {
         // TODO
         return defaultRule;
     }
@@ -29,7 +29,7 @@ public class FloatSimpleRandomExecutor extends AbstractRandomExecutor {
     public Rule getRule(FieldToken fieldToken) {
         // TODO
         if(fieldToken == null){
-            return getRule();
+            return getDefaultRule();
         }
         return new DefaultFloatRule(fieldToken);
     }

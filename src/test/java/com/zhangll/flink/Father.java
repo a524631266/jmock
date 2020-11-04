@@ -85,6 +85,15 @@ public class Father {
     )
     @BasicTokenInfo(min = "1", max = "2")
     private ArrayList<Son> sonslist;
+
+    @ContainerTokenInfo(
+            innerPojoType =  @PojoTokenInfo(
+                    {
+                            @TokenMapping(field = "id", basicTokenInfo = @BasicTokenInfo(min = "1", max = "10"))
+                    }
+            )
+    )
+    @BasicTokenInfo(min = "3", max = "4")
     private Son[] sonlist2;
 
     @BasicTokenInfo(value = {"/\\d{ 1, 3}  abcd\\/ \\d/ [a-bA-H1-4]{1,5}/" , "/[a-z][A-Z][0-9]/", "/\\w\\W\\s\\S\\d\\D/", "/\\d{5,10}/"})

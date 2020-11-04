@@ -28,7 +28,7 @@ public class DoubleSimpleRandomExecutor extends AbstractRandomExecutor {
 
 
     @Override
-    public Rule getRule() {
+    public Rule getDefaultRule() {
         // TOCO
         return defaultDoubleRule;
     }
@@ -36,7 +36,7 @@ public class DoubleSimpleRandomExecutor extends AbstractRandomExecutor {
     @Override
     public Rule getRule(FieldToken fieldToken) {
         if(fieldToken == null){
-            return getRule();
+            return getDefaultRule();
         }
         return new DefaultDoubleRule(fieldToken);
     }

@@ -34,7 +34,7 @@ public class ListRandomExecutor<T> extends AbstractRandomExecutor {
     }
 
     @Override
-    public Rule getRule() {
+    public Rule getDefaultRule() {
 
         return defaultRule;
     }

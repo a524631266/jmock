@@ -22,17 +22,17 @@ public class MappingStoreTest {
 //        for (Field field : fields) {
 //            RandomType random = RandomExecutorFactory.getRandom(field.getType());
 //            if(random != null){
-//                mappingStore.setRuleMap(testClass, field, random.getRule());
+//                mappingStore.setRuleMap(testClass, field, random.getDefaultRule());
 //            }
 //        }
 //
 //    }
 //
 //    @Test
-//    public void getRule() {
+//    public void getDefaultRule() {
 //        setRuleMap();
 //        for (Field field : fields) {
-//            Rule rule = mappingStore.getRule(testClass, field);
+//            Rule rule = mappingStore.getDefaultRule(testClass, field);
 //            System.out.println("field:" + field.getType() + "====> rule: " + rule);
 //        }
 //    }

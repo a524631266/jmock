@@ -24,14 +24,14 @@ public class IntegerSimpleRandomExecutor extends AbstractRandomExecutor {
     }
 
     @Override
-    public Rule getRule() {
+    public Rule getDefaultRule() {
         return defaultRule;
     }
 
     @Override
     public Rule getRule(FieldToken fieldToken) {
         if(fieldToken == null){
-            return getRule();
+            return getDefaultRule();
         }
         return new DefaultIntegerRule(fieldToken);
     }

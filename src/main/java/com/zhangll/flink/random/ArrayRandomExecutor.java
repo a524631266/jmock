@@ -26,7 +26,7 @@ public class ArrayRandomExecutor<T> extends AbstractRandomExecutor {
     }
 
     @Override
-    public Rule getRule() {
+    public Rule getDefaultRule() {
         return defaultRule;
     }
 
@@ -107,6 +107,7 @@ public class ArrayRandomExecutor<T> extends AbstractRandomExecutor {
 
                         o[i] = executor.getRule(fieldNodeContext.getInnerBasicTokens()).apply(mockContext, fieldNodeContext);
                     } else {
+                        // componentType =  POJO Type
                         o[i] = mockContext.mock(componentType, fieldNodeContext.getInnerPojoTokens());
 //                        fieldNodeContext.assignInnerObject(o[i], mockContext);
 //                        o[i] = mockContext.mockWithContext(componentType, fieldNodeContext);

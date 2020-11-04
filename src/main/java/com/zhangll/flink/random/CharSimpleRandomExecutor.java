@@ -20,7 +20,7 @@ public class CharSimpleRandomExecutor extends AbstractRandomExecutor {
     }
 
     @Override
-    public Rule getRule() {
+    public Rule getDefaultRule() {
         // TODO
         return defaultRule;
     }
@@ -28,7 +28,7 @@ public class CharSimpleRandomExecutor extends AbstractRandomExecutor {
     @Override
     public Rule getRule(FieldToken fieldToken) {
         if(fieldToken == null){
-            return getRule();
+            return getDefaultRule();
         }
         return new DefaultCharRule(fieldToken);
     }

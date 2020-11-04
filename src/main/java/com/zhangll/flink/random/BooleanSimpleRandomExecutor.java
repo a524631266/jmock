@@ -28,7 +28,7 @@ public class BooleanSimpleRandomExecutor extends AbstractRandomExecutor {
 
 
     @Override
-    public Rule getRule() {
+    public Rule getDefaultRule() {
         return defaultBooleanRule;
     }
 

@@ -17,7 +17,7 @@ public interface RandomType {
      * 获取当前默认执行器的Rule，一般默认为单例模式
      * @return
      */
-    Rule getRule();
+    Rule getDefaultRule();
 
     /**
      * 根据token结果集获取指定类型的rule

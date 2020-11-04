@@ -28,7 +28,7 @@ public class StringSimpleRandomExecutor extends AbstractRandomExecutor {
     }
 
     @Override
-    public Rule getRule() {
+    public Rule getDefaultRule() {
         return defaultStringRule;
     }
 

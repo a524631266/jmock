@@ -67,7 +67,7 @@ public class SqlTimeSimpleRandomExecutor extends AbstractRandomExecutor {
     }
 
     @Override
-    public Rule getRule() {
+    public Rule getDefaultRule() {
         if(innerClass == Date.class){
             return DATE;
         }else if(innerClass == Time.class){
