@@ -60,7 +60,9 @@ public class Father {
             innerBasicType =  @BasicTokenInfo(min = "15", max = "30")
     )
     private Set<String> sonsNameSet;
-
+    @PojoTokenInfo(
+            @TokenMapping(field = "name", basicTokenInfo = @BasicTokenInfo(min = "3", max = "7"))
+    )
     private Son son;
 
     @BasicTokenInfo(step = "4", value = {"张三", "李四" ,"王五" , "@First @Middle @last", "/\\d{ 1, 3}  abcd\\/ \\d/"}, count = "10")

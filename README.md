@@ -5,6 +5,8 @@
 支持嵌套model
 > 概念1: 注解BasicTokenInfo
 用来表达每个内置基本类型字段的取值的约束条件
+内置基本类型包括 如下4种
+1. java基本类型
 ```text
 Integer.class, 
 int.class
@@ -160,14 +162,6 @@ for (int i = 0; i < 2; i++) {
 ```
 
 
-```java
-class Person{
-    @FieldTokenType()
-    @InnerTokens()
-    List<String> listString;
-}
-```
-
 
 ## 后续改进内容
 1. 添加正则文法匹配功能 （has done）
@@ -197,3 +191,5 @@ class Person{
 本项目的目的是基于满足最基本所需。
 
 
+## 版本更新
+后续支持 map

@@ -6,7 +6,9 @@ import com.zhangll.flink.model.FieldToken;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 目前的版本是用来解析类上的注解作用，如果没有注解就使用默认
@@ -28,10 +30,16 @@ public class NodeParser {
     public FieldNode initNodeTree(Class<?> cClass, Field currentField, Map<String, FieldToken> pojoTokenMap) {
         // 1.获取当前的currentFieldToken
         FieldToken currentBasicToken = getCurrentBasicToken(currentField);
+        // 根据优先级，融合merge
+        FieldToken mergedBasicToken = mergePojoToken(currentField, currentBasicToken, pojoTokenMap);
         // 2. 获取innercurrnetToken，一般是在Contain中（id，为列名）
         Map<String, FieldToken> innerPojoTokens = getInnerPojoTokens(currentField, pojoTokenMap);
+        // 3. 获取PojoTokens
+        Map<String, FieldToken> pojoTokens = getPojoToken(currentField);
+        mergePojoTokens(innerPojoTokens, pojoTokens);
+
         FieldToken innerBasicToken = getInnerBasicToken(currentField);
-        FieldNode parent = initParentNode(cClass, currentField, currentBasicToken, innerPojoTokens, innerBasicToken);
+        FieldNode parent = initParentNode(cClass, currentField, mergedBasicToken, innerPojoTokens, innerBasicToken);
         // 如果是内置类型，就停止直接返回节点
         if (parent.isInnerType()) {
             return parent;
@@ -42,6 +50,37 @@ public class NodeParser {
             parent.addChild(node);
         }
         return parent;
+    }
+
+    private void mergePojoTokens(Map<String, FieldToken> innerPojoTokens, Map<String, FieldToken> pojoTokens) {
+        Iterator<Map.Entry<String, FieldToken>> iterator = pojoTokens.entrySet().iterator();
+        while (iterator.hasNext()){
+            Map.Entry<String, FieldToken> next = iterator.next();
+            innerPojoTokens.put(next.getKey(), next.getValue());
+        }
+    }
+
+
+    /**
+     * TODO
+     * @param currentField
+     * @param currentBasicToken
+     * @param pojoTokenMap
+     * @return
+     */
+    private FieldToken mergePojoToken(Field currentField, FieldToken currentBasicToken, Map<String, FieldToken> pojoTokenMap) {
+        if(pojoTokenMap == null) {
+            return currentBasicToken;
+        }
+        if(currentField == null){
+            return currentBasicToken;
+        }
+        String name = currentField.getName();
+        FieldToken fieldToken = pojoTokenMap.get(name);
+        if(fieldToken!=null){
+            return fieldToken;
+        }
+        return currentBasicToken;
     }
 
     /**
@@ -71,24 +110,7 @@ public class NodeParser {
 
 
 
-
-    /**
-     * 根据field获取FieldTokens信息
-     * @param field
-     * @param pojoTokenMap
-     * @return
-     */
-    protected static Map<String, FieldToken> getInnerPojoTokens(Field field, Map<String, FieldToken> pojoTokenMap) {
-        if(field == null) {
-            return new HashMap<>(1);
-        }
-        ContainerTokenInfo containerInfo = field.getAnnotation(ContainerTokenInfo.class);
-        if(containerInfo == null){
-            return new HashMap<>(1);
-        }
-        PojoTokenInfo pojoTokenInfo = containerInfo.innerPojoType();
-        Map<String, FieldToken> result = new HashMap<>(1);
-        TokenMapping[] value = pojoTokenInfo.value();
+    private static void putIntResult(Map<String, FieldToken> pojoTokenMap, Map<String, FieldToken> result, TokenMapping[] value) {
         for (TokenMapping tokenMapping : value) {
             BasicTokenInfo basicTokenInfo = tokenMapping.basicTokenInfo();
             String fieldName = tokenMapping.field();
@@ -121,7 +143,27 @@ public class NodeParser {
                 result.put(fieldName, fieldToken);
             }
         }
+    }
 
+
+    /**
+     * 根据field获取FieldTokens信息
+     * @param field
+     * @param pojoTokenMap
+     * @return
+     */
+    protected static Map<String, FieldToken> getInnerPojoTokens(Field field, Map<String, FieldToken> pojoTokenMap) {
+        if(field == null) {
+            return new HashMap<>(1);
+        }
+        ContainerTokenInfo containerInfo = field.getAnnotation(ContainerTokenInfo.class);
+        if(containerInfo == null){
+            return new HashMap<>(1);
+        }
+        PojoTokenInfo pojoTokenInfo = containerInfo.innerPojoType();
+        Map<String, FieldToken> result = new HashMap<>(1);
+        TokenMapping[] value = pojoTokenInfo.value();
+        putIntResult(pojoTokenMap, result, value);
         return result;
     }
     /**
@@ -196,5 +238,17 @@ public class NodeParser {
                         .setStep(Integer.valueOf(annotation.step()));
     }
 
-
+    private Map<String, FieldToken> getPojoToken(Field currentField) {
+        if (currentField==null){
+            return new HashMap<>(1);
+        }
+        PojoTokenInfo pojoTokenInfo = currentField.getAnnotation(PojoTokenInfo.class);
+        if(pojoTokenInfo == null) {
+            return new HashMap<>(1);
+        }
+        Map<String, FieldToken> result = new HashMap<>(1);
+        TokenMapping[] value = pojoTokenInfo.value();
+        putIntResult(null, result, value);
+        return result;
+    }
 }

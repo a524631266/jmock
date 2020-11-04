@@ -67,10 +67,10 @@ public class MockTest
     public void testNestModel2()
     {
         AnnotationMockContext context = new AnnotationMockContext();
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 10; i++) {
             Father mock = (Father)context.mock(Father.class);
 //            System.out.println(mock.getRegrex());
-//            System.out.println(mock);
+            System.out.println(mock);
             assertTrue(mock != null);
         }
     }
@@ -110,5 +110,17 @@ public class MockTest
             assertEquals("李四",mock.getStringArr()[4]);
         }
     }
-
+    @Test
+    public void testPojo()
+    {
+        AnnotationMockContext context = new AnnotationMockContext();
+        String arrayValueRegrex = "\\d{1,3}  abcd\\/ \\d";
+        for (int i = 0; i < 10; i++) {
+            Father mock = (Father)context.mock(Father.class);
+            Son son = mock.getSon();
+            int length = son.getName().length();
+            System.out.println(son);
+            assertTrue(length >=3 && length < 7);
+        }
+    }
 }

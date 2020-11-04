@@ -1,8 +1,10 @@
 package com.zhangll.flink;
 
 import com.zhangll.flink.annotation.BasicTokenInfo;
+import lombok.Getter;
 import lombok.ToString;
 
+@Getter
 @ToString
 public class Son {
     private String name;
