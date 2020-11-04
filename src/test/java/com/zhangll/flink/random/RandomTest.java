@@ -106,11 +106,11 @@ public class RandomTest {
             double p = 0.99;
             int gap = 1000 - i;
             Double d = gap * p;
-            System.out.println("########");
-            System.out.println(gap);
-            System.out.println(d);
-            System.out.println(Math.round(d));
-            System.out.println("########");
+//            System.out.println("########");
+//            System.out.println(gap);
+//            System.out.println(d);
+//            System.out.println(Math.round(d));
+//            System.out.println("########");
         }
     }
     @Test

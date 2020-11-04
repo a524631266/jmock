@@ -5,6 +5,7 @@ import com.zhangll.flink.enumt.RegrexDemo;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -45,7 +46,7 @@ public class MockTest
                 public void run() {
                     Father father = (Father) new AnnotationMockContext().mock(Father.class);
 //                    System.out.println(father);
-                    assertTrue(father.getAge() >= 10 && father.getAge() < 100);
+                    assertTrue(father.getAge() >= 10 && father.getAge() <= 100);
 //                    System.out.println("count:" + (System.currentTimeMillis() - l));
                 }
             }.start();
@@ -67,10 +68,10 @@ public class MockTest
     public void testNestModel2()
     {
         AnnotationMockContext context = new AnnotationMockContext();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             Father mock = (Father)context.mock(Father.class);
 //            System.out.println(mock.getRegrex());
-            System.out.println(mock);
+//            System.out.println(mock);
             assertTrue(mock != null);
         }
     }
@@ -80,7 +81,7 @@ public class MockTest
         AnnotationMockContext context = new AnnotationMockContext();
         String arrayValueRegrex = "\\d{5,6}\\w+\\d";
         Pattern compile = Pattern.compile(arrayValueRegrex);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             Father mock = (Father)context.mock(Father.class);
 //            System.out.println(mock.getSonsNameList());
             assertEquals(10,mock.getSonsNameList().size());
@@ -97,7 +98,7 @@ public class MockTest
         AnnotationMockContext context = new AnnotationMockContext();
         String arrayValueRegrex = "\\d{1,3}  abcd\\/ \\d";
         Pattern compile = Pattern.compile(arrayValueRegrex);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             Father mock = (Father)context.mock(Father.class);
 //            System.out.println(Arrays.stream(mock.getStringArr())
 //                    .map(ele -> ele + "],[")
@@ -115,11 +116,11 @@ public class MockTest
     {
         AnnotationMockContext context = new AnnotationMockContext();
         String arrayValueRegrex = "\\d{1,3}  abcd\\/ \\d";
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             Father mock = (Father)context.mock(Father.class);
             Son son = mock.getSonff();
             int length = son.getName().length();
-            System.out.println(son);
+//            System.out.println(son);
             assertTrue(length >=3 && length <= 7);
         }
     }
@@ -129,17 +130,29 @@ public class MockTest
     public void testArrayPojo()
     {
         AnnotationMockContext context = new AnnotationMockContext();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             Father mock = (Father)context.mock(Father.class);
             Son[] sonlist2 = mock.getSonlist2();
-            System.out.println("#########");
             for (int i1 = 0; i1 < sonlist2.length; i1++) {
-                System.out.println(sonlist2[i1]);
+//                System.out.println(sonlist2[i1]);
                 Son son = sonlist2[i1];
                 assertTrue(son.getId() >= 1 && son.getId() <= 10);
             }
             assertTrue(sonlist2.length >= 3 && sonlist2.length <= 4);
-            System.out.println("#########");
+
+        }
+    }
+    @Test
+    public void testListPojo()
+    {
+        AnnotationMockContext context = new AnnotationMockContext();
+        for (int i = 0; i < 100; i++) {
+            Father mock = (Father)context.mock(Father.class);
+            ArrayList<Son> sonslist = mock.getSonslist();
+            for (Son son : sonslist) {
+                assertTrue(son.getId() >= 1 && son.getId() <= 10);
+            }
+            assertTrue(sonslist.size() >= 10 && sonslist.size() <= 20);
         }
     }
 }

@@ -14,7 +14,7 @@ public class RegrexDemo {
         long l = Long.parseLong(string);
         // 超出限制就会报错
         int i = Integer.parseInt(string);
-        System.out.println(l);
+//        System.out.println(l);
     }
 
     /**
@@ -29,7 +29,7 @@ public class RegrexDemo {
         String str2 = "\\d{1}";
         Matcher matcher = compile.matcher(str1);
         Matcher matcher1 = compile.matcher(str2);
-        System.out.println(matcher);
+//        System.out.println(matcher);
         // find为迭代器
         while (matcher.find()){
             // group 划分依据为， （1） （2） （3）从1开始计数，其中mather.group(0)==mather.group(), 表示原集合
@@ -41,7 +41,7 @@ public class RegrexDemo {
                 end = Integer.parseInt(matcher.group(3));
             }
             str1 = matcher.replaceFirst(matcher.group(1) + "{" + randomAsString(start, end) + "}");
-            System.out.println(str1);
+//            System.out.println(str1);
         }
     }
 
@@ -56,7 +56,7 @@ public class RegrexDemo {
         Pattern compile = Pattern.compile(regrex1);
         Matcher matcher = compile.matcher(str1);
         while (matcher.find()) {
-            System.out.println(matcher.group());
+//            System.out.println(matcher.group());
         }
     }
 
@@ -64,6 +64,6 @@ public class RegrexDemo {
     public void testRegrex(){
         String s = "\\w\\d{1, 3}";
         String s1 = new RandomStringGenerator().generateByRegex(s);
-        System.out.println(s1);
+//        System.out.println(s1);
     }
 }

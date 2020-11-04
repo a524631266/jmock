@@ -24,7 +24,7 @@ public class EnumApiTest {
          */
         Arrays.stream(DigitLetter.class.getEnumConstants()).forEach(digitLeeter ->
         {
-            System.out.println(digitLeeter.getLetter());
+//            System.out.println(digitLeeter.getLetter());
         });
         // 收集编程字符串
         String collect = Arrays.stream(DigitLetter.class.getEnumConstants()).map(digitLeeter -> digitLeeter.getLetter())
@@ -33,7 +33,7 @@ public class EnumApiTest {
                 .collect(Collectors.toList());
 
         Class<DigitLetter> digitLeeterClass = DigitLetter.class;
-        System.out.println(digitLeeterClass);
+//        System.out.println(digitLeeterClass);
     }
 
     /**

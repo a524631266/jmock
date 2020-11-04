@@ -83,7 +83,7 @@ public class Father {
             ),
             innerBasicType = @BasicTokenInfo(min = "1233", max = "12324")
     )
-    @BasicTokenInfo(min = "1", max = "2")
+    @BasicTokenInfo(min = "10", max = "20")
     private ArrayList<Son> sonslist;
 
     @ContainerTokenInfo(

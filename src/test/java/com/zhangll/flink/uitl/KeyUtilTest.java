@@ -15,7 +15,7 @@ public class KeyUtilTest {
         Class<? extends Father> aClass = father.getClass();
         Field[] declaredFields = aClass.getDeclaredFields();
         for (Field declaredField : declaredFields) {
-            System.out.println(KeyUtil.generateKey(aClass, declaredField));
+//            System.out.println(KeyUtil.generateKey(aClass, declaredField));
         }
     }
 }
