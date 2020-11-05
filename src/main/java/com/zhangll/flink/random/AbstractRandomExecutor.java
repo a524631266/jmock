@@ -23,7 +23,7 @@ public abstract class AbstractRandomExecutor implements RandomExecutor {
      */
     @Override
     public void updateField(Object target, MockContext context, FieldNode fieldNodeContext) {
-        // 第一步首先要处理step方法
+        // 第一步首先要处理step方法（step优先于其他计算）
         Object compute = handleStep(context, fieldNodeContext);
         // 获取当前上下文中的执行器来计算
         if(compute == null){
@@ -68,18 +68,20 @@ public abstract class AbstractRandomExecutor implements RandomExecutor {
         if(fieldNodeContext.getCurrentTokenInfo().getStep() == 0){
             return null;
         }
-        fieldNodeContext.
-        return doHandleStep(context, fieldNodeContext);
+        Object o = doHandleStep(context, fieldNodeContext);
+        // 坐标 当前step,
+        fieldNodeContext.afterState(PostState);
+        return o;
     }
 
+    /**
+     * 处理step语义 如果可以获取数据那么久
+     * @param context
+     * @param fieldNodeContext
+     * @return
+     */
+    @Nullable
     protected abstract Object doHandleStep(MockContext context, FieldNode fieldNodeContext);
-
-
-    ;
-
-
-
-//    compute
 
 }
 

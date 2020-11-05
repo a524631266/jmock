@@ -90,6 +90,13 @@ public class BasicType {
         }
         return primitive;
     }
+
+    /**
+     * 为了解决 Double[]  => doubel[]
+     * @param componentType
+     * @param result
+     * @return
+     */
     public static Object transWrapperArrayToBasicArray(Class<?> componentType, Object[] result) {
         Class<?> componentType1 = result.getClass().getComponentType();
         if(componentType != componentType1){
