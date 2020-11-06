@@ -39,6 +39,12 @@ public class ArrayRandomExecutor<T> extends AbstractRandomExecutor {
         return new DefaultArrayRule(fieldToken);
     }
 
+    @Override
+    protected Object doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
+        //TODO
+        return null;
+    }
+
     /**
      * 根据解析规则 name中的range进行匹配
      *

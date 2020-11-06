@@ -4,6 +4,7 @@ import com.sun.istack.internal.Nullable;
 import com.zhangll.flink.MockContext;
 import com.zhangll.flink.expression.RulePostProcessor;
 import com.zhangll.flink.model.FieldNode;
+import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.type.BasicType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,20 +69,20 @@ public abstract class AbstractRandomExecutor implements RandomExecutor {
         if(fieldNodeContext.getCurrentTokenInfo().getStep() == 0){
             return null;
         }
-        Object o = doHandleStep(context, fieldNodeContext);
-        // 坐标 当前step,
-        fieldNodeContext.afterState(PostState);
+        Object o = doHandleStep(fieldNodeContext.getCurrentTokenInfo(), fieldNodeContext.getCurrrentStepState());
+        // 坐标 更新当前的状态
+        fieldNodeContext.updateStepState(o);
         return o;
     }
-
     /**
-     * 处理step语义 如果可以获取数据那么久
-     * @param context
-     * @param fieldNodeContext
+     * 处理step语义 基本类型和时间戳类型不一致。
+     * @param currentTokenInfo
+     * @param currentState
      * @return
      */
     @Nullable
-    protected abstract Object doHandleStep(MockContext context, FieldNode fieldNodeContext);
+    protected abstract Object doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState);
+
 
 }
 

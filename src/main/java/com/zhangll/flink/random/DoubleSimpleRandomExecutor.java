@@ -41,6 +41,12 @@ public class DoubleSimpleRandomExecutor extends AbstractRandomExecutor {
         return new DefaultDoubleRule(fieldToken);
     }
 
+    @Override
+    protected Object doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
+        //TODO
+        return null;
+    }
+
     /**
      * 'name|min-max.dmin-dmax': number
      * 保留位数

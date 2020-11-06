@@ -34,6 +34,12 @@ public class FloatSimpleRandomExecutor extends AbstractRandomExecutor {
         return new DefaultFloatRule(fieldToken);
     }
 
+    @Override
+    protected Object doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
+        // TODO
+        return null;
+    }
+
 
     /**
      * 'name|min-max.dmin-dmax': number

@@ -34,6 +34,12 @@ public class CharSimpleRandomExecutor extends AbstractRandomExecutor {
         return new DefaultCharRule(fieldToken);
     }
 
+    @Override
+    protected Object doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
+        //TODO
+        return null;
+    }
+
     /**
      * 根据解析规则 name中的range进行匹配
      * {

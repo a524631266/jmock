@@ -38,25 +38,42 @@ public class IntegerSimpleRandomExecutor extends AbstractRandomExecutor {
     }
 
     /**
-     * @BasicTokenInfo(min="1", step = "2"), 后续所有数据均以[1 ,3, 5...] 递增
+     * @BasicTokenInfo(min="1", step = "2"), 后续所有数据均以[1 ,3, 5...] 递增 直到最大，再重新来
      *
-     * @BasicTokenInfo(min="1" , max="5", step = "2"), 后续所有数据均以[1 ,3, 5, 1, 3 ,5 循环递增] 递增
+     * @BasicTokenInfo(min="1" , max="5", step = "2"), 后续所有数据均以[1 ,3, 5, 1, 3 ,5 循环递增] round-robin递增
      *
-     * @BasicTokenInfo( step = "2", value ={ "1", "10" , "20"}), ==> 1 , 20 , 10, 1循环
+     * @BasicTokenInfo( step = "2", value ={ "1", "10" , "20"}), ==> 1 , 20 , 10, 1 round-robin 循环
      *
-     * @param context
-     * @param fieldNodeContext
+     * @param currentTokenInfo
+     * @param currentState 当前的状态
      * @return
      */
     @Override
-    protected Object doHandleStep(MockContext context, FieldNode fieldNodeContext) {
+    protected Object doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
         // TODO
-        FieldToken currentTokenInfo = fieldNodeContext.getCurrentTokenInfo();
-        int step = currentTokenInfo.getStep();
         String[] value = currentTokenInfo.getValue();
-        int min = currentTokenInfo.getMin();
-        int min1 = currentTokenInfo.getMin();
-        return null;
+
+        if(value.length > 0){
+            return Integer.valueOf(value[currentState.getProgress() % value.length]);
+        }
+
+        final int min = currentTokenInfo.getMin();
+        final int max = currentTokenInfo.getMax();
+        Object object;
+        if((object = currentState.getPreObject())== null) {
+            // 语义 表示 当step > 0 从最小开始计数
+            if(currentState.getStep() > 0 ){
+                return min;
+            }
+            // 当step<0 则从最大开始计数
+            return max;
+        }
+        int cutgap = currentState.getProgress() % (max - min + 1);
+        if(currentState.getStep() > 0){
+            return min + cutgap;
+        }else{
+            return max + cutgap;
+        }
     }
 
 

@@ -98,5 +98,11 @@ public class Father {
 
     @BasicTokenInfo(value = {"/\\d{ 1, 3}  abcd\\/ \\d/ [a-bA-H1-4]{1,5}/" , "/[a-z][A-Z][0-9]/", "/\\w\\W\\s\\S\\d\\D/", "/\\d{5,10}/"})
     private String regrex;
+
+    // 初始化start方法
+    @BasicTokenInfo(min = "3", max = "100", step = "20")
+    private int min3Max100;
+    @BasicTokenInfo(min = "3", max= "100", step = "-20")
+    private int min3Max100ReduceStep;
 ////    private Date date2;
 }

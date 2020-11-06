@@ -93,6 +93,12 @@ public class SqlTimeSimpleRandomExecutor extends AbstractRandomExecutor {
         return null;
     }
 
+    @Override
+    protected Object doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
+        //TODO
+        return null;
+    }
+
     protected static class DefaultDateRule implements Rule<Date> {
 
         private final FieldToken fieldToken;

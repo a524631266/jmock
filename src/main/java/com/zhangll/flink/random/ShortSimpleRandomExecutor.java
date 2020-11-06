@@ -35,6 +35,11 @@ public class ShortSimpleRandomExecutor extends AbstractRandomExecutor {
         return new DefaultShortRule(fieldToken);
     }
 
+    @Override
+    protected Object doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
+        // TODO
+        return null;
+    }
 
 
     /**

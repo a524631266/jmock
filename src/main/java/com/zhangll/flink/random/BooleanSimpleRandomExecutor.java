@@ -38,6 +38,12 @@ public class BooleanSimpleRandomExecutor extends AbstractRandomExecutor {
         return new DefaultBooleanRule(fieldToken);
     }
 
+    @Override
+    protected Object doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
+        // TODO
+        return null;
+    }
+
     /**
      * 'name|1': boolean
      * 'name|min-max': value

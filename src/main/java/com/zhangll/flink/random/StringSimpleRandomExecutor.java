@@ -46,6 +46,12 @@ public class StringSimpleRandomExecutor extends AbstractRandomExecutor {
         return new DefaultStringRule(fieldToken);
     }
 
+    @Override
+    protected Object doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
+        // TODO
+        return null;
+    }
+
 
     /**
      * 属性值是字符串 String

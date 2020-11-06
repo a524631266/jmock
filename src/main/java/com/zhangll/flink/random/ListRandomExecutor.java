@@ -48,6 +48,11 @@ public class ListRandomExecutor<T> extends AbstractRandomExecutor {
         return new DefaultListRule(fieldToken);
     }
 
+    @Override
+    protected Object doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
+        // TODO
+        return null;
+    }
 
 
     /**
