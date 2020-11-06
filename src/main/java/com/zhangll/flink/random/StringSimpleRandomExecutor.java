@@ -47,8 +47,15 @@ public class StringSimpleRandomExecutor extends AbstractRandomExecutor {
     }
 
     @Override
-    protected Object doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
-        // TODO
+    protected String doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
+        String[] value = currentTokenInfo.getValue();
+        if(value.length > 0){
+            int cutgap = currentState.getProgress() % value.length;
+            if(currentState.getStep()>0){
+                return value[cutgap];
+            }
+            return value[(value.length-1) + cutgap];
+        }
         return null;
     }
 
