@@ -49,7 +49,7 @@ public class IntegerSimpleRandomExecutor extends AbstractRandomExecutor {
      * @return
      */
     @Override
-    protected Object doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
+    protected Integer doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
         String[] value = currentTokenInfo.getValue();
 
         if(value.length > 0){

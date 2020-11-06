@@ -32,7 +32,7 @@ public class LongSimpleRandomExecutor extends AbstractRandomExecutor {
     }
 
     @Override
-    protected Object doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
+    protected Long doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
         String[] value = currentTokenInfo.getValue();
 
         if(value.length > 0){

@@ -36,7 +36,7 @@ public class ShortSimpleRandomExecutor extends AbstractRandomExecutor {
     }
 
     @Override
-    protected Object doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
+    protected Short doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
         String[] value = currentTokenInfo.getValue();
 
         if(value.length > 0){
