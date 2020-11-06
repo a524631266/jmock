@@ -104,5 +104,11 @@ public class Father {
     private int min3Max100;
     @BasicTokenInfo(min = "3", max= "100", step = "-20")
     private int min3Max100ReduceStep;
+
+    @BasicTokenInfo(step = "2", value = {"1", "2", "8", "4", "20"})
+    private int intValue;
+
+    @BasicTokenInfo(step = "-3", value = {"1", "2", "8", "4", "20"})
+    private int intValueMinus;
 ////    private Date date2;
 }

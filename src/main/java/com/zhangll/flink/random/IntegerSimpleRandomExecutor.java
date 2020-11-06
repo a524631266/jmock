@@ -54,11 +54,15 @@ public class IntegerSimpleRandomExecutor extends AbstractRandomExecutor {
         String[] value = currentTokenInfo.getValue();
 
         if(value.length > 0){
-            return Integer.valueOf(value[currentState.getProgress() % value.length]);
+            int cutgap = currentState.getProgress() % value.length;
+            if(currentState.getStep()>0){
+                return Integer.valueOf(value[cutgap]);
+            }
+            return Integer.valueOf(value[(value.length-1) + cutgap]);
         }
-
         final int min = currentTokenInfo.getMin();
         final int max = currentTokenInfo.getMax();
+
         Object object;
         if((object = currentState.getPreObject())== null) {
             // 语义 表示 当step > 0 从最小开始计数
@@ -69,6 +73,7 @@ public class IntegerSimpleRandomExecutor extends AbstractRandomExecutor {
             return max;
         }
         int cutgap = currentState.getProgress() % (max - min + 1);
+
         if(currentState.getStep() > 0){
             return min + cutgap;
         }else{
