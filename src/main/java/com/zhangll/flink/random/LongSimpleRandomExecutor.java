@@ -33,8 +33,34 @@ public class LongSimpleRandomExecutor extends AbstractRandomExecutor {
 
     @Override
     protected Object doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
-        //TODO
-        return null;
+        String[] value = currentTokenInfo.getValue();
+
+        if(value.length > 0){
+            int cutgap = currentState.getProgress() % value.length;
+            if(currentState.getStep()>0){
+                return Long.parseLong(value[cutgap]);
+            }
+            return Long.parseLong(value[(value.length-1) + cutgap]);
+        }
+        final int min = currentTokenInfo.getMin();
+        final int max = currentTokenInfo.getMax();
+
+        Object object;
+        if((object = currentState.getPreObject())== null) {
+            // 语义 表示 当step > 0 从最小开始计数
+            if(currentState.getStep() > 0 ){
+                return (long) min;
+            }
+            // 当step<0 则从最大开始计数
+            return (long)max;
+        }
+        int cutgap = currentState.getProgress() % (max - min + 1);
+
+        if(currentState.getStep() > 0){
+            return (long)(min + cutgap);
+        }else{
+            return (long)(max + cutgap);
+        }
     }
 
     /**
