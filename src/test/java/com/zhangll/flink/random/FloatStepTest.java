@@ -5,24 +5,23 @@ import com.zhangll.flink.annotation.BasicTokenInfo;
 import lombok.Getter;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @Getter
-class DoubleFather {
+class FloatFather {
 
     @BasicTokenInfo(min = "3", max = "100", dmin = "2", dmax = "5", step = "20")
-    private double i;
+    private float i;
     @BasicTokenInfo(min = "3", max = "103", step = "-20")
-    private Double i2;
+    private Float i2;
     @BasicTokenInfo( step = "2", value ={"1.2", "2.5", "8.8", "4.4", "20.5"})
-    private double i3;
+    private float i3;
     @BasicTokenInfo(step = "-3", value = {"1.2", "2.5", "8.8", "4.4", "20.5"})
-    private Double i4;
+    private Float i4;
 }
 
 
-public class DoubleStepTest {
+public class FloatStepTest {
     @Test
     public void testMin3Max100Step20(){
         AnnotationMockContext context = new AnnotationMockContext();
@@ -32,8 +31,8 @@ public class DoubleStepTest {
         int process = 0;
         int gap = max - min + 1;
         for (int i = 0; i < 100; i++) {
-            DoubleFather mock = (DoubleFather)context.mock(DoubleFather.class);
-            double min3Max100 = mock.getI();
+            FloatFather mock = (FloatFather)context.mock(FloatFather.class);
+            float min3Max100 = mock.getI();
 //            System.out.println(min3Max100);
             process = step * i ;
             final double fi = (min + process % gap) * 1.0;
@@ -49,8 +48,8 @@ public class DoubleStepTest {
         int step = -20;
         double before = max;
         for (int i = 0; i < 100; i++) {
-            DoubleFather mock = (DoubleFather)context.mock(DoubleFather.class);
-            double min3Max100 = mock.getI2();
+            FloatFather mock = (FloatFather)context.mock(FloatFather.class);
+            float min3Max100 = mock.getI2();
 //            System.out.println(min3Max100);
             assertTrue(before == min3Max100);
             before += step;
@@ -71,11 +70,11 @@ public class DoubleStepTest {
         int process = 0;
         int step = 2;
         for (int i = 0; i < 100; i++) {
-            DoubleFather mock = (DoubleFather)context.mock(DoubleFather.class);
-            double doubleValue = mock.getI3();
+            FloatFather mock = (FloatFather)context.mock(FloatFather.class);
+            float doubleValue = mock.getI3();
 //            System.out.println(doubleValue);
             process = step * i ;
-            assertTrue(Double.parseDouble(value[process % length]) == doubleValue);
+            assertTrue(Float.parseFloat(value[process % length]) == doubleValue);
         }
     }
     /**
@@ -89,12 +88,12 @@ public class DoubleStepTest {
         int process = 0;
         int step = -3;
         for (int i = 0; i < 100; i++) {
-            DoubleFather mock = (DoubleFather)context.mock(DoubleFather.class);
-            double doubleValue = mock.getI4();
+            FloatFather mock = (FloatFather)context.mock(FloatFather.class);
+            float doubleValue = mock.getI4();
 //            System.out.println(intValue);
             process = step * i ;
             int gap = process % length;
-            assertTrue(Double.parseDouble(value[length-1+ gap]) == doubleValue);
+            assertTrue(Float.parseFloat(value[length-1+ gap]) == doubleValue);
         }
     }
 }

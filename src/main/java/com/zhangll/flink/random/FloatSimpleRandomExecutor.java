@@ -35,9 +35,38 @@ public class FloatSimpleRandomExecutor extends AbstractRandomExecutor {
     }
 
     @Override
-    protected Object doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
-        // TODO
-        return null;
+    protected Float doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
+        String[] value = currentTokenInfo.getValue();
+
+        if(value.length > 0){
+            int cutgap = currentState.getProgress() % value.length;
+            if(currentState.getStep()>0){
+                return Float.parseFloat(value[cutgap]);
+            }
+            return Float.parseFloat(value[(value.length-1) + cutgap]);
+        }
+        final int min = currentTokenInfo.getMin();
+        final int max = currentTokenInfo.getMax();
+        final int dmax = currentTokenInfo.getDmax();
+        final int dmin = currentTokenInfo.getDmin();
+
+        Object object = null;
+        if((object = currentState.getPreObject())== null) {
+            // 语义 表示 当step > 0 从最小开始计数
+            if(currentState.getStep() > 0 ){
+                return (float) (min * 1.0);
+            }
+            // 当step<0 则从最大开始计数
+            return (float)(max * 1.0);
+        }
+        Float preValue = (Float) object;
+        Float nextValue = preValue + currentState.getStep();
+        if(nextValue >= (max+1) ){
+            nextValue = nextValue - (max+1) + min;
+        }else if(nextValue < min ){
+            nextValue = max + 1 - (min - nextValue);
+        }
+        return nextValue;
     }
 
 
