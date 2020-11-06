@@ -1,6 +1,7 @@
 package com.zhangll.flink.random;
 
 import com.zhangll.flink.MockContext;
+import com.zhangll.flink.error.FieldIllegalArgumentException;
 import com.zhangll.flink.model.FieldNode;
 import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.rule.Rule;
@@ -8,7 +9,10 @@ import com.zhangll.flink.rule.Rule;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 
 /**
@@ -16,6 +20,13 @@ import java.util.Random;
  * 生成逻辑与long相关
  */
 public class SqlTimeSimpleRandomExecutor extends AbstractRandomExecutor {
+    public static Pattern TimePattern  = Pattern.compile("\\d{2}:\\d{2}:\\d{2}");
+    public static Pattern DatePattern  = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
+    public static Pattern TimestampPattern  = Pattern.compile("\\d{4}-\\d{2}-\\d{2}\\s+\\d{2}:\\d{2}:\\d{2}");
+    static SimpleDateFormat TimestampFormat = new SimpleDateFormat("yyyy-MM-dd");
+    static SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    static SimpleDateFormat TimeFormat = new SimpleDateFormat("HH:mm:ss");
+
     public static Rule<Date> DATE = new DefaultDateRule(
             new FieldToken.FieldTokenBuilder()
                     .setMin(new Long(System.currentTimeMillis() / 1000 - 24 *60 *60).intValue())
@@ -41,7 +52,7 @@ public class SqlTimeSimpleRandomExecutor extends AbstractRandomExecutor {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         long ti = 1603890014000L;
         //
         Date date = new Date(ti);
@@ -57,6 +68,10 @@ public class SqlTimeSimpleRandomExecutor extends AbstractRandomExecutor {
         int count = (int) (System.currentTimeMillis() / 1000);
         System.out.println(count);
 
+        assert TimePattern.matcher("00:12:13").matches();
+        assert TimestampPattern.matcher("2015-12-20 00:12:12").matches();
+        assert DatePattern.matcher("2015-12-20").matches();
+        System.out.println(TimestampFormat.parse("2015-12-20 00:12:12").getTime());
     }
 
     @Override
@@ -78,25 +93,84 @@ public class SqlTimeSimpleRandomExecutor extends AbstractRandomExecutor {
         return null;
     }
 
-    @Override
-    public Rule getRule(FieldToken fieldToken) {
+    private SimpleDateFormat getFormat() {
         if(innerClass == Date.class){
-            if(fieldToken==null) return DATE;
-            return new DefaultDateRule(fieldToken);
+            return DateFormat;
         }else if(innerClass == Time.class){
-            if(fieldToken==null) return TIME;
-            return new DefaultDateRule(fieldToken);
-        } else if (innerClass == Timestamp.class) {
-            if(fieldToken==null) return TIMESTAMP;
-            return new DefaultTimestampRule(fieldToken);
+            return TimeFormat;
+        }else if(innerClass == Timestamp.class){
+            return TimestampFormat;
         }
         return null;
     }
 
     @Override
-    protected Object doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
-        //TODO
+    public Rule getRule(FieldToken fieldToken) {
+        if(innerClass == Date.class){
+            if(fieldToken==null) {
+                return DATE;
+            }
+            return new DefaultDateRule(fieldToken);
+        }else if(innerClass == Time.class){
+            if(fieldToken==null) {
+                return TIME;
+            }
+            return new DefaultDateRule(fieldToken);
+        } else if (innerClass == Timestamp.class) {
+            if(fieldToken==null) {
+                return TIMESTAMP;
+            }
+            return new DefaultTimestampRule(fieldToken);
+        }
         return null;
+    }
+
+    /**
+     *
+     * @param currentTokenInfo
+     * @param currentState
+     * @return Date Time Timestamp
+     */
+    @Override
+    protected Object doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
+        long result = 0;
+
+        try {
+            result = handleSqlTimeStep(currentTokenInfo, currentState);
+        } catch ( ParseException e ) {
+            e.printStackTrace();
+            throw new IllegalArgumentException(currentState.toString());
+        }
+
+        if (innerClass == Date.class) {
+            return new Date(result);
+        } else if (innerClass == Time.class) {
+            return new Time( result );
+        } else if (innerClass == Timestamp.class) {
+            return new Timestamp(result);
+        }
+        return null;
+    }
+
+    /**
+     * 处理共性
+     * @param currentTokenInfo
+     * @param currentState
+     * @return
+     */
+    private long handleSqlTimeStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) throws ParseException {
+        String[] value = currentTokenInfo.getValue();
+
+        if(value.length > 0){
+            int cutgap = currentState.getProgress() % value.length;
+            if(currentState.getStep()>0){
+                return getFormat().parse(value[cutgap]).getTime();
+            }
+            return getFormat().parse(value[(value.length-1) + cutgap]).getTime();
+        }
+
+        // TODO
+        return 0;
     }
 
     protected static class DefaultDateRule implements Rule<Date> {

@@ -8,6 +8,7 @@ import com.zhangll.flink.rule.Rule;
 import com.zhangll.flink.type.BasicType;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import lombok.ToString;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -216,6 +217,7 @@ public class FieldNode implements ASTNode{
         return stepState;
     }
     @Getter
+    @ToString
     public class StepState {
         // 进度
         int progress = 0;
