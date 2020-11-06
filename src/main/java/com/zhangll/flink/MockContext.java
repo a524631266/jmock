@@ -8,7 +8,9 @@ import com.zhangll.flink.parser.NodeParser;
 import com.zhangll.flink.random.ExecutorStore;
 import com.zhangll.flink.random.RandomType;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
@@ -50,10 +52,21 @@ public abstract class MockContext {
         Object resource = null;
         try {
 //            resource = root.getType().newInstance();
-            resource = cClass.newInstance();
+//            resource = cClass.newInstance();
+            // 一般使用默认的构造器构造方法
+            Constructor<?>[] declaredConstructors = cClass.getDeclaredConstructors();
+            for (Constructor<?> declaredConstructor : declaredConstructors) {
+                if(declaredConstructor.getParameterCount() == 0){
+                    declaredConstructor.setAccessible(true);
+                    resource = declaredConstructor.newInstance();
+                    break;
+                }
+            }
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch ( InvocationTargetException e ) {
             e.printStackTrace();
         }
         if(resource == null){

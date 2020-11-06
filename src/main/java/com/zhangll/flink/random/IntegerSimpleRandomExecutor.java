@@ -50,15 +50,14 @@ public class IntegerSimpleRandomExecutor extends AbstractRandomExecutor {
      */
     @Override
     protected Object doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
-        // TODO
         String[] value = currentTokenInfo.getValue();
 
         if(value.length > 0){
             int cutgap = currentState.getProgress() % value.length;
             if(currentState.getStep()>0){
-                return Integer.valueOf(value[cutgap]);
+                return Integer.parseInt(value[cutgap]);
             }
-            return Integer.valueOf(value[(value.length-1) + cutgap]);
+            return Integer.parseInt(value[(value.length-1) + cutgap]);
         }
         final int min = currentTokenInfo.getMin();
         final int max = currentTokenInfo.getMax();

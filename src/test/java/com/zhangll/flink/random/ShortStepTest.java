@@ -2,15 +2,30 @@ package com.zhangll.flink.random;
 
 import com.zhangll.flink.AnnotationMockContext;
 import com.zhangll.flink.Father;
-import com.zhangll.flink.Son;
+import com.zhangll.flink.annotation.BasicTokenInfo;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.junit.Test;
 
-import java.util.ArrayList;
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
-public class StepTest {
+@Getter
+class ShortFather {
+
+    @BasicTokenInfo(min = "3", max = "100", step = "20")
+    private short i;
+    @BasicTokenInfo(min = "3", max = "100", step = "-20")
+    private Short i2;
+    @BasicTokenInfo(min = "3", max = "100", step = "2", value = {"1", "2", "8", "4", "20"})
+    private Short i3;
+    @BasicTokenInfo(min = "3", max = "100", step = "-3", value = {"1", "2", "8", "4", "20"})
+    private Short i4;
+}
+
+
+
+public class ShortStepTest {
     @Test
     public void testMin3Max100Step20(){
         AnnotationMockContext context = new AnnotationMockContext();
@@ -20,8 +35,8 @@ public class StepTest {
         int process = 0;
         int gap = max - min + 1;
         for (int i = 0; i < 100; i++) {
-            Father mock = (Father)context.mock(Father.class);
-            int min3Max100 = mock.getMin3Max100();
+            ShortFather mock = (ShortFather)context.mock(ShortFather.class);
+            short min3Max100 = mock.getI();
 //            System.out.println(min3Max100);
             process = step * i ;
             final int fi = min + process % gap;
@@ -38,8 +53,8 @@ public class StepTest {
         int process = 0;
         int gap = max - min + 1;
         for (int i = 0; i < 100; i++) {
-            Father mock = (Father)context.mock(Father.class);
-            int min3Max100 = mock.getMin3Max100ReduceStep();
+            ShortFather mock = (ShortFather)context.mock(ShortFather.class);
+            int min3Max100 = mock.getI2();
 //            System.out.println(min3Max100);
             process = step * i ;
             final int fi = max + process % gap;
@@ -58,8 +73,8 @@ public class StepTest {
         int process = 0;
         int step = 2;
         for (int i = 0; i < 100; i++) {
-            Father mock = (Father)context.mock(Father.class);
-            int intValue = mock.getIntValue();
+            ShortFather mock = (ShortFather)context.mock(ShortFather.class);
+            int intValue = mock.getI3();
 //            System.out.println(intValue);
             process = step * i ;
             assertEquals(Integer.parseInt(value[process % length]), intValue);
@@ -76,8 +91,8 @@ public class StepTest {
         int process = 0;
         int step = -3;
         for (int i = 0; i < 100; i++) {
-            Father mock = (Father)context.mock(Father.class);
-            int intValue = mock.getIntValueMinus();
+            ShortFather mock = (ShortFather)context.mock(ShortFather.class);
+            int intValue = mock.getI4();
 //            System.out.println(intValue);
             process = step * i ;
             int gap = process % length;
