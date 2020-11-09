@@ -3,8 +3,10 @@ package com.zhangll.flink.parser;
 import com.zhangll.flink.annotation.*;
 import com.zhangll.flink.model.FieldNode;
 import com.zhangll.flink.model.FieldToken;
+import com.zhangll.flink.uitl.DateUtil;
 
 import java.lang.reflect.Field;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -29,7 +31,7 @@ public class NodeParser {
      */
     public FieldNode initNodeTree(Class<?> cClass, Field currentField, Map<String, FieldToken> pojoTokenMap) {
         // 1.获取当前的currentFieldToken
-        FieldToken currentBasicToken = getCurrentBasicToken(currentField);
+        FieldToken currentBasicToken = getCurrentBasicToken(cClass, currentField);
         // 根据优先级，融合merge
         FieldToken mergedBasicToken = mergePojoToken(currentField, currentBasicToken, pojoTokenMap);
         // 2. 获取innercurrnetToken，一般是在Contain中（id，为列名）
@@ -206,11 +208,13 @@ public class NodeParser {
     /**
      * 1. 先获取默认的fieldToken
      * 2. 获取注解中fieldToken
+     *  根据不同类型进行获取数据
      *
+     * @param cClass
      * @param field
      * @return
      */
-    protected static FieldToken getCurrentBasicToken(Field field) {
+    protected static FieldToken getCurrentBasicToken(Class<?> cClass, Field field) {
         if (field == null) {
             return null;
         }
@@ -219,16 +223,31 @@ public class NodeParser {
             // 判断是否为空
             return null;
         }
-        FieldToken result = new FieldToken.FieldTokenBuilder()
-                .setMin(Integer.valueOf(basicTokenInfo.min()))
-                .setMax(Integer.valueOf(basicTokenInfo.max()))
+        FieldToken result = null;
+        FieldToken.FieldTokenBuilder fieldTokenBuilder = new FieldToken.FieldTokenBuilder()
                 .setDmin(Integer.valueOf(basicTokenInfo.dmin()))
                 .setDmax(Integer.valueOf(basicTokenInfo.dmax()))
                 .setCount(Integer.valueOf(basicTokenInfo.count()))
                 .setValue(basicTokenInfo.value())
                 .setDcount(Integer.valueOf(basicTokenInfo.dcount()))
-                .setStep(Integer.valueOf(basicTokenInfo.step()))
-                .build();
+                .setStep(Integer.valueOf(basicTokenInfo.step()));
+        if(DateUtil.isSqlTime(cClass)){
+            try {
+                // 1. basicTokenInfo.min() 可能为0
+                String parseMinTime  = "0".equals(basicTokenInfo.min())? DateUtil.initDate(cClass): basicTokenInfo.min();
+                String parseMaxTime  = "0".equals(basicTokenInfo.max())? DateUtil.initDate(cClass): basicTokenInfo.max();
+
+                result = fieldTokenBuilder
+                        .setMin((int) (DateUtil.getFormat(cClass).parse(parseMinTime).getTime()/ 1000))
+                        .setMax((int) (DateUtil.getFormat(cClass).parse(parseMaxTime).getTime()/ 1000))
+                        .build();
+            } catch ( ParseException e ) {
+                throw new IllegalArgumentException("日期错误");
+            }
+        } else{
+            result = fieldTokenBuilder.setMin(Integer.valueOf(basicTokenInfo.min()))
+                    .setMax(Integer.valueOf(basicTokenInfo.max())).build();
+        }
         return result;
     }
 

@@ -23,7 +23,7 @@ public class NodeParserTest {
     @Test
     public void get3TokenByNull() {
 
-        FieldToken currentBasicToken = nodeParser.getCurrentBasicToken(null);
+        FieldToken currentBasicToken = nodeParser.getCurrentBasicToken(null, null);
         // 2. 获取innercurrnetToken，一般是在Contain中（id，为列名）
         Map<String, FieldToken> innerPojoTokens = nodeParser.getInnerPojoTokens(null, pojoTokenMap);
         FieldToken innerBasicToken = nodeParser.getInnerBasicToken(null);
@@ -38,7 +38,7 @@ public class NodeParserTest {
         Class<Father> fatherClass = Father.class;
         Field[] declaredFields = fatherClass.getDeclaredFields();
         Field money = fatherClass.getDeclaredField("money");
-        FieldToken currentBasicToken = nodeParser.getCurrentBasicToken(money);
+        FieldToken currentBasicToken = nodeParser.getCurrentBasicToken(null, money);
         Map<String, FieldToken> innerPojoTokens = nodeParser.getInnerPojoTokens(money, pojoTokenMap);
         FieldToken innerBasicToken = nodeParser.getInnerBasicToken(money);
         assertTrue(currentBasicToken != null);
@@ -52,7 +52,7 @@ public class NodeParserTest {
     @Test
     public void testContainerForBasicType() throws NoSuchFieldException {
         Field sonsNameSet = Father.class.getDeclaredField("sonsNameSet");
-        FieldToken currentBasicToken = nodeParser.getCurrentBasicToken(sonsNameSet);
+        FieldToken currentBasicToken = nodeParser.getCurrentBasicToken(null, sonsNameSet);
         Map<String, FieldToken> innerPojoTokens = nodeParser.getInnerPojoTokens(sonsNameSet, pojoTokenMap);
         FieldToken innerBasicToken = nodeParser.getInnerBasicToken(sonsNameSet);
 
@@ -67,7 +67,7 @@ public class NodeParserTest {
     public void testContainerForPojoType() throws NoSuchFieldException {
 
         Field sonsNameSet = Father.class.getDeclaredField("sonslist");
-        FieldToken currentBasicToken = nodeParser.getCurrentBasicToken(sonsNameSet);
+        FieldToken currentBasicToken = nodeParser.getCurrentBasicToken(null, sonsNameSet);
         Map<String, FieldToken> innerPojoTokens = nodeParser.getInnerPojoTokens(sonsNameSet, pojoTokenMap);
         FieldToken innerBasicToken = nodeParser.getInnerBasicToken(sonsNameSet);
 

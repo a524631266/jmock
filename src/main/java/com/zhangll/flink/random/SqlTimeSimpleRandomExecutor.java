@@ -5,6 +5,7 @@ import com.zhangll.flink.error.FieldIllegalArgumentException;
 import com.zhangll.flink.model.FieldNode;
 import com.zhangll.flink.model.FieldToken;
 import com.zhangll.flink.rule.Rule;
+import com.zhangll.flink.uitl.DateUtil;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -20,12 +21,7 @@ import java.util.regex.Pattern;
  * 生成逻辑与long相关
  */
 public class SqlTimeSimpleRandomExecutor extends AbstractRandomExecutor {
-    public static Pattern TimePattern  = Pattern.compile("\\d{2}:\\d{2}:\\d{2}");
-    public static Pattern DatePattern  = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
-    public static Pattern TimestampPattern  = Pattern.compile("\\d{4}-\\d{2}-\\d{2}\\s+\\d{2}:\\d{2}:\\d{2}");
-    static SimpleDateFormat TimestampFormat = new SimpleDateFormat("yyyy-MM-dd");
-    static SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    static SimpleDateFormat TimeFormat = new SimpleDateFormat("HH:mm:ss");
+
 
     public static Rule<Date> DATE = new DefaultDateRule(
             new FieldToken.FieldTokenBuilder()
@@ -68,10 +64,7 @@ public class SqlTimeSimpleRandomExecutor extends AbstractRandomExecutor {
         int count = (int) (System.currentTimeMillis() / 1000);
         System.out.println(count);
 
-        assert TimePattern.matcher("00:12:13").matches();
-        assert TimestampPattern.matcher("2015-12-20 00:12:12").matches();
-        assert DatePattern.matcher("2015-12-20").matches();
-        System.out.println(TimestampFormat.parse("2015-12-20 00:12:12").getTime());
+
     }
 
     @Override
@@ -89,17 +82,6 @@ public class SqlTimeSimpleRandomExecutor extends AbstractRandomExecutor {
             return TIME;
         }else if(innerClass == Timestamp.class){
             return TIMESTAMP;
-        }
-        return null;
-    }
-
-    private SimpleDateFormat getFormat() {
-        if(innerClass == Date.class){
-            return DateFormat;
-        }else if(innerClass == Time.class){
-            return TimeFormat;
-        }else if(innerClass == Timestamp.class){
-            return TimestampFormat;
         }
         return null;
     }
@@ -160,17 +142,57 @@ public class SqlTimeSimpleRandomExecutor extends AbstractRandomExecutor {
      */
     private long handleSqlTimeStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) throws ParseException {
         String[] value = currentTokenInfo.getValue();
-
+        // value优先级
         if(value.length > 0){
             int cutgap = currentState.getProgress() % value.length;
             if(currentState.getStep()>0){
-                return getFormat().parse(value[cutgap]).getTime();
+                return DateUtil.getFormat(innerClass).parse(value[cutgap]).getTime();
             }
-            return getFormat().parse(value[(value.length-1) + cutgap]).getTime();
-        }
+            return DateUtil.getFormat(innerClass).parse(value[(value.length-1) + cutgap]).getTime();
+        }else{
+            if(currentTokenInfo.getStep() !=  0){
+                long preTimeLong10 = 0;
+                if(currentState.getPreObject() == null){
+                    if(currentTokenInfo.getStep() >0 ){
+                        preTimeLong10 = Long.valueOf(currentTokenInfo.getMin()) * 1000;
+                    } else {
+                        preTimeLong10 = Long.valueOf(currentTokenInfo.getMax()) * 1000;
+                    }
+                } else {
+                    java.util.Date date = (java.util.Date) currentState.getPreObject();
+                    preTimeLong10 = verifyOutBound(date.getTime() + DateUtil.getBase(innerClass) * currentTokenInfo.getStep(),currentTokenInfo );
 
-        // TODO
+                }
+                return preTimeLong10;
+            }
+        }
         return 0;
+    }
+
+    /**
+     * bug 当 gap 很小，时候
+     * @param value
+     * @param currentTokenInfo
+     * @return
+     */
+    private long verifyOutBound(long value, FieldToken currentTokenInfo) {
+        if(value < (Long.valueOf(currentTokenInfo.getMin()) * 1000)){
+            long gap = Long.valueOf(currentTokenInfo.getMax() - currentTokenInfo.getMin()) * 1000;
+            long result = value + gap;
+            while (result < (Long.valueOf(currentTokenInfo.getMin()) * 1000)){
+                result += gap;
+            }
+            return result;
+        }
+        if(value > (Long.valueOf(currentTokenInfo.getMax()) * 1000)){
+            long gap = Long.valueOf(currentTokenInfo.getMax() - currentTokenInfo.getMin()) * 1000;
+            long result = value - gap;
+            while (result > (Long.valueOf(currentTokenInfo.getMax()) * 1000)){
+                result -= gap;
+            }
+            return  result;
+        }
+        return value;
     }
 
     protected static class DefaultDateRule implements Rule<Date> {

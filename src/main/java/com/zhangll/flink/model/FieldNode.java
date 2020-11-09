@@ -220,9 +220,9 @@ public class FieldNode implements ASTNode{
     @ToString
     public class StepState {
         // 进度
-        int progress = 0;
-        int step = 0;
-        Object preObject;
+        private int progress = 0;
+        private int step = 0;
+        private Object preObject;
 
         public StepState(int progress, int step) {
             this.progress = progress;
