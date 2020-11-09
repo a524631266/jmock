@@ -1,6 +1,6 @@
 package com.zhangll.flink.random;
 
-import com.sun.istack.internal.Nullable;
+import javax.annotation.Nullable;
 import com.zhangll.flink.MockContext;
 import com.zhangll.flink.expression.RulePostProcessor;
 import com.zhangll.flink.model.FieldNode;
