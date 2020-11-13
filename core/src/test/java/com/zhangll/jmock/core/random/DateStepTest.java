@@ -1,7 +1,5 @@
 package com.zhangll.jmock.core.random;
 
-import com.zhangll.flink.AnnotationMockContext;
-import com.zhangll.flink.annotation.BasicTokenInfo;
 import com.zhangll.jmock.core.AnnotationMockContext;
 import com.zhangll.jmock.core.annotation.BasicTokenInfo;
 import lombok.Getter;
@@ -13,10 +11,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
+
 import java.util.Calendar;
 
 import static org.junit.Assert.assertEquals;

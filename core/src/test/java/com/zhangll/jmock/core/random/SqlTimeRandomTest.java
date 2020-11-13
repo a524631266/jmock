@@ -1,7 +1,5 @@
 package com.zhangll.jmock.core.random;
 
-import com.zhangll.flink.MockContext;
-import com.zhangll.flink.rule.Rule;
 import com.zhangll.jmock.core.MockContext;
 import com.zhangll.jmock.core.rule.Rule;
 import org.junit.Test;

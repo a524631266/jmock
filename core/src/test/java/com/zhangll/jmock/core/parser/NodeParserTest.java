@@ -1,8 +1,7 @@
 package com.zhangll.jmock.core.parser;
 
-import com.zhangll.flink.Father;
-import com.zhangll.flink.model.FieldNode;
-import com.zhangll.flink.model.FieldToken;
+
+import com.zhangll.jmock.core.Father;
 import com.zhangll.jmock.core.model.FieldNode;
 import com.zhangll.jmock.core.model.FieldToken;
 import org.junit.Before;

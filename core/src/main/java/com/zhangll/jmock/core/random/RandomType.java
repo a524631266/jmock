@@ -1,7 +1,8 @@
 package com.zhangll.jmock.core.random;
 
-import com.zhangll.flink.model.FieldToken;
-import com.zhangll.flink.rule.Rule;
+
+import com.zhangll.jmock.core.model.FieldToken;
+import com.zhangll.jmock.core.rule.Rule;
 
 import java.lang.reflect.Field;
 

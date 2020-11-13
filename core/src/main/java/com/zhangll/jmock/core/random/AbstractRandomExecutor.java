@@ -1,12 +1,12 @@
 package com.zhangll.jmock.core.random;
 
 import javax.annotation.Nullable;
-import com.zhangll.flink.MockContext;
-import com.zhangll.flink.expression.RulePostProcessor;
-import com.zhangll.flink.model.FieldNode;
-import com.zhangll.flink.model.FieldToken;
-import com.zhangll.flink.type.BasicType;
+
+import com.zhangll.jmock.core.MockContext;
+import com.zhangll.jmock.core.expression.RulePostProcessor;
 import com.zhangll.jmock.core.model.FieldNode;
+import com.zhangll.jmock.core.model.FieldToken;
+import com.zhangll.jmock.core.type.BasicType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

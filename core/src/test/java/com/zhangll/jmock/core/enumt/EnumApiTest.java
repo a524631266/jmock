@@ -1,7 +1,7 @@
 package com.zhangll.jmock.core.enumt;
 
-import com.zhangll.flink.Father;
-import com.zhangll.flink.expression.regrex.DigitLetter;
+import com.zhangll.jmock.core.Father;
+import com.zhangll.jmock.core.expression.regrex.DigitLetter;
 import org.junit.Test;
 
 import java.lang.reflect.Field;

@@ -1,9 +1,5 @@
 package com.zhangll.jmock.core;
 
-import com.zhangll.flink.annotation.BasicTokenInfo;
-import com.zhangll.flink.annotation.PojoTokenInfo;
-import com.zhangll.flink.annotation.ContainerTokenInfo;
-import com.zhangll.flink.annotation.TokenMapping;
 import com.zhangll.jmock.core.annotation.BasicTokenInfo;
 import com.zhangll.jmock.core.annotation.ContainerTokenInfo;
 import com.zhangll.jmock.core.annotation.PojoTokenInfo;

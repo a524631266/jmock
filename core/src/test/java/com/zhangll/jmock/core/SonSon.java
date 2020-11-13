@@ -1,6 +1,5 @@
 package com.zhangll.jmock.core;
 
-import com.zhangll.flink.annotation.BasicTokenInfo;
 import com.zhangll.jmock.core.annotation.BasicTokenInfo;
 import lombok.ToString;
 

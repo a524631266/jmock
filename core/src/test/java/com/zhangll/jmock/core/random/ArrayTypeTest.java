@@ -1,6 +1,5 @@
 package com.zhangll.jmock.core.random;
 
-import com.zhangll.flink.Father;
 import com.zhangll.jmock.core.Father;
 import org.junit.Test;
 

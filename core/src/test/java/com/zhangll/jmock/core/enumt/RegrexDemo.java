@@ -1,6 +1,6 @@
 package com.zhangll.jmock.core.enumt;
 
-import com.zhangll.flink.expression.regrex.RandomStringGenerator;
+import com.zhangll.jmock.core.expression.regrex.RandomStringGenerator;
 import org.junit.Test;
 
 import java.util.Random;

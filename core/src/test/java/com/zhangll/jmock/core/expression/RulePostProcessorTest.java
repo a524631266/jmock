@@ -1,13 +1,11 @@
 package com.zhangll.jmock.core.expression;
 
-import com.zhangll.flink.uitl.RandomUtil;
 import com.zhangll.jmock.core.uitl.RandomUtil;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+
 
 import static org.junit.Assert.*;
 

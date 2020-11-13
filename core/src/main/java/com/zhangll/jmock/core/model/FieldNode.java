@@ -1,11 +1,12 @@
 package com.zhangll.jmock.core.model;
 
-import com.zhangll.flink.MockContext;
-import com.zhangll.flink.random.AbstractRandomExecutor;
-import com.zhangll.flink.random.RandomExecutorFactory;
-import com.zhangll.flink.random.RandomType;
-import com.zhangll.flink.rule.Rule;
-import com.zhangll.flink.type.BasicType;
+
+import com.zhangll.jmock.core.MockContext;
+import com.zhangll.jmock.core.random.AbstractRandomExecutor;
+import com.zhangll.jmock.core.random.RandomExecutorFactory;
+import com.zhangll.jmock.core.random.RandomType;
+import com.zhangll.jmock.core.rule.Rule;
+import com.zhangll.jmock.core.type.BasicType;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.ToString;

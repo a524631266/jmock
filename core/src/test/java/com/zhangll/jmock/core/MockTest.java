@@ -1,14 +1,10 @@
 package com.zhangll.jmock.core;
 
-import com.zhangll.flink.annotation.BasicTokenInfo;
-import com.zhangll.flink.enumt.RegrexDemo;
 import org.junit.Test;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

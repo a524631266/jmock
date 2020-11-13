@@ -1,7 +1,6 @@
 package com.zhangll.jmock.core.random;
 
-import com.zhangll.flink.AnnotationMockContext;
-import com.zhangll.flink.annotation.BasicTokenInfo;
+
 import com.zhangll.jmock.core.AnnotationMockContext;
 import com.zhangll.jmock.core.annotation.BasicTokenInfo;
 import lombok.Getter;

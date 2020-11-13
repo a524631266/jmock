@@ -1,8 +1,7 @@
 package com.zhangll.jmock.core.random;
 
-import com.zhangll.flink.AnnotationMockContext;
-import com.zhangll.flink.Father;
-import com.zhangll.flink.Son;
+import com.zhangll.jmock.core.AnnotationMockContext;
+import com.zhangll.jmock.core.Father;
 import org.junit.Test;
 
 import java.util.ArrayList;

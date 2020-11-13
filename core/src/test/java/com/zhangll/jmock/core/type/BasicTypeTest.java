@@ -1,6 +1,6 @@
 package com.zhangll.jmock.core.type;
 
-import com.zhangll.flink.Father;
+
 import com.zhangll.jmock.core.Father;
 import org.junit.Test;
 
