@@ -8,7 +8,6 @@
         <groupId>com.zhangll.jmock</groupId>
         <version>1.0.0</version>
     </parent>
-  <groupId>com.zhangll.jmock</groupId>
   <artifactId>example</artifactId>
   <version>1.0.0</version>
 
