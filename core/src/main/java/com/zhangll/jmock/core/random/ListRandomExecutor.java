@@ -98,7 +98,7 @@ public class ListRandomExecutor<T> extends AbstractRandomExecutor {
                 } else if (listType == Set.class) {
                     o = new HashSet();
                 } else {
-                    o = (List) listType.newInstance();
+                    o = (Collection) listType.newInstance();
                 }
             } catch ( InstantiationException e ) {
                 e.printStackTrace();
