@@ -1,10 +1,10 @@
 package com.zhangll.jmock.core.random;
 
-import com.zhangll.flink.MockContext;
-import com.zhangll.flink.model.FieldNode;
-import com.zhangll.flink.model.FieldToken;
-import com.zhangll.flink.rule.Rule;
-import com.zhangll.flink.uitl.RandomUtil;
+import com.zhangll.jmock.core.MockContext;
+import com.zhangll.jmock.core.model.FieldNode;
+import com.zhangll.jmock.core.model.FieldToken;
+import com.zhangll.jmock.core.rule.Rule;
+import com.zhangll.jmock.core.uitl.RandomUtil;
 
 import java.util.Random;
 
@@ -34,7 +34,9 @@ public class BooleanSimpleRandomExecutor extends AbstractRandomExecutor {
 
     @Override
     public Rule getRule(FieldToken fieldToken) {
-        if(fieldToken==null) return defaultBooleanRule;
+        if(fieldToken==null) {
+            return defaultBooleanRule;
+        }
         return new DefaultBooleanRule(fieldToken);
     }
 

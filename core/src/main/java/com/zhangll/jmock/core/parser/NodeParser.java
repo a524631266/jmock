@@ -1,14 +1,10 @@
 package com.zhangll.jmock.core.parser;
 
-import com.zhangll.flink.annotation.*;
-import com.zhangll.flink.model.FieldNode;
-import com.zhangll.flink.model.FieldToken;
-import com.zhangll.flink.uitl.DateUtil;
-import com.zhangll.jmock.core.annotation.ContainerTokenInfo;
-import com.zhangll.jmock.core.annotation.PojoTokenInfo;
-import com.zhangll.jmock.core.annotation.TokenMapping;
+
+import com.zhangll.jmock.core.annotation.*;
 import com.zhangll.jmock.core.model.FieldNode;
 import com.zhangll.jmock.core.model.FieldToken;
+import com.zhangll.jmock.core.uitl.DateUtil;
 
 import java.lang.reflect.Field;
 import java.text.ParseException;

@@ -1,9 +1,7 @@
 package com.zhangll.jmock.core.expression;
 
 
-import com.zhangll.flink.expression.regrex.RandomStringGenerator;
-import com.zhangll.flink.type.BasicType;
-import com.zhangll.flink.uitl.RandomUtil;
+import com.zhangll.jmock.core.expression.regrex.RandomStringGenerator;
 import com.zhangll.jmock.core.type.BasicType;
 import com.zhangll.jmock.core.uitl.RandomUtil;
 import org.slf4j.Logger;

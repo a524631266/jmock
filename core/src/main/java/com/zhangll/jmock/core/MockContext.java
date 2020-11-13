@@ -1,12 +1,6 @@
 package com.zhangll.jmock.core;
 
-import com.zhangll.flink.annotation.PojoTokenInfo;
-import com.zhangll.flink.model.ASTNode;
-import com.zhangll.flink.model.FieldNode;
-import com.zhangll.flink.model.FieldToken;
-import com.zhangll.flink.parser.NodeParser;
-import com.zhangll.flink.random.ExecutorStore;
-import com.zhangll.flink.random.RandomType;
+
 import com.zhangll.jmock.core.model.ASTNode;
 import com.zhangll.jmock.core.model.FieldNode;
 import com.zhangll.jmock.core.model.FieldToken;

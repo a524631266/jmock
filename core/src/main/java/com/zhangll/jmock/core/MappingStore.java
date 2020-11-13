@@ -1,8 +1,5 @@
 package com.zhangll.jmock.core;
 
-import com.zhangll.flink.annotation.PojoTokenInfo;
-import com.zhangll.flink.model.FieldNode;
-import com.zhangll.flink.uitl.KeyUtil;
 import com.zhangll.jmock.core.model.FieldNode;
 import com.zhangll.jmock.core.uitl.KeyUtil;
 

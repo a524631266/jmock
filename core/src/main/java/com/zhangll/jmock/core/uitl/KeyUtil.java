@@ -1,6 +1,6 @@
 package com.zhangll.jmock.core.uitl;
 
-import com.zhangll.flink.annotation.PojoTokenInfo;
+import com.zhangll.jmock.core.annotation.PojoTokenInfo;
 
 import java.lang.reflect.Field;
 

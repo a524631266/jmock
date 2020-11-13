@@ -1,11 +1,11 @@
 package com.zhangll.jmock.core.random;
 
-import com.zhangll.flink.MockContext;
-import com.zhangll.flink.model.FieldNode;
-import com.zhangll.flink.model.FieldToken;
-import com.zhangll.flink.rule.Rule;
-import com.zhangll.flink.type.BasicType;
-import com.zhangll.flink.uitl.RandomUtil;
+import com.zhangll.jmock.core.MockContext;
+import com.zhangll.jmock.core.model.FieldNode;
+import com.zhangll.jmock.core.model.FieldToken;
+import com.zhangll.jmock.core.rule.Rule;
+import com.zhangll.jmock.core.type.BasicType;
+import com.zhangll.jmock.core.uitl.RandomUtil;
 import com.zhangll.jmock.core.model.FieldNode;
 
 import java.lang.reflect.Type;

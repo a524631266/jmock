@@ -1,6 +1,6 @@
 package com.zhangll.jmock.core.random;
 
-import com.zhangll.flink.type.BasicType;
+import com.zhangll.jmock.core.type.BasicType;
 
 import java.lang.reflect.Array;
 import java.sql.Time;
