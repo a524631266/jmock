@@ -144,19 +144,19 @@ under the License.
                         <!--</executions>-->
                     <!--</plugin>-->
                     <!-- GPG -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.5</version>
-                        <executions>
-                            <execution>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
+                    <!--<plugin>-->
+                        <!--<groupId>org.apache.maven.plugins</groupId>-->
+                        <!--<artifactId>maven-gpg-plugin</artifactId>-->
+                        <!--<version>1.5</version>-->
+                        <!--<executions>-->
+                            <!--<execution>-->
+                                <!--<phase>verify</phase>-->
+                                <!--<goals>-->
+                                    <!--<goal>sign</goal>-->
+                                <!--</goals>-->
+                            <!--</execution>-->
+                        <!--</executions>-->
+                    <!--</plugin>-->
                     <!--Compiler -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
