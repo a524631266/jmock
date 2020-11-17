@@ -66,7 +66,20 @@ public class CharSimpleRandomExecutor extends AbstractRandomExecutor {
             return (char) (max + cutgap);
         }
     }
+    @Override
+    protected Object doHandleCountValue(MockContext context, FieldNode fieldNodeContext) {
+        String[] value = fieldNodeContext.getCurrentTokenInfo().getValue();
+        Integer index = RandomUtil.getMin2Max(0, value.length - 1);
+        return value[index];
+    }
 
+    @Override
+    protected Object convertToCurrentType(FieldNode fieldNodeContext,Object result) {
+        if(result instanceof String) {
+            return ((String) result).toCharArray()[0];
+        }
+        return super.convertToCurrentType(fieldNodeContext, result);
+    }
     /**
      * 根据解析规则 name中的range进行匹配
      * {

@@ -31,7 +31,12 @@ public class ArrayRandomExecutor<T> extends AbstractRandomExecutor {
     public Rule getDefaultRule() {
         return defaultRule;
     }
-
+    @Override
+    protected Object convertToCurrentType(FieldNode fieldNodeContext, Object result) {
+        return BasicType.transWrapperArrayToBasicArray(
+                fieldNodeContext.getType().getComponentType(),
+                (Object[]) result);
+    }
     @Override
     public Rule getRule(FieldToken fieldToken) {
         if(fieldToken == null) {

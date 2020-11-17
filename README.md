@@ -1,47 +1,31 @@
 所有规则均根据官网介绍
 [Mock规则官网](https://github.com/nuysoft/Mock/wiki/Syntax-Specification)
 
-### 使用注解方式设置
-支持嵌套model
-> 概念1: 注解BasicTokenInfo
-用来表达每个内置基本类型字段的取值的约束条件
-内置基本类型包括 如下4种
-1. java基本类型
-```text
-Integer.class, 
-int.class
-char.class
-Character.class
-Double.class
-double.class
-Float.class
-float.class
-Long.class 
-long.class 
-Short.class
-short.class
-Boolean.class
-boolean.class
-String.class
-时间类型
-sql.Date.class
-sql.Time.class
-sql.Timestamp.class
-数组类型
-Array.class
-集合类型
-List.class
-Set.class 
-```
+[TOC]
+所有规则均参照**前端界**比较流行的mock框架: 
+[javascript Mock规则官网](https://github.com/nuysoft/Mock/wiki/Syntax-Specification)
+## 背景
+市面上已经有很多常用的mock框架，比如easy-mock，mockio， 等，但是生成的数据要不都是给前端使用的，要不就是在java层无法自定义扩展功能。
+但是有个前辈已经做了比较好的项目([Mock.java](https://gitee.com/ForteScarlet/Mock.java?_from=gitee_search),[jmockdata](https://gitee.com/keko-boy/jmockdata?_from=gitee_search)),[mockj](https://gitee.com/kkk001/mockj?_from=gitee_search)。调查了很多框架，没有一款以Java注解方式，通过简单灵活的方式快速生成想要的数。
 
->概念2: mockContext
-用来构建一个mock对象的上下文
-#### 创建两个model，一个Father，一个Son
+而且支持注解的不能很好地在注解上表达数据的关联,不支持注解的使用起来代码又过于冗余。并不能用于提供其他方面的学习，更有甚者，在比如数据开发/数仓领域为了测试代码逻辑问题，也会要求生成相关的数据用于检验代码的合理性。
 
-> 概念3: ContainerTokenInfo
-就是容器的类型约束条件
-见如下的sonslist 使用方式
+因此，本项目的宗旨是以简单，易用（使用注解），方便的方式用于代码的自动生成。
 
+## 项目目标
+
+通过注解的方式，通过自定义规则生成指定想要的随机测试的数据。对于很多项目开发而言，测试数据能够以最快的速度进行项目的交付。同时通过测试数据，也能够很好地进行一些框架的快速学习和教育。因此，本项目的宗旨是，以最小的成本和灵活的配置来搭建一个快速测试的数据。
+
+### 项目依赖
+在核心业务逻辑不依赖于其他框架。不过本项目为了快速开发依赖了如下
+
+1. lombok 一款自动生成getter/setter/construct的工具。节约开发时间（不参与核心）
+2. log4j 日志框架,只是用来打印日志（不参与核心）
+3. findbugs google 开发的一款注解系统，这个只是在方法上加入注解，并没有做其他方面的作用（不参与核心）
+
+## how to use
+### 生成一个pojo类。
+如下，首先定义了一个父类pojo.可以支持java基本类型（包装类）、字符串、数组、list，日期类型
 ```java
 package com.zhangll.flink;
 
@@ -138,13 +122,13 @@ public class Son {
     private int id;
     @FieldTokenType(min = "10", max = "20")
     private int age;
-
+    
     private SonSon son;
 }
 
 ```
 
-#### 使用方法
+### main.java
 使用方法 context 为mock的上下文，可以通过上下文的mock方法
 ```java
 AnnotationMockContext context = new AnnotationMockContext();
@@ -163,23 +147,280 @@ for (int i = 0; i < 2; i++) {
 
 
 
-## 后续改进内容
-1. 添加正则文法匹配功能 （has done）
+## 功能介绍
+**[案例地址](https://github.com/a524631266/jmock/tree/master/example/src/main/java/com/zhangll/jmock/example)**
+### 1. 接受多层pojo递归嵌套
+```java
+@ToString
+class Father{
+    Son son;
+}
+@ToString
+class Son {
+    Son2 son2;
+    private Date date;
+}
+@ToString
+class Son2 {
+    @BasicTokenInfo(min = "1" , max = "100")
+    private int a;
+}
+
+
+...main(){
+   AnnotationMockContext annotationMockContext = new AnnotationMockContext();
+    for (int i = 0; i < 100; i++) {
+        Object mock = annotationMockContext.mock(Father.class);
+        System.out.println(mock);
+    }
+}
+
+```
+### 2. 接受正则表达式(支持基本类型/String/Date类型)
+添加正则文法匹配功能 （has done）[使用Java原生的Regrex表达式]
 > input
 ```java
  @BasicTokenInfo(value = {"/\\d{ 1, 3}  abcd\\/ \\d/ [a-bA-H1-4]{1,5}/" , "/[a-z][A-Z][0-9]/", "/\\w\\W\\s\\S\\d\\D/", "/\\d{5,10}/"})
     private String regrex;
+    
+    
+@BasicTokenInfo(value = "/\\d{1,3}/")
+    private int regrexInteger;
+@BasicTokenInfo(value = "/\\d{1,3}\\.\\d{1,6}/")
+private double regrexDouble;
+@BasicTokenInfo(value = "/201[1-8]-0[1-8]-0[1-8]/")
+    private Date dateRegrex;
+
+@BasicTokenInfo(value = "/[a-zA-Z]/")
+    private Character charRegrex;
 ```
 > result 会选取其中一个作为regrex
 ```text
-"regexp1": "55  abcd/ 3/ h13a2"
-"regexp2": "pJ7",
-"regexp3": "F)\fp1G",
-"regexp4": "561659409"
+RegrexPojo(regrex=42283, regrexInteger=656, regrexDouble=476.8, dateRegrex=2014-04-03, charRegrex=n)
+RegrexPojo(regrex=2028284986, regrexInteger=20, regrexDouble=27.74132, dateRegrex=2015-01-01, charRegrex=e)
+RegrexPojo(regrex=1  abcd/ 4/ 4hb, regrexInteger=393, regrexDouble=334.27, dateRegrex=2013-03-02, charRegrex=w)
 ```
 
-2. 增加（+step）功能 
-目前用于 集合类型（list.class, Array.class)
+### 3. 时间函数
+```java
+@ToString
+class DatePojo{
+// 表示最小2010-10-10日,最大2010-10-20
+    @BasicTokenInfo(min = "2010-10-10" , max = "2010-10-20")
+    Date date;
+
+// 同上
+ @BasicTokenInfo(min = "2010-10-10 00:10:20" , max = "2010-10-20 00:10:20")
+    Timestamp timestamp;
+
+    // 同上
+    @BasicTokenInfo(min = "00:10:20" , max = "00:11:20")
+    Time time;
+
+// 步长为 2天
+    @BasicTokenInfo(min = "2010-10-10" , max = "2010-10-20",step = "2")
+    Date date2;
+
+    // 步长为2秒
+    @BasicTokenInfo(min = "2010-10-10 00:10:20" , max = "2010-10-20 00:10:20", step = "2")
+    Timestamp timestamp2;
+
+    // 步长为2秒
+    @BasicTokenInfo(min = "00:10:20" , max = "00:11:20", step = "2")
+    Time time2;
+}
+```
+
+> out put
+
+```shell
+DatePojo(date=2010-10-11, timestamp=2010-10-10 17:30:22.0, time=00:10:27, date2=2010-10-10, timestamp2=2010-10-10 00:10:20.0, time2=00:10:20)
+DatePojo(date=2010-10-10, timestamp=2010-10-17 20:55:40.0, time=00:11:16, date2=2010-10-12, timestamp2=2010-10-10 00:10:22.0, time2=00:10:22)
+DatePojo(date=2010-10-10, timestamp=2010-10-19 14:30:19.0, time=00:10:52, date2=2010-10-14, timestamp2=2010-10-10 00:10:24.0, time2=00:10:24)
+DatePojo(date=2010-10-17, timestamp=2010-10-12 22:59:23.0, time=00:10:35, date2=2010-10-16, timestamp2=2010-10-10 00:10:26.0, time2=00:10:26)
+....
+```
+
+### 4. 容器随机
+```java
+class Array01 {
+    //容器大小在2和3数量之间,其中内的基本类型的约束在
+    @ContainerTokenInfo(innerBasicType = @BasicTokenInfo(min = "2", max = "3"))
+    @BasicTokenInfo(min = "2", max = "3")
+    List<String> list;
+    @ContainerTokenInfo(innerBasicType = @BasicTokenInfo(min = "1", max = "10"))
+    @BasicTokenInfo(min = "2", max = "3")
+    ArrayList<Integer> arrayList;
+    @ContainerTokenInfo(innerBasicType = @BasicTokenInfo(min = "1", max = "10"))
+    @BasicTokenInfo(min = "2", max = "3")
+    Set<Boolean> set;
+    @ContainerTokenInfo(innerBasicType = @BasicTokenInfo(min = "1", max = "10"))
+    @BasicTokenInfo(min = "2", max = "3")
+    HashSet<Double> hashSet;
+    @ContainerTokenInfo(innerBasicType = @BasicTokenInfo(min = "1", max = "10"))
+    @BasicTokenInfo(min = "2", max = "3")
+    LinkedList<Short> linkedList;
+
+}
+```
+
+> OutPut
+
+```java
+Array01(list=[拿晚芝, 摩笛宋, 贪会信], arrayList=[1, 5], set=[true], hashSet=[6.1], linkedList=[7, 6, 2])
+Array01(list=[键僻旋, 便培, 梨忙买], arrayList=[4, 10], set=[true], hashSet=[5.8, 3.1, 1.9], linkedList=[6, 8, 3])
+Array01(list=[亏二馅, 落键滴], arrayList=[10, 8, 8], set=[true], hashSet=[9.3, 2.1], linkedList=[5, 8])
+Array01(list=[降孕待, 虾蹲], arrayList=[4, 5, 6], set=[true], hashSet=[7.1, 8.8], linkedList=[10, 10, 6])
+Array01(list=[眠岭, 宁酒], arrayList=[3, 6, 7], set=[false, true], hashSet=[8.6, 3.1], linkedList=[7, 4])
+```
+
+### 5. 基本数据类型检测方法
+以int为例子
+```java
+@ToString
+class IntegerPojo{
+    @BasicTokenInfo(min = "1000", max = "10000")
+    private Integer int1;
+
+    @BasicTokenInfo(value = {"1" , "10", "100"})
+    private int int2;
+}
+```
+1. int1 表示为 最小为1000， 最大 10000的随机值
+2. int2 表示为 从 value中 1， 10 ， 100 为随机值任一取一个值
+
+同理其他基本数据类型. 不过比较特殊的是boolean类型
+
+```java
+@BasicTokenInfo(min = "1" , max = "99")
+private boolean bool3;
+```
+> 这里min和max指的是 boolean为true 的概率为 max/ (max + min) = 99%
+
+
+### 6. 支持 以@为前缀的语义转换
+
+比如 @First表示姓名 @Middle
+
+```java
+ "@First @Middle @last"
+```
+
+
+### 7. 优先级
+在pojo中可能会嵌套pojo，同时我们定义
+
+```java
+class ListPojo{
+ @ContainerTokenInfo(
+            innerPojoType = @PojoTokenInfo(
+            value = {
+                    @TokenMapping(field = "bool3",
+                            basicTokenInfo = @BasicTokenInfo(min = "1", max = "2"))
+            })
+    )
+    @BasicTokenInfo(min ="1", max = "1")
+    BooleanPojo[] booleanPojos;
+}
+
+class BooleanPojo{
+    @BasicTokenInfo(min = "1" , max = "100")
+    private boolean bool3;
+}
+```
+可以想象，在容器类中定义的优先级是高于原始类的
+
+因此 @BasicTokenInfo(min = "1", max = "2") 会覆盖 @BasicTokenInfo(min = "1" , max = "100")规则
+
+## 框架支持的类型
+支持普通class/内部class
+
+后续可以添加一个
+
+> 内置基本类型@BasicTokenInfo修饰的变量类型
+
+分类 | 类描述
+---|---
+Java包装类 | Integer.class
+Java包装类 | Character.class
+Java包装类 | Double.class
+Java包装类 | Float.class
+Java包装类 | Long.class 
+Java包装类 | Short.class
+Java包装类 | Boolean.class
+java基本类型 | int.class
+java基本类型 | char.class
+java基本类型 | double.class
+java基本类型 | float.class
+java基本类型 | long.class 
+java基本类型 | short.class
+java基本类型 | boolean.class
+字符串类型 | String.class
+时间类型 | sql.Date.class
+时间类型 | sql.Time.class
+时间类型 | sql.Timestamp.class
+
+
+
+
+> @ContainerTokenInfo修饰的类型
+
+分类 | 类描述
+---|---
+数组类型 |  Array.class(int[]...,String[],Object[])
+集合类型 | List.class[List子类或list都可以]
+集合类型 | Set.class[Set/HashSet等等Set的子类]
+> Pojo类型
+
+分类 | 类描述
+---|---
+Pojo类型 | Object.class
+
+### 注解使用方式
+> 注解1: @BasicTokenInfo
+
+用来表达每个字段内置基本类型的取值的约束条件
+
+>注解2: @ContainerTokenInfo
+
+容器,(Set和List)类型的数据之间
+
+
+> mockContext(上下文)对象
+
+mock上下文对象是用来构建mock对象的上下文.可以利用上下文,关联生成对象之间的关系
+```java
+@ToString
+class Step01 {
+    @BasicTokenInfo(min = "5", max = "10", step = "2")
+    private int increase;
+}
+
+main(){
+    AnnotationMockContext annotationMockContext = new AnnotationMockContext();
+        for (int i = 0; i < 100; i++) {
+            Object mock = annotationMockContext.mock(Step01.class);
+            System.out.println(mock);
+        }
+}
+```
+> output
+```
+Step01(increase=5)
+Step01(increase=7)
+Step01(increase=9)
+Step01(increase=5)
+Step01(increase=7)
+Step01(increase=9)
+....
+```
+
+此时输出的随机对象是以5为其实开始点,并以步长2在 [min, max]依次轮询增加.
+
+
+2.step功能还能在array或者list中使用
+
+
 
 ## 注意： 注解的表达能力有限
 在开发的过程中，注解无法嵌套定义，会出现 cyclic annotation element type 编译错误
@@ -190,16 +431,25 @@ for (int i = 0; i < 2; i++) {
 
 本项目的目的是基于满足最基本所需。
 
+## 为什么不用map？
+本人认为 map对象一般是可以直接转化为pojo的key value表达式就可以表达，按照语义上来说map数据结构是pojo的特殊表达方式。
+
+如果大家有疑惑，可以发起issue，我会及时解答的。
+
+## 后续进展
+
+
+> 会支持更多@前缀语义
+
+> 有任何需求的同学可以参与进去哦，也欢迎提bug和随机需求
 
 ## 版本更新
 后续支持 map
 ## 项目捐赠
 写代码不易...请作者喝杯咖啡呗?
-写代码不易...请作者喝杯咖啡呗?
-
 
 ![](data/zhifu.jpg)
-
+<!--![](https://github.com/a524631266/jmock/blob/master/data/zhifu.jpg)
+-->
 (PS: 支付的时候 请带上你的名字/昵称呀 会维护一个赞助列表~ )
-
 [捐赠列表](CONTRIBUTING.md)

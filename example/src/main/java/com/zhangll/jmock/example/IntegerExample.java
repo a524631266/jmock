@@ -5,17 +5,21 @@ import com.zhangll.jmock.core.annotation.BasicTokenInfo;
 import lombok.ToString;
 
 @ToString
-class RegrexDemo {
-    @BasicTokenInfo(value = {"/\\d{ 1, 3}  abcd\\/ \\d/ [a-bA-H1-4]{1,5}/" , "/[a-z][A-Z][0-9]/", "/\\w\\W\\s\\S\\d\\D/", "/\\d{5,10}/"})
-    private String regrex;
+class IntegerPojo{
+    @BasicTokenInfo(min = "1000", max = "10000")
+    private Integer int1;
+
+    @BasicTokenInfo(value = {"1" , "10", "100"})
+    private int int2;
+
 }
-public class Example02 {
+
+public class IntegerExample {
     public static void main(String[] args) {
         AnnotationMockContext annotationMockContext = new AnnotationMockContext();
         for (int i = 0; i < 100; i++) {
-            Object mock = annotationMockContext.mock(RegrexDemo.class);
+            Object mock = annotationMockContext.mock(IntegerPojo.class);
             System.out.println(mock);
         }
-
     }
 }

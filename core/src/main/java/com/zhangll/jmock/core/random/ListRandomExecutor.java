@@ -55,6 +55,15 @@ public class ListRandomExecutor<T> extends AbstractRandomExecutor {
         return null;
     }
 
+    @Override
+    protected Object doHandleCountValue(MockContext context, FieldNode fieldNodeContext) {
+        return super.doHandleCountValue(context, fieldNodeContext);
+    }
+
+    @Override
+    protected Object convertToCurrentType(FieldNode fieldNodeContext, Object result) {
+        return result;
+    }
 
     /**
      * 根据解析规则 name中的range进行匹配

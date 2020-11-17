@@ -46,6 +46,20 @@ public class BooleanSimpleRandomExecutor extends AbstractRandomExecutor {
         return null;
     }
 
+    @Override
+    protected Object doHandleCountValue(MockContext context, FieldNode fieldNodeContext) {
+        String[] value = fieldNodeContext.getCurrentTokenInfo().getValue();
+        Integer index = RandomUtil.getMin2Max(0, value.length - 1);
+        return value[index];
+    }
+
+    @Override
+    protected Object convertToCurrentType(FieldNode fieldNodeContext, Object result) {
+        if(result instanceof String) {
+            return Boolean.valueOf((String) result);
+        }
+        return super.convertToCurrentType(fieldNodeContext, result);
+    }
     /**
      * 'name|1': boolean
      * 'name|min-max': value
@@ -77,6 +91,13 @@ public class BooleanSimpleRandomExecutor extends AbstractRandomExecutor {
             }
             return result ? !leftResult: leftResult;
         }
+    }
+
+    public static void main(String[] args) {
+        String t = "false";
+        Boolean aBoolean = Boolean.valueOf(t);
+        System.out.println(aBoolean);
+
     }
 
 }

@@ -9,6 +9,7 @@ import com.zhangll.jmock.core.annotation.TokenMapping;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,16 +21,19 @@ class Father{
 @ToString
 class Son {
     Son2 son2;
+    private Date date;
 }
 @ToString
 class Son2 {
+    @BasicTokenInfo(min = "1" , max = "100")
     private int a;
 }
-public class Example01 {
+public class NestPojoDemo {
     public static void main(String[] args) {
         AnnotationMockContext annotationMockContext = new AnnotationMockContext();
-        Object mock = annotationMockContext.mock(Father.class);
-        System.out.println(mock);
-//        annotationMockContext.mock()
+        for (int i = 0; i < 100; i++) {
+            Object mock = annotationMockContext.mock(Father.class);
+            System.out.println(mock);
+        }
     }
 }

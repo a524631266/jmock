@@ -76,6 +76,20 @@ public class DoubleSimpleRandomExecutor extends AbstractRandomExecutor {
         return nextValue;
     }
 
+    @Override
+    protected Object doHandleCountValue(MockContext context, FieldNode fieldNodeContext) {
+        String[] value = fieldNodeContext.getCurrentTokenInfo().getValue();
+        Integer index = RandomUtil.getMin2Max(0, value.length - 1);
+        return value[index];
+    }
+
+    @Override
+    protected Object convertToCurrentType(FieldNode fieldNodeContext, Object result) {
+        if(result instanceof String) {
+            return Double.valueOf((String) result);
+        }
+        return super.convertToCurrentType(fieldNodeContext, result);
+    }
     /**
      * 'name|min-max.dmin-dmax': number
      * 保留位数

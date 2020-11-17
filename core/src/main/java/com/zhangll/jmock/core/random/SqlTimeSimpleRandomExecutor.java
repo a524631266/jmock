@@ -6,6 +6,8 @@ import com.zhangll.jmock.core.model.FieldNode;
 import com.zhangll.jmock.core.model.FieldToken;
 import com.zhangll.jmock.core.rule.Rule;
 import com.zhangll.jmock.core.uitl.DateUtil;
+import com.zhangll.jmock.core.uitl.RandomUtil;
+import lombok.SneakyThrows;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -194,6 +196,32 @@ public class SqlTimeSimpleRandomExecutor extends AbstractRandomExecutor {
         }
         return value;
     }
+
+
+    @Override
+    protected Object doHandleCountValue(MockContext context, FieldNode fieldNodeContext) {
+        String[] value = fieldNodeContext.getCurrentTokenInfo().getValue();
+        Integer index = RandomUtil.getMin2Max(0, value.length - 1);
+        return value[index];
+    }
+
+    @SneakyThrows
+    @Override
+    protected Object convertToCurrentType(FieldNode fieldNodeContext, Object result) {
+        if(result instanceof String) {
+            SimpleDateFormat format = DateUtil.getFormat(innerClass);
+            long time = format.parse((String) result).getTime();
+            if(this.innerClass == Date.class){
+                return new Date(time);
+            }else if(this.innerClass == Timestamp.class){
+                return new Timestamp(time);
+            }else if(this.innerClass == Time.class){
+                return new Time(time);
+            }
+        }
+        return super.convertToCurrentType(fieldNodeContext, result);
+    }
+
 
     protected static class DefaultDateRule implements Rule<Date> {
 

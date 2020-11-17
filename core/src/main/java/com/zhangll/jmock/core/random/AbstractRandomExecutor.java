@@ -26,35 +26,82 @@ public abstract class AbstractRandomExecutor implements RandomExecutor {
     @Override
     public void updateField(Object target, MockContext context, FieldNode fieldNodeContext) {
         // 第一步首先要处理step方法（step优先于其他计算）
-        Object compute = handleStep(context, fieldNodeContext);
+        Object compute = handleCountValue(context, fieldNodeContext);
+        if(compute == null) {
+            compute = handleStep(context, fieldNodeContext);
+        }
         // 获取当前上下文中的执行器来计算
         if(compute == null){
             compute = fieldNodeContext.getRule().apply(context, fieldNodeContext);
         }
         Object result = postProcessor.postProcessAfterCompute(compute);
-        if (BasicType.isArray(result.getClass())) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug(fieldNodeContext.getDeclaredField().getName());
-                LOG.debug(result.getClass().getName());
-            }
-            try {
-                fieldNodeContext.getDeclaredField().set(target,
-                        BasicType.transWrapperArrayToBasicArray(
-                                fieldNodeContext.getType().getComponentType(),
-                                (Object[]) result));
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(fieldNodeContext.getDeclaredField().getName()
-                        + ": 不能被赋值");
-            }
-        } else {
-            try {
-                fieldNodeContext.getDeclaredField().set(target, result);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(fieldNodeContext.getDeclaredField().getName()
-                        + ": 不能被赋值");
-            }
+        try {
+            fieldNodeContext.getDeclaredField().set(target, convertToCurrentType(fieldNodeContext, result));
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(fieldNodeContext.getDeclaredField().getName()
+                    + ": 不能被赋值");
         }
+//        // 结果集映射没有做好
+//        if (BasicType.isArray(result.getClass())) {
+//            if (LOG.isDebugEnabled()) {
+//                LOG.debug(fieldNodeContext.getDeclaredField().getName());
+//                LOG.debug(result.getClass().getName());
+//            }
+//            try {
+//                fieldNodeContext.getDeclaredField().set(target,
+//                        BasicType.transWrapperArrayToBasicArray(
+//                                fieldNodeContext.getType().getComponentType(),
+//                                (Object[]) result));
+//            } catch (IllegalAccessException e) {
+//                throw new RuntimeException(fieldNodeContext.getDeclaredField().getName()
+//                        + ": 不能被赋值");
+//            }
+//        } else {
+//            try {
+//                fieldNodeContext.getDeclaredField().set(target, convertToCurrentType(result));
+//            } catch (IllegalAccessException e) {
+//                throw new RuntimeException(fieldNodeContext.getDeclaredField().getName()
+//                        + ": 不能被赋值");
+//            }
+//        }
     }
+
+    /**
+     * 转换为当前
+     * @param result
+     * @return
+     */
+    protected Object convertToCurrentType(FieldNode fieldNodeContext, Object result) {
+        return result;
+    }
+
+    /**
+     * 处理 value 和 count的
+     * @param context
+     * @param fieldNodeContext
+     * @return
+     */
+    protected Object handleCountValue(MockContext context, FieldNode fieldNodeContext){
+        if(fieldNodeContext.getCurrentTokenInfo() == null){
+            return null;
+        }
+        // 有step则走step
+        if(fieldNodeContext.getCurrentTokenInfo().getStep() != 0){
+            return null;
+        }
+        // 没有value = {}
+        if(fieldNodeContext.getCurrentTokenInfo().getValue().length  == 0){
+            return null;
+        }
+        return doHandleCountValue(context, fieldNodeContext);
+    }
+
+    protected Object doHandleCountValue(MockContext context, FieldNode fieldNodeContext){
+        return null;
+    };
+
+
+    ;
 
     /**
      *

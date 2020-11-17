@@ -5,6 +5,7 @@ import com.zhangll.jmock.core.model.FieldNode;
 import com.zhangll.jmock.core.model.FieldToken;
 import com.zhangll.jmock.core.rule.Rule;
 import com.zhangll.jmock.core.model.FieldNode;
+import com.zhangll.jmock.core.uitl.RandomUtil;
 
 import java.util.Random;
 
@@ -64,6 +65,20 @@ public class LongSimpleRandomExecutor extends AbstractRandomExecutor {
         }
     }
 
+    @Override
+    protected Object doHandleCountValue(MockContext context, FieldNode fieldNodeContext) {
+        String[] value = fieldNodeContext.getCurrentTokenInfo().getValue();
+        Integer index = RandomUtil.getMin2Max(0, value.length - 1);
+        return value[index];
+    }
+
+    @Override
+    protected Object convertToCurrentType(FieldNode fieldNodeContext, Object result) {
+        if(result instanceof String) {
+            return Long.valueOf((String) result);
+        }
+        return super.convertToCurrentType(fieldNodeContext, result);
+    }
     /**
      * 根据解析规则 name中的range进行匹配
      * {
