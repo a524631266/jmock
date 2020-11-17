@@ -24,7 +24,8 @@ under the License.
         <!--<groupId>com.zhangll.flink</groupId>-->
         <!--<version>1.0-SNAPSHOT</version>-->
     <!--</parent>-->
-    <groupId>com.zhangll.jmock</groupId>
+    <!--<groupId>com.zhangll.jmock</groupId>-->
+    <groupId>com.github.a524631266</groupId>
     <modules>
         <module>example</module>
         <module>core</module>
