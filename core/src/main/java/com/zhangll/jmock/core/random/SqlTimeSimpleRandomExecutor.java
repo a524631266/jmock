@@ -99,7 +99,7 @@ public class SqlTimeSimpleRandomExecutor extends AbstractRandomExecutor {
             if(fieldToken==null) {
                 return TIME;
             }
-            return new DefaultDateRule(fieldToken);
+            return new DefaultTimeRule(fieldToken);
         } else if (innerClass == Timestamp.class) {
             if(fieldToken==null) {
                 return TIMESTAMP;
