@@ -35,29 +35,35 @@ public abstract class AbstractRandomExecutor implements RandomExecutor {
             compute = fieldNodeContext.getRule().apply(context, fieldNodeContext);
         }
         Object result = postProcessor.postProcessAfterCompute(compute);
-        // 结果集映射没有做好
-        if (BasicType.isArray(result.getClass())) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug(fieldNodeContext.getDeclaredField().getName());
-                LOG.debug(result.getClass().getName());
-            }
-            try {
-                fieldNodeContext.getDeclaredField().set(target,
-                        BasicType.transWrapperArrayToBasicArray(
-                                fieldNodeContext.getType().getComponentType(),
-                                (Object[]) result));
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(fieldNodeContext.getDeclaredField().getName()
-                        + ": 不能被赋值");
-            }
-        } else {
-            try {
-                fieldNodeContext.getDeclaredField().set(target, convertToCurrentType(result));
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(fieldNodeContext.getDeclaredField().getName()
-                        + ": 不能被赋值");
-            }
+        try {
+            fieldNodeContext.getDeclaredField().set(target, convertToCurrentType(fieldNodeContext, result));
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(fieldNodeContext.getDeclaredField().getName()
+                    + ": 不能被赋值");
         }
+//        // 结果集映射没有做好
+//        if (BasicType.isArray(result.getClass())) {
+//            if (LOG.isDebugEnabled()) {
+//                LOG.debug(fieldNodeContext.getDeclaredField().getName());
+//                LOG.debug(result.getClass().getName());
+//            }
+//            try {
+//                fieldNodeContext.getDeclaredField().set(target,
+//                        BasicType.transWrapperArrayToBasicArray(
+//                                fieldNodeContext.getType().getComponentType(),
+//                                (Object[]) result));
+//            } catch (IllegalAccessException e) {
+//                throw new RuntimeException(fieldNodeContext.getDeclaredField().getName()
+//                        + ": 不能被赋值");
+//            }
+//        } else {
+//            try {
+//                fieldNodeContext.getDeclaredField().set(target, convertToCurrentType(result));
+//            } catch (IllegalAccessException e) {
+//                throw new RuntimeException(fieldNodeContext.getDeclaredField().getName()
+//                        + ": 不能被赋值");
+//            }
+//        }
     }
 
     /**
@@ -65,7 +71,7 @@ public abstract class AbstractRandomExecutor implements RandomExecutor {
      * @param result
      * @return
      */
-    protected Object convertToCurrentType(Object result) {
+    protected Object convertToCurrentType(FieldNode fieldNodeContext, Object result) {
         return result;
     }
 

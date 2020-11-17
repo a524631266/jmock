@@ -54,11 +54,11 @@ public class BooleanSimpleRandomExecutor extends AbstractRandomExecutor {
     }
 
     @Override
-    protected Object convertToCurrentType(Object result) {
+    protected Object convertToCurrentType(FieldNode fieldNodeContext, Object result) {
         if(result instanceof String) {
             return Boolean.valueOf((String) result);
         }
-        return super.convertToCurrentType(result);
+        return super.convertToCurrentType(fieldNodeContext, result);
     }
     /**
      * 'name|1': boolean

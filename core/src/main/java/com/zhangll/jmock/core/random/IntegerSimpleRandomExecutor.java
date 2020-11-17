@@ -90,11 +90,11 @@ public class IntegerSimpleRandomExecutor extends AbstractRandomExecutor {
     }
 
     @Override
-    protected Object convertToCurrentType(Object result) {
+    protected Object convertToCurrentType(FieldNode fieldNodeContext, Object result) {
         if(result instanceof String) {
             return Integer.valueOf((String) result);
         }
-        return super.convertToCurrentType(result);
+        return super.convertToCurrentType(fieldNodeContext, result);
     }
 
     /**

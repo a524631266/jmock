@@ -74,11 +74,11 @@ public class CharSimpleRandomExecutor extends AbstractRandomExecutor {
     }
 
     @Override
-    protected Object convertToCurrentType(Object result) {
+    protected Object convertToCurrentType(FieldNode fieldNodeContext,Object result) {
         if(result instanceof String) {
             return ((String) result).toCharArray()[0];
         }
-        return super.convertToCurrentType(result);
+        return super.convertToCurrentType(fieldNodeContext, result);
     }
     /**
      * 根据解析规则 name中的range进行匹配

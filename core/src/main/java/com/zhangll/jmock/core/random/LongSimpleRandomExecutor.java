@@ -73,11 +73,11 @@ public class LongSimpleRandomExecutor extends AbstractRandomExecutor {
     }
 
     @Override
-    protected Object convertToCurrentType(Object result) {
+    protected Object convertToCurrentType(FieldNode fieldNodeContext, Object result) {
         if(result instanceof String) {
             return Long.valueOf((String) result);
         }
-        return super.convertToCurrentType(result);
+        return super.convertToCurrentType(fieldNodeContext, result);
     }
     /**
      * 根据解析规则 name中的range进行匹配

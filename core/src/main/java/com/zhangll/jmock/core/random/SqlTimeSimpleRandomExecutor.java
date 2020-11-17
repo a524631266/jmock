@@ -207,7 +207,7 @@ public class SqlTimeSimpleRandomExecutor extends AbstractRandomExecutor {
 
     @SneakyThrows
     @Override
-    protected Object convertToCurrentType(Object result) {
+    protected Object convertToCurrentType(FieldNode fieldNodeContext, Object result) {
         if(result instanceof String) {
             SimpleDateFormat format = DateUtil.getFormat(innerClass);
             long time = format.parse((String) result).getTime();
@@ -219,7 +219,7 @@ public class SqlTimeSimpleRandomExecutor extends AbstractRandomExecutor {
                 return new Time(time);
             }
         }
-        return super.convertToCurrentType(result);
+        return super.convertToCurrentType(fieldNodeContext, result);
     }
 
 

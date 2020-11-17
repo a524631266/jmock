@@ -84,11 +84,11 @@ public class DoubleSimpleRandomExecutor extends AbstractRandomExecutor {
     }
 
     @Override
-    protected Object convertToCurrentType(Object result) {
+    protected Object convertToCurrentType(FieldNode fieldNodeContext, Object result) {
         if(result instanceof String) {
             return Double.valueOf((String) result);
         }
-        return super.convertToCurrentType(result);
+        return super.convertToCurrentType(fieldNodeContext, result);
     }
     /**
      * 'name|min-max.dmin-dmax': number
