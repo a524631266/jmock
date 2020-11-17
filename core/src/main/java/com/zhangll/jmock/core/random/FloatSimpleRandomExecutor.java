@@ -69,7 +69,20 @@ public class FloatSimpleRandomExecutor extends AbstractRandomExecutor {
         }
         return nextValue;
     }
+    @Override
+    protected Object doHandleCountValue(MockContext context, FieldNode fieldNodeContext) {
+        String[] value = fieldNodeContext.getCurrentTokenInfo().getValue();
+        Integer index = RandomUtil.getMin2Max(0, value.length - 1);
+        return value[index];
+    }
 
+    @Override
+    protected Object convertToCurrentType(Object result) {
+        if(result instanceof String) {
+            return Float.valueOf((String) result);
+        }
+        return super.convertToCurrentType(result);
+    }
 
     /**
      * 'name|min-max.dmin-dmax': number

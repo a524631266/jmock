@@ -81,6 +81,21 @@ public class IntegerSimpleRandomExecutor extends AbstractRandomExecutor {
         }
     }
 
+    @Override
+    protected Object doHandleCountValue(MockContext context, FieldNode fieldNodeContext) {
+        String[] value = fieldNodeContext.getCurrentTokenInfo().getValue();
+        Integer index = RandomUtil.getMin2Max(0, value.length - 1);
+        return value[index];
+//        return super.doHandleCountValue(context, fieldNodeContext);
+    }
+
+    @Override
+    protected Object convertToCurrentType(Object result) {
+        if(result instanceof String) {
+            return Integer.valueOf((String) result);
+        }
+        return super.convertToCurrentType(result);
+    }
 
     /**
      * 根据解析规则 name中的range进行匹配
