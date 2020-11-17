@@ -37,7 +37,24 @@ under the License.
     <!--<name>mockdata</name>-->
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
-
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <scm>
+        <connection>scm:git:https://github.com/a524631266/jmock.git</connection>
+        <developerConnection>scm:git:https://github.com/a524631266/jmock.git</developerConnection>
+        <url>https://github.com/a524631266/jmock.git</url>
+    </scm>
+    <developers>
+        <developer>
+            <name>Zhang LiangLiang</name>
+            <email>524631266@qq.com</email>
+            <organization>luban</organization>
+        </developer>
+    </developers>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
