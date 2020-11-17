@@ -9,7 +9,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 
 @ToString
-class DatePojo{
+class DatePojo2{
     // 表示最小2010-10-10日,最大2010-10-20
     @BasicTokenInfo(min = "2010-10-10" , max = "2010-10-20")
     Date date;
@@ -39,7 +39,7 @@ public class DateExample {
     public static void main(String[] args) {
         AnnotationMockContext annotationMockContext = new AnnotationMockContext();
         for (int i = 0; i < 100; i++) {
-            Object mock = annotationMockContext.mock(DatePojo.class);
+            Object mock = annotationMockContext.mock(DatePojo2.class);
             System.out.println(mock);
         }
     }

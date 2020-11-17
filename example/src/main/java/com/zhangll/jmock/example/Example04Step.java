@@ -10,16 +10,21 @@ import java.util.*;
 
 @ToString
 class Array01 {
-   @ContainerTokenInfo(innerBasicType = @BasicTokenInfo(min = "2", max = "3"))
-    List<String> list;
-    @ContainerTokenInfo
-    ArrayList<String> arrayList;
-    @ContainerTokenInfo
-    Set<String> set;
-    @ContainerTokenInfo
-    HashSet<String> hashSet;
-    @ContainerTokenInfo
-    LinkedList<String> linkedList;
+//    @ContainerTokenInfo(innerBasicType = @BasicTokenInfo(min = "2", max = "3"))
+//    @BasicTokenInfo(min = "2", max = "3")
+//    List<String> list;
+    @ContainerTokenInfo(innerBasicType = @BasicTokenInfo(min = "1", max = "10", step = "2"))
+    @BasicTokenInfo(min = "2", max = "3")
+    ArrayList<Integer> arrayList;
+//    @ContainerTokenInfo(innerBasicType = @BasicTokenInfo(min = "1", max = "10"))
+//    @BasicTokenInfo(min = "2", max = "3")
+//    Set<Boolean> set;
+//    @ContainerTokenInfo(innerBasicType = @BasicTokenInfo(min = "1", max = "10"))
+//    @BasicTokenInfo(min = "2", max = "3")
+//    HashSet<Double> hashSet;
+//    @ContainerTokenInfo(innerBasicType = @BasicTokenInfo(min = "1", max = "10"))
+//    @BasicTokenInfo(min = "2", max = "3")
+//    LinkedList<Short> linkedList;
 
 }
 

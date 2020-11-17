@@ -5,7 +5,8 @@
   <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>jmock-parent</artifactId>
-        <groupId>com.zhangll.jmock</groupId>
+<!--        <groupId>com.zhangll.jmock</groupId>-->
+        <groupId>com.github.a524631266</groupId>
         <version>1.0.0</version>
     </parent>
   <artifactId>example</artifactId>
@@ -30,8 +31,9 @@
     </dependency>
 
     <dependency>
-      <groupId>com.zhangll.jmock</groupId>
-      <artifactId>core</artifactId>
+<!--      <groupId>com.zhangll.jmock</groupId>-->
+      <groupId>com.github.a524631266</groupId>
+      <artifactId>jmock-core</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>
