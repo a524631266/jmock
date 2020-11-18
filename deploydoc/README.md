@@ -4,6 +4,7 @@ gpg --gen-key
 
 gpg --list-keys
 
+// 如下这一步不需要,只要在本地生成gpg就可以了
 gpg --keyserver hkp://subkeys.pgp.net --send-keys xxxxxxx
 ``` 
 
@@ -13,12 +14,16 @@ gpg --keyserver hkp://subkeys.pgp.net --send-keys xxxxxxx
     <profile>
       <id>gpg</id>
       <properties>
-          <!-- 由于我电脑安装的是gpg2，不存在gpg命令，所以需要指定执行gpg2，否则会报错 -->
+          <!-- 如果电脑安装的是gpg2，不存在gpg命令，所以需要指定执行gpg2，否则会报错 -->
           <gpg.executable>gpg</gpg.executable>
           <gpg.passphrase>xxxx</gpg.passphrase>
       </properties>
     </profile>
 </profiles>
+
+<activeProfiles>
+        <activeProfile>gpg</activeProfile>
+    </activeProfiles>
 ```
 
 ```xml

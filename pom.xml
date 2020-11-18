@@ -192,7 +192,8 @@ under the License.
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
-                                <phase>verify</phase>
+<!--                                不能添加这个verify 否则不会生成asc文件-->
+<!--                                <phase>verify</phase>-->
                                 <goals>
                                     <goal>jar-no-fork</goal>
                                 </goals>
