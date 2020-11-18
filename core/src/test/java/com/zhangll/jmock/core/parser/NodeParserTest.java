@@ -13,6 +13,20 @@ import java.util.Map;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
 
+class Father1{
+    private int age;
+    private boolean sex1;
+    private float money;
+}
+
+class Child1 extends Father1{
+    private int age2;
+    private boolean sex2;
+}
+class Child2 extends Child1{
+    private int age3;
+}
+
 public class NodeParserTest {
     NodeParser nodeParser;
     private Map<String, FieldToken> pojoTokenMap = null;
@@ -87,5 +101,11 @@ public class NodeParserTest {
     public void testParseClass(){
         FieldNode node = nodeParser.initNodeTree(Father.class, null, pojoTokenMap);
         System.out.println(node);
+    }
+
+    @Test
+    public void getAllDeclaredFields() {
+        Field[] allDeclaredFields = new NodeParser().getAllDeclaredFields(Child2.class);
+        assertTrue(allDeclaredFields.length == 6);
     }
 }

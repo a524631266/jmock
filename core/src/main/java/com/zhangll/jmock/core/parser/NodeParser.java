@@ -8,10 +8,7 @@ import com.zhangll.jmock.core.uitl.DateUtil;
 
 import java.lang.reflect.Field;
 import java.text.ParseException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 目前的版本是用来解析类上的注解作用，如果没有注解就使用默认
@@ -47,12 +44,29 @@ public class NodeParser {
         if (parent.isInnerType()) {
             return parent;
         }
-        Field[] declaredFields = cClass.getDeclaredFields();
+        // 获取所有fields 包含父类
+        Field[] declaredFields = getAllDeclaredFields(cClass);
         for (Field declaredField : declaredFields) {
             FieldNode node = initNodeTree(declaredField.getType(), declaredField, innerPojoTokens);
             parent.addChild(node);
         }
         return parent;
+    }
+
+    /**
+     * 获取当前以及所有父类的fields
+     * @param cClass
+     * @return
+     */
+    protected Field[] getAllDeclaredFields(Class<?> cClass) {
+        Field[] currentFields = cClass.getDeclaredFields();
+        if( cClass.getSuperclass() != Object.class){
+            Field[] fatherFields = getAllDeclaredFields(cClass.getSuperclass());
+            Field[] result = Arrays.copyOf(currentFields, currentFields.length + fatherFields.length);
+            System.arraycopy(fatherFields, 0, result, currentFields.length, fatherFields.length);
+            return result;
+        }
+        return currentFields;
     }
 
     private void mergePojoTokens(Map<String, FieldToken> innerPojoTokens, Map<String, FieldToken> pojoTokens) {
