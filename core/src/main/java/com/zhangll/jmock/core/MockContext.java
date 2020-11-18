@@ -43,23 +43,26 @@ public abstract class MockContext {
     }
 
     /**
-     * 创建一个对象
+     * 创建一个空对象
      * @param cClass
      * @param root
      * @return
      */
-    private Object createObject(Class<?> cClass, FieldNode root) {
+    protected Object createObject(Class<?> cClass, FieldNode root) {
         Object resource = null;
         try {
 //            resource = root.getType().newInstance();
 //            resource = cClass.newInstance();
             // 一般使用默认的构造器构造方法
-            Constructor<?>[] declaredConstructors = cClass.getDeclaredConstructors();
-            for (Constructor<?> declaredConstructor : declaredConstructors) {
-                if(declaredConstructor.getParameterCount() == 0){
-                    declaredConstructor.setAccessible(true);
-                    resource = declaredConstructor.newInstance();
-                    break;
+            resource = getInnerClassObject(cClass, root);
+            if(resource == null){
+                Constructor<?>[] declaredConstructors = cClass.getDeclaredConstructors();
+                for (Constructor<?> declaredConstructor : declaredConstructors) {
+                    if(declaredConstructor.getParameterCount() == 0){
+                        declaredConstructor.setAccessible(true);
+                        resource = declaredConstructor.newInstance();
+                        break;
+                    }
                 }
             }
         } catch (InstantiationException e) {
@@ -73,6 +76,25 @@ public abstract class MockContext {
             throw new IllegalArgumentException(cClass.getCanonicalName() + ": 无法实例化");
         }
         return resource;
+    }
+
+    /**
+     * 不断闭环
+     *
+     * @param cClass
+     * @param root
+     * @return
+     */
+    private Object getInnerClassObject(Class<?> cClass, FieldNode root) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+        Class<?> enclosingClass = cClass.getEnclosingClass();
+        if (enclosingClass != null) {
+            Object enCloseObject = createObject(enclosingClass, root);
+            Constructor<?> constructor = cClass.getConstructors()[0];
+            if(constructor != null){
+                return constructor.newInstance(enCloseObject);
+            }
+        }
+        return null;
     }
 
     /**

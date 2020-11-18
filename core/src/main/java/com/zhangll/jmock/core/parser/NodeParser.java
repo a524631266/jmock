@@ -7,6 +7,7 @@ import com.zhangll.jmock.core.model.FieldToken;
 import com.zhangll.jmock.core.uitl.DateUtil;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.text.ParseException;
 import java.util.*;
 
@@ -47,10 +48,16 @@ public class NodeParser {
         // 获取所有fields 包含父类
         Field[] declaredFields = getAllDeclaredFields(cClass);
         for (Field declaredField : declaredFields) {
-            FieldNode node = initNodeTree(declaredField.getType(), declaredField, innerPojoTokens);
-            parent.addChild(node);
+            if(!canEscapeField(declaredField)){
+                FieldNode node = initNodeTree(declaredField.getType(), declaredField, innerPojoTokens);
+                parent.addChild(node);
+            }
         }
         return parent;
+    }
+
+    private boolean canEscapeField(Field declaredField) {
+        return Modifier.isFinal(declaredField.getModifiers());
     }
 
     /**
