@@ -22,7 +22,7 @@
 <dependency>
   <groupId>com.github.a524631266</groupId>
   <artifactId>jmock-core</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
 </dependency>
 ```
 
@@ -342,6 +342,12 @@ class BooleanPojo{
 
 因此 @BasicTokenInfo(min = "1", max = "2") 会覆盖 @BasicTokenInfo(min = "1" , max = "100")规则
 
+### 8. 1.1.0 新增内容
+#### 继承类使用
+[demo ](https://github.com/a524631266/jmock/blob/1.1.0/example/src/main/java/com/zhangll/jmock/example/TestForExetends.java)
+
+#### 内部类使用
+[demo innerClass](https://github.com/a524631266/jmock/blob/1.1.0/core/src/test/java/com/zhangll/jmock/core/MockContextTest.java)
 ## 框架支持的类型
 支持普通class/内部class
 
@@ -446,7 +452,6 @@ Step01(increase=9)
 
 如果大家有疑惑，可以发起issue，我会及时解答的。
 
-## 后续进展
 
 
 > 会支持更多@前缀语义
