@@ -453,3 +453,10 @@ Step01(increase=9)
 -->
 (PS: 支付的时候 请带上你的名字/昵称呀 会维护一个赞助列表~ )
 [捐赠列表](CONTRIBUTING.md)
+
+
+
+### 解决plugins无法下载
+```cmd
+mvn dependency:get -DrepoUrl=http://repo.maven.apache.org/maven2/ -Dartifact=org.apache.maven.plugins:maven-gpg-plugin:1.6
+```
