@@ -1,11 +1,24 @@
 1. 
 ```cmd
+> 选择第一个会生成公钥和私钥
 gpg --gen-key
+
+ 
+gpg: checking the trustdb
+gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
+gpg: depth: 0  valid:   2  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 2u
+pub   2048R/B714D989 2020-11-18
+      Key fingerprint = B103 B270 9B42 D04F 12C1  26FB 7495 280B B714 D989
+uid                  zhangll <524631266@qq.com>
+sub   2048R/246857A0 2020-11-18
+
 
 gpg --list-keys
 
 // 如下这一步不需要,只要在本地生成gpg就可以了
 gpg --keyserver hkp://subkeys.pgp.net --send-keys xxxxxxx
+用如下命令确认有没有公钥
+gpg --keyserver hkp://keyserver.ubuntu.com:11371 --recv-keys  xxxxxxx
 ``` 
 
 2. settings
@@ -55,9 +68,9 @@ $ mvn clean javadoc:jar deploy -P release
 ```
 
 从上面我们发现有三个 key-servers 是 Sonatype公司要用到的，Sonatype公司会在上面任意一个key-servers上进行搜索公钥，具体的key-servers 为： 
-
+其实最好都要试一边.有些时候网络或服务问题,没有成功即使无响应
 ```xml
-http://pgp.mit.edu:11371 
+http://keys.openpgp.org:11371 
 http://keyserver.ubuntu.com:11371 
 http://pool.sks-keyservers.net:11371
 ```
