@@ -43,3 +43,36 @@ gpg --keyserver hkp://subkeys.pgp.net --send-keys xxxxxxx
 ```cmd
 $ mvn clean javadoc:jar deploy -P release
 ```
+
+4. 会出现
+
+```xml
+  * No public key: Key with id: (697b68e76252cf01) was not able to be located on &lt;a href=http://pool.sks-keyservers.net:11371/&gt;http://pool.sks-keyservers.net:11371/&lt;/a&gt;. Upload your public key and try the operation again.
+[ERROR]     * No public key: Key with id: (697b68e76252cf01) was not able to be located on &lt;a href=http://keyserver.ubuntu.com:11371/&gt;http://keyserver.ubuntu.com:11371/&lt;/a&gt;. Upload your public key and try the operation again.
+[ERROR]     * No public key: Key with id: (697b68e76252cf01) was not able to be located on &lt;a href=http://keys.openpgp.org:11371/&gt;http://keys.openpgp.org:11371/&lt;/a&gt;. Upload your public key and try the operation again.
+
+
+```
+
+从上面我们发现有三个 key-servers 是 Sonatype公司要用到的，Sonatype公司会在上面任意一个key-servers上进行搜索公钥，具体的key-servers 为： 
+
+```xml
+http://pgp.mit.edu:11371 
+http://keyserver.ubuntu.com:11371 
+http://pool.sks-keyservers.net:11371
+```
+正确的只是 使用hkp协议加端口在任意一个服务中注册
+```cmd
+gpg --keyserver hkp://keyserver.ubuntu.com:11371  --send-keys 3B8360078551E62C4E3F258BA08C67DDE0285045
+```
+3B8360078551E62C4E3F258BA08C67DDE0285045 号码哪里看
+
+```xml
+ gpg --list-key zhangll
+
+ gpg --edit-key zhangll
+    gpg> fpr
+    pub   2048R/E0285045 2020-11-18 zhangll <524631266@qq.com>
+     Primary key fingerprint: 3B83 6007 8551 E62C 4E3F  258B A08C 67DD E028 5045
+     输入 fpr
+```
