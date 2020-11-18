@@ -1,4 +1,13 @@
-1. settings
+1. 
+```cmd
+gpg --gen-key
+
+gpg --list-keys
+
+gpg --keyserver hkp://subkeys.pgp.net --send-keys xxxxxxx
+``` 
+
+2. settings
 ```xml
 <profiles>
     <profile>
@@ -25,7 +34,7 @@
 </server>
 ```
 
-2. mvn
+3. mvn
 ```cmd
 $ mvn clean javadoc:jar deploy -P release
 ```
