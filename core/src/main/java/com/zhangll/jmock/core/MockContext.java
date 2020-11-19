@@ -27,6 +27,9 @@ public abstract class MockContext {
     protected ExecutorStore executorStore = new ExecutorStore();
 
     public <T> T mock(Class<T> cClass) {
+        if(cClass == null){
+            return null;
+        }
         return (T) this.mock(cClass, null, null);
     }
 
@@ -37,7 +40,7 @@ public abstract class MockContext {
      * @return
      */
     private FieldNode initMappingStore(Class<?> cClass, Field containerField, Map<String, FieldToken> innerPojoTokens) {
-        FieldNode root;
+        FieldNode root = null;
         if((root = mappingStore.getFieldNode(cClass ,containerField ))==null){
             root = nodeParser.initNodeTree(cClass, null, innerPojoTokens);
             mappingStore.setNodeMap(cClass, containerField, root);
@@ -117,8 +120,8 @@ public abstract class MockContext {
     private Object doObjectBindField(Object target, FieldNode fieldNode) {
         // 根据classNode初始化变量
         // 给当前节点设置值, 根据之前的状态来
-        if(fieldNode == null){
-            return null;
+        if(fieldNode == null || target == null){
+            return target;
         }
         List<ASTNode> children = fieldNode.getChildren();
         for (ASTNode child : children) {
@@ -134,12 +137,16 @@ public abstract class MockContext {
 
     /**
      * 一般为 mock对象
+     *
      * @param cClass
      * @param containerField 当前类所属容器的field
-     * @param pojoTokens 映射, 一般是所属类名
+     * @param pojoTokens     映射, 一般是所属类名
      * @return
      */
-    public Object mock(Class<?> cClass, Field containerField ,Map<String, FieldToken> pojoTokens) {
+    public Object mock(Class<?> cClass, Field containerField, Map<String, FieldToken> pojoTokens) {
+        if(cClass == null){
+            return null;
+        }
         FieldNode root = null;
         // 暂时先不上mapping
         root = initMappingStore(cClass, containerField, pojoTokens);
