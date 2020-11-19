@@ -182,7 +182,7 @@ public class RandomTest {
             int it = Integer.valueOf(s.split("\\.")[0]);
 
             assertTrue( dLength >= dmin && dLength <= dmax);
-            assertTrue(it >= min && it <= max);
+            assertTrue(it >= min && it <= max+1);
         }
     }
 

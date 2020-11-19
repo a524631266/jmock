@@ -2,6 +2,7 @@
 [Mock规则官网](https://github.com/nuysoft/Mock/wiki/Syntax-Specification)
 
 [TOC]
+
 所有规则均参照**前端界**比较流行的mock框架: 
 [javascript Mock规则官网](https://github.com/nuysoft/Mock/wiki/Syntax-Specification)
 ## 背景
@@ -22,7 +23,7 @@
 <dependency>
   <groupId>com.github.a524631266</groupId>
   <artifactId>jmock-core</artifactId>
-  <version>1.1.0</version>
+  <version>1.1.1</version>
 </dependency>
 ```
 
