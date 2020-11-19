@@ -89,3 +89,9 @@ gpg --keyserver hkp://keyserver.ubuntu.com:11371  --send-keys 3B8360078551E62C4E
      Primary key fingerprint: 3B83 6007 8551 E62C 4E3F  258B A08C 67DD E028 5045
      输入 fpr
 ```
+
+
+update version
+```shell
+mvn versions:set -DnewVersion=1.1.1
+```
