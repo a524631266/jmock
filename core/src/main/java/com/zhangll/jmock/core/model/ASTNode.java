@@ -4,12 +4,16 @@ package com.zhangll.jmock.core.model;
 
 import com.zhangll.jmock.core.MockContext;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 public interface ASTNode {
     ASTNode getParent();
     List<ASTNode> getChildren();
     Class getType();
+
+    Field getDeclaredField();
+
     boolean isInnerType();
 
     /**

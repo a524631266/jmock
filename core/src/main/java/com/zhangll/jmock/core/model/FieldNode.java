@@ -136,6 +136,7 @@ public class FieldNode implements ASTNode{
         declaredField.set(target, source);
     }
 
+    @Override
     public Field getDeclaredField() {
         return declaredField;
     }

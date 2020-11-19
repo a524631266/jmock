@@ -67,11 +67,17 @@ public class NodeParser {
      */
     protected Field[] getAllDeclaredFields(Class<?> cClass) {
         Field[] currentFields = cClass.getDeclaredFields();
-        if( cClass.getSuperclass() != Object.class){
-            Field[] fatherFields = getAllDeclaredFields(cClass.getSuperclass());
-            Field[] result = Arrays.copyOf(currentFields, currentFields.length + fatherFields.length);
-            System.arraycopy(fatherFields, 0, result, currentFields.length, fatherFields.length);
-            return result;
+        if( cClass.getSuperclass() != Object.class
+            && cClass.getSuperclass() != null
+            ){
+            try {
+                Field[] fatherFields = getAllDeclaredFields(cClass.getSuperclass());
+                Field[] result = Arrays.copyOf(currentFields, currentFields.length + fatherFields.length);
+                System.arraycopy(fatherFields, 0, result, currentFields.length, fatherFields.length);
+                return result;
+            } catch (NullPointerException exception) {
+                throw new NullPointerException(cClass.getName() +":" + cClass.getSuperclass());
+            }
         }
         return currentFields;
     }

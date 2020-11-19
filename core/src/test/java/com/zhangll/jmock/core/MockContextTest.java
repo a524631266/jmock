@@ -34,7 +34,7 @@ public class MockContextTest {
     }
     @Test
     public void createNotNullObject() {
-        Object object = context.createObject(InnerClass.class, null);
+        Object object = context.createObject(InnerClass.class, null, null);
         assertTrue(object != null);
     }
 

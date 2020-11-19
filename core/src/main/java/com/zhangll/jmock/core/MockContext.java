@@ -5,8 +5,11 @@ import com.zhangll.jmock.core.model.ASTNode;
 import com.zhangll.jmock.core.model.FieldNode;
 import com.zhangll.jmock.core.model.FieldToken;
 import com.zhangll.jmock.core.parser.NodeParser;
+import com.zhangll.jmock.core.random.AbstractRandomExecutor;
 import com.zhangll.jmock.core.random.ExecutorStore;
 import com.zhangll.jmock.core.random.RandomType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -18,13 +21,13 @@ import java.util.Map;
  * 解析流程
  */
 public abstract class MockContext {
+    private final  static Logger LOG = LoggerFactory.getLogger(MockContext.class);
     protected MappingStore mappingStore = new MappingStore();
     protected static NodeParser nodeParser = new NodeParser();
     protected ExecutorStore executorStore = new ExecutorStore();
 
-    public  Object mock(Class<?> cClass) {
-
-        return this.mock(cClass, null, null);
+    public <T> T mock(Class<T> cClass) {
+        return (T) this.mock(cClass, null, null);
     }
 
     /**
@@ -33,11 +36,11 @@ public abstract class MockContext {
      * @param innerPojoTokens
      * @return
      */
-    private FieldNode initMappingStore(Class<?> cClass, Field ownField, Map<String, FieldToken> innerPojoTokens) {
+    private FieldNode initMappingStore(Class<?> cClass, Field containerField, Map<String, FieldToken> innerPojoTokens) {
         FieldNode root;
-        if((root = mappingStore.getFieldNode(cClass ,ownField ))==null){
+        if((root = mappingStore.getFieldNode(cClass ,containerField ))==null){
             root = nodeParser.initNodeTree(cClass, null, innerPojoTokens);
-            mappingStore.setNodeMap(cClass, ownField, root);
+            mappingStore.setNodeMap(cClass, containerField, root);
         }
         return root;
     }
@@ -46,15 +49,16 @@ public abstract class MockContext {
      * 创建一个空对象
      * @param cClass
      * @param root
+     * @param pojoTokens
      * @return
      */
-    protected Object createObject(Class<?> cClass, FieldNode root) {
+    protected Object createObject(Class<?> cClass, FieldNode root, Map<String, FieldToken> pojoTokens) {
         Object resource = null;
         try {
 //            resource = root.getType().newInstance();
 //            resource = cClass.newInstance();
             // 一般使用默认的构造器构造方法
-            resource = getInnerClassObject(cClass, root);
+            resource = getInnerClassObject(cClass, root, pojoTokens);
             if(resource == null){
                 Constructor<?>[] declaredConstructors = cClass.getDeclaredConstructors();
                 for (Constructor<?> declaredConstructor : declaredConstructors) {
@@ -73,7 +77,8 @@ public abstract class MockContext {
             e.printStackTrace();
         }
         if(resource == null){
-            throw new IllegalArgumentException(cClass.getCanonicalName() + ": 无法实例化");
+            LOG.debug(cClass.getCanonicalName() + ": 无法实例化");
+//            throw new IllegalArgumentException(cClass.getCanonicalName() + ": 无法实例化");
         }
         return resource;
     }
@@ -83,13 +88,18 @@ public abstract class MockContext {
      *
      * @param cClass
      * @param root
+     * @param pojoTokens
      * @return
      */
-    private Object getInnerClassObject(Class<?> cClass, FieldNode root) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+    private Object getInnerClassObject(Class<?> cClass, FieldNode root, Map<String, FieldToken> pojoTokens) throws IllegalAccessException, InvocationTargetException, InstantiationException {
         Class<?> enclosingClass = cClass.getEnclosingClass();
         if (enclosingClass != null) {
-            Object enCloseObject = createObject(enclosingClass, root);
-            Constructor<?> constructor = cClass.getConstructors()[0];
+            // 单个对象. 这里如何判断是否停止mock,是根据什么来判断
+//            Object enCloseObject = createObject(enclosingClass, root, pojoTokens);
+            // container对象
+            Object enCloseObject = mock(enclosingClass, root==null || root.getParent() == null? null: root.getParent().getDeclaredField(), pojoTokens);
+            Constructor<?> constructor = cClass.getDeclaredConstructors()[0];
+            constructor.setAccessible(true);
             if(constructor != null){
                 return constructor.newInstance(enCloseObject);
             }
@@ -107,6 +117,9 @@ public abstract class MockContext {
     private Object doObjectBindField(Object target, FieldNode fieldNode) {
         // 根据classNode初始化变量
         // 给当前节点设置值, 根据之前的状态来
+        if(fieldNode == null){
+            return null;
+        }
         List<ASTNode> children = fieldNode.getChildren();
         for (ASTNode child : children) {
             child.assignInnerObject(target, this);
@@ -122,21 +135,21 @@ public abstract class MockContext {
     /**
      * 一般为 mock对象
      * @param cClass
-     * @param ownField 当前所属域
-     * @param pojoTokens
+     * @param containerField 当前类所属容器的field
+     * @param pojoTokens 映射, 一般是所属类名
      * @return
      */
-    public Object mock(Class<?> cClass, Field ownField ,Map<String, FieldToken> pojoTokens) {
+    public Object mock(Class<?> cClass, Field containerField ,Map<String, FieldToken> pojoTokens) {
         FieldNode root = null;
         // 暂时先不上mapping
-        root = initMappingStore(cClass, ownField, pojoTokens);
+        root = initMappingStore(cClass, containerField, pojoTokens);
         // 1. 创建一个对象,不过这个对象是
-        Object resource = createObject(cClass, root);
+        Object resource = createObject(cClass, root, pojoTokens);
         return doObjectBindField(resource, root);
     }
 
     public Object mockWithContext(Class currentClass, FieldNode fieldNode){
-        Object object = createObject(currentClass, fieldNode);
+        Object object = createObject(currentClass, fieldNode, null);
         return doObjectBindField(object, fieldNode);
     };
 }
