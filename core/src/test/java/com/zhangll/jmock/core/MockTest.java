@@ -14,6 +14,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class MockTest
 {
+    private AnnotationMockContext context =  new AnnotationMockContext();
     /**
      * Rigorous Test :-)
      */
@@ -22,7 +23,7 @@ public class MockTest
     {
         int count = 0;
         while ((count ++) < 200){
-            Father father = (Father) new AnnotationMockContext().mock(Father.class);
+            Father father = (Father) context.mock(Father.class);
 //            System.out.println(father);
             assertTrue(father.getAge() >=10 && father.getAge() <= 100);
         }
@@ -40,7 +41,7 @@ public class MockTest
             new Thread(){
                 @Override
                 public void run() {
-                    Father father = (Father) new AnnotationMockContext().mock(Father.class);
+                    Father father = (Father) context.mock(Father.class);
 //                    System.out.println(father);
                     assertTrue(father.getAge() >= 10 && father.getAge() <= 100);
 //                    System.out.println("count:" + (System.currentTimeMillis() - l));
@@ -63,7 +64,7 @@ public class MockTest
     @Test
     public void testNestModel2()
     {
-        AnnotationMockContext context = new AnnotationMockContext();
+//        AnnotationMockContext context = new AnnotationMockContext();
         for (int i = 0; i < 100; i++) {
             Father mock = (Father)context.mock(Father.class);
 //            System.out.println(mock.getRegrex());
@@ -74,7 +75,7 @@ public class MockTest
     @Test
     public void testListStep()
     {
-        AnnotationMockContext context = new AnnotationMockContext();
+//        AnnotationMockContext context = new AnnotationMockContext();
         String arrayValueRegrex = "\\d{5,6}\\w+\\d";
         Pattern compile = Pattern.compile(arrayValueRegrex);
         for (int i = 0; i < 100; i++) {
@@ -91,7 +92,7 @@ public class MockTest
     @Test
     public void testArrayStep()
     {
-        AnnotationMockContext context = new AnnotationMockContext();
+//        AnnotationMockContext context = new AnnotationMockContext();
         String arrayValueRegrex = "\\d{1,3}  abcd\\/ \\d";
         Pattern compile = Pattern.compile(arrayValueRegrex);
         for (int i = 0; i < 100; i++) {
@@ -110,7 +111,7 @@ public class MockTest
     @Test
     public void testPojo()
     {
-        AnnotationMockContext context = new AnnotationMockContext();
+//        AnnotationMockContext context = new AnnotationMockContext();
         String arrayValueRegrex = "\\d{1,3}  abcd\\/ \\d";
         for (int i = 0; i < 100; i++) {
             Father mock = (Father)context.mock(Father.class);
@@ -125,7 +126,7 @@ public class MockTest
     @Test
     public void testArrayPojo()
     {
-        AnnotationMockContext context = new AnnotationMockContext();
+//        AnnotationMockContext context = new AnnotationMockContext();
         for (int i = 0; i < 100; i++) {
             Father mock = (Father)context.mock(Father.class);
             Son[] sonlist2 = mock.getSonlist2();
@@ -141,7 +142,7 @@ public class MockTest
     @Test
     public void testListPojo()
     {
-        AnnotationMockContext context = new AnnotationMockContext();
+//        AnnotationMockContext context = new AnnotationMockContext();
         for (int i = 0; i < 2; i++) {
             Father mock = (Father)context.mock(Father.class);
             ArrayList<Son> sonslist = mock.getSonslist();

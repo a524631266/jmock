@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ExecutorStore {
-    public static Map<Class, RandomType> randomMap = new HashMap<Class, RandomType>();
+    public Map<Class, RandomType> randomMap = new HashMap<Class, RandomType>();
     public ExecutorStore() {
 
     }
