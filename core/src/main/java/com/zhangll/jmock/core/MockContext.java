@@ -1,6 +1,7 @@
 package com.zhangll.jmock.core;
 
 
+import com.zhangll.jmock.core.ext.EnumRandomExecutor;
 import com.zhangll.jmock.core.model.ASTNode;
 import com.zhangll.jmock.core.model.FieldNode;
 import com.zhangll.jmock.core.model.FieldToken;
@@ -159,4 +160,8 @@ public abstract class MockContext {
         Object object = createObject(currentClass, fieldNode, null);
         return doObjectBindField(object, fieldNode);
     };
+
+    public void register(Class<?> enumClass, AbstractRandomExecutor executor) {
+        executorStore.register(enumClass, executor);
+    }
 }

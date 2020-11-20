@@ -6,10 +6,7 @@ import java.lang.reflect.Array;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class RandomExecutorFactory {
     private static Map<Class, RandomType> randomMap = new HashMap<Class, RandomType>();
@@ -50,7 +47,5 @@ public class RandomExecutorFactory {
         }
         return randomMap.get(type);
     }
-
-
 
 }
