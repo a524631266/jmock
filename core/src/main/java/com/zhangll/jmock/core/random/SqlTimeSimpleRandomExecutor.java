@@ -173,26 +173,32 @@ public class SqlTimeSimpleRandomExecutor extends AbstractRandomExecutor {
 
     /**
      * bug 当 gap 很小，时候
+     * bug 2 当 getMin与getMax相等时候,会垂下按各占哦给异常
+     *
      * @param value
      * @param currentTokenInfo
      * @return
      */
     private long verifyOutBound(long value, FieldToken currentTokenInfo) {
-        if(value < (Long.valueOf(currentTokenInfo.getMin()) * 1000)){
-            long gap = Long.valueOf(currentTokenInfo.getMax() - currentTokenInfo.getMin()) * 1000;
+        long gap = Long.valueOf(currentTokenInfo.getMax() - currentTokenInfo.getMin()) * 1000;
+        if (gap == 0){
+            return currentTokenInfo.getMax() * 1000;
+        }
+
+        if (value < (Long.valueOf(currentTokenInfo.getMin()) * 1000)) {
             long result = value + gap;
-            while (result < (Long.valueOf(currentTokenInfo.getMin()) * 1000)){
+            while (result < (Long.valueOf(currentTokenInfo.getMin()) * 1000)) {
                 result += gap;
             }
             return result;
         }
-        if(value > (Long.valueOf(currentTokenInfo.getMax()) * 1000)){
-            long gap = Long.valueOf(currentTokenInfo.getMax() - currentTokenInfo.getMin()) * 1000;
+
+        if (value > (Long.valueOf(currentTokenInfo.getMax()) * 1000)) {
             long result = value - gap;
-            while (result > (Long.valueOf(currentTokenInfo.getMax()) * 1000)){
+            while (result > (Long.valueOf(currentTokenInfo.getMax()) * 1000)) {
                 result -= gap;
             }
-            return  result;
+            return result;
         }
         return value;
     }
