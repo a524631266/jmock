@@ -24,8 +24,8 @@ import java.util.Map;
 public abstract class MockContext {
     private final  static Logger LOG = LoggerFactory.getLogger(MockContext.class);
     protected MappingStore mappingStore = new MappingStore();
-    protected static NodeParser nodeParser = new NodeParser();
     protected ExecutorStore executorStore = new ExecutorStore();
+    protected NodeParser nodeParser = new NodeParser(executorStore);
 
     public <T> T mock(Class<T> cClass) {
         if(cClass == null){

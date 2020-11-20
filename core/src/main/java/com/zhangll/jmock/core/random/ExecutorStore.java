@@ -33,7 +33,7 @@ public class ExecutorStore {
             random = executors.stream()
                     .filter(randomType -> randomType.isCurrentType(cClass))
                     .findFirst()
-                    .get();
+                    .orElse(null);
         }
         return random;
     }
@@ -53,5 +53,9 @@ public class ExecutorStore {
             result.add(iterator.next());
         }
         return result;
+    }
+
+    public boolean isInnerType(Class currentClass) {
+        return RandomExecutorFactory.getRandom(currentClass)!=null;
     }
 }

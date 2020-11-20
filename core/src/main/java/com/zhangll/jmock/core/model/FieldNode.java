@@ -3,7 +3,7 @@ package com.zhangll.jmock.core.model;
 
 import com.zhangll.jmock.core.MockContext;
 import com.zhangll.jmock.core.random.AbstractRandomExecutor;
-import com.zhangll.jmock.core.random.RandomExecutorFactory;
+import com.zhangll.jmock.core.random.ExecutorStore;
 import com.zhangll.jmock.core.random.RandomType;
 import com.zhangll.jmock.core.rule.Rule;
 import com.zhangll.jmock.core.type.BasicType;
@@ -27,6 +27,7 @@ public class FieldNode implements ASTNode{
     final Class currentClass;
     final boolean isInnerType;
     private final RandomType executor;
+    private final ExecutorStore executorStore;
 //    private Map<String, FieldToken> fieldTokens = new HashMap<>();
     /**
      * 默认为null
@@ -64,14 +65,17 @@ public class FieldNode implements ASTNode{
      * @param currentTokenInfo
      * @param innerPojoTokens
      * @param innerBasicTokens
+     * @param executorStore
      */
     public FieldNode(Class currentClass, Field field,
                      FieldToken currentTokenInfo,
                      Map<String, FieldToken> innerPojoTokens,
-                     FieldToken innerBasicTokens) {
+                     FieldToken innerBasicTokens, ExecutorStore executorStore) {
         this.currentClass = currentClass;
-        this.executor = RandomExecutorFactory.getRandom(currentClass);
-        this.isInnerType = this.executor != null;
+        this.executorStore = executorStore;
+        this.executor = executorStore.getExecutor(currentClass);
+//        this.isInnerType = this.executor != null;
+        this.isInnerType = executorStore.isInnerType(currentClass);
         if(field != null){
             field.setAccessible(true);
             this.componentType = field.getType().getComponentType();
@@ -116,9 +120,10 @@ public class FieldNode implements ASTNode{
 
     @Override
     public void assignInnerObject(Object target, MockContext context) {
-        if(isInnerType){
-            ((AbstractRandomExecutor) executor).updateField(target, context,this);
-        }else{
+
+        if (executor != null) {
+            ((AbstractRandomExecutor) executor).updateField(target, context, this);
+        } else {
             Object source = context.mockWithContext(this.currentClass, this);
             this.swap(target, source);
         }
@@ -183,7 +188,7 @@ public class FieldNode implements ASTNode{
             }else{
                 boolean isInner = false;
                 for (int i = 0; i < actualTypeArguments.length; i++) {
-                    RandomType random = RandomExecutorFactory.getRandom((Class) actualTypeArguments[i]);
+                    RandomType random = executorStore.getExecutor((Class) actualTypeArguments[i]);
                     if (random != null) {
                         isInner = true;
                         break;
@@ -196,7 +201,7 @@ public class FieldNode implements ASTNode{
         if(componentType != null){
             boolean isInner = false;
 
-            RandomType random = RandomExecutorFactory.getRandom(componentType);
+            RandomType random = executorStore.getExecutor(componentType);
             if (random != null) {
                 isInner = true;
 

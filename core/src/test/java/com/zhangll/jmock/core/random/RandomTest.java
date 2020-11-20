@@ -36,7 +36,9 @@ public class RandomTest {
     @Before
     public void init(){
         mockContext = new AnnotationMockContext();
-        nodeParser = new NodeParser();
+
+        ExecutorStore store = new ExecutorStore();
+        nodeParser = new NodeParser(store);
     }
 
     /**

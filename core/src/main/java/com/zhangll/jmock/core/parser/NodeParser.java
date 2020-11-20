@@ -4,6 +4,7 @@ package com.zhangll.jmock.core.parser;
 import com.zhangll.jmock.core.annotation.*;
 import com.zhangll.jmock.core.model.FieldNode;
 import com.zhangll.jmock.core.model.FieldToken;
+import com.zhangll.jmock.core.random.ExecutorStore;
 import com.zhangll.jmock.core.uitl.DateUtil;
 
 import java.lang.reflect.Field;
@@ -20,6 +21,12 @@ import java.util.*;
  * @author zhangll
  */
 public class NodeParser {
+    protected final ExecutorStore executorStore;
+
+    public NodeParser(ExecutorStore executorStore) {
+        this.executorStore = executorStore;
+    }
+
     /**
      * 根据当前的类，获取fieldTokens
      *
@@ -133,8 +140,8 @@ public class NodeParser {
                 currentField,
                 currentFieldToken,
                 innerPojoTokens,
-                innerBasicToken
-                );
+                innerBasicToken,
+                executorStore);
     }
 
 

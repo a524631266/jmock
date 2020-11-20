@@ -34,6 +34,10 @@ public abstract class AbstractRandomExecutor implements RandomExecutor {
         if(compute == null){
             compute = fieldNodeContext.getRule().apply(context, fieldNodeContext);
         }
+
+        if(compute == null) {
+            return;
+        }
         Object result = postProcessor.postProcessAfterCompute(compute);
         try {
             fieldNodeContext.getDeclaredField().set(target, convertToCurrentType(fieldNodeContext, result));

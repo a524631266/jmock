@@ -4,6 +4,7 @@ package com.zhangll.jmock.core.parser;
 import com.zhangll.jmock.core.Father;
 import com.zhangll.jmock.core.model.FieldNode;
 import com.zhangll.jmock.core.model.FieldToken;
+import com.zhangll.jmock.core.random.ExecutorStore;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,9 +31,13 @@ class Child2 extends Child1{
 public class NodeParserTest {
     NodeParser nodeParser;
     private Map<String, FieldToken> pojoTokenMap = null;
+    private ExecutorStore store;
+
     @Before
     public void init(){
-        nodeParser = new NodeParser();
+
+        store = new ExecutorStore();
+        nodeParser = new NodeParser(store);
         pojoTokenMap = null;
     }
     @Test
@@ -105,7 +110,7 @@ public class NodeParserTest {
 
     @Test
     public void getAllDeclaredFields() {
-        Field[] allDeclaredFields = new NodeParser().getAllDeclaredFields(Child2.class);
+        Field[] allDeclaredFields = new NodeParser(store).getAllDeclaredFields(Child2.class);
         assertTrue(allDeclaredFields.length == 6);
     }
 }
