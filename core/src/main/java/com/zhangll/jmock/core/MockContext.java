@@ -27,6 +27,14 @@ public abstract class MockContext {
     protected ExecutorStore executorStore = new ExecutorStore();
     protected NodeParser nodeParser = new NodeParser(executorStore);
 
+    public MockContext(){
+        registerExtExecutor();
+    }
+
+    private void registerExtExecutor() {
+        executorStore.register(Enum.class, new EnumRandomExecutor());
+    }
+
     public <T> T mock(Class<T> cClass) {
         if(cClass == null){
             return null;
@@ -149,7 +157,7 @@ public abstract class MockContext {
             return null;
         }
         FieldNode root = null;
-        // 暂时先不上mapping
+        // 1.初始化 root
         root = initMappingStore(cClass, containerField, pojoTokens);
         // 1. 创建一个对象,不过这个对象是
         Object resource = createObject(cClass, root, pojoTokens);
