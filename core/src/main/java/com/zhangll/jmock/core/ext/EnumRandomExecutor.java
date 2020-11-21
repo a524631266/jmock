@@ -17,7 +17,7 @@ public class EnumRandomExecutor extends AbstractRandomExecutor {
     );
     @Nullable
     @Override
-    protected Object doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
+    protected Object doHandleStepUsingMinMaxOrValue(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
         return null;
     }
 

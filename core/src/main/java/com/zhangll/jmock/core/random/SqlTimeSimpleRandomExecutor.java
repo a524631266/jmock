@@ -116,7 +116,7 @@ public class SqlTimeSimpleRandomExecutor extends AbstractRandomExecutor {
      * @return Date Time Timestamp
      */
     @Override
-    protected Object doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
+    protected Object doHandleStepUsingMinMaxOrValue(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
         long result = 0;
 
         try {
@@ -205,7 +205,7 @@ public class SqlTimeSimpleRandomExecutor extends AbstractRandomExecutor {
 
 
     @Override
-    protected Object doHandleCountValue(MockContext context, FieldNode fieldNodeContext) {
+    protected Object doHandleRandomValue(MockContext context, FieldNode fieldNodeContext) {
         String[] value = fieldNodeContext.getCurrentTokenInfo().getValue();
         Integer index = RandomUtil.getMin2Max(0, value.length - 1);
         return value[index];

@@ -36,7 +36,7 @@ public class CharSimpleRandomExecutor extends AbstractRandomExecutor {
     }
 
     @Override
-    protected Character doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
+    protected Character doHandleStepUsingMinMaxOrValue(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
         String[] value = currentTokenInfo.getValue();
 
         if(value.length > 0){
@@ -67,7 +67,7 @@ public class CharSimpleRandomExecutor extends AbstractRandomExecutor {
         }
     }
     @Override
-    protected Object doHandleCountValue(MockContext context, FieldNode fieldNodeContext) {
+    protected Object doHandleRandomValue(MockContext context, FieldNode fieldNodeContext) {
         String[] value = fieldNodeContext.getCurrentTokenInfo().getValue();
         Integer index = RandomUtil.getMin2Max(0, value.length - 1);
         return value[index];

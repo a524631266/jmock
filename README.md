@@ -376,7 +376,7 @@ java基本类型 | boolean.class
 时间类型 | sql.Date.class
 时间类型 | sql.Time.class
 时间类型 | sql.Timestamp.class
-
+枚举类型 | Enum.class
 
 
 
@@ -475,3 +475,7 @@ Step01(increase=9)
 1. Enum 类型的随机生成
 [查看地址](example/src/main/java/com/zhangll/jmock/example/EnumExample.java)
 
+2. 开放支持用户自定义规则，详情请看
+
+[自定义Enum扩展类](core/src/main/java/com/zhangll/jmock/core/ext/EnumRandomExecutor.java)
+[注册方式](core/src/test/java/com/zhangll/jmock/core/ext/EnumRandomExecutorTest.java)

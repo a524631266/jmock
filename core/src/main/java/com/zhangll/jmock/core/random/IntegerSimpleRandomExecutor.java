@@ -50,7 +50,7 @@ public class IntegerSimpleRandomExecutor extends AbstractRandomExecutor {
      * @return
      */
     @Override
-    protected Integer doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
+    protected Integer doHandleStepUsingMinMaxOrValue(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
         String[] value = currentTokenInfo.getValue();
 
         if(value.length > 0){
@@ -82,11 +82,11 @@ public class IntegerSimpleRandomExecutor extends AbstractRandomExecutor {
     }
 
     @Override
-    protected Object doHandleCountValue(MockContext context, FieldNode fieldNodeContext) {
+    protected Object doHandleRandomValue(MockContext context, FieldNode fieldNodeContext) {
         String[] value = fieldNodeContext.getCurrentTokenInfo().getValue();
         Integer index = RandomUtil.getMin2Max(0, value.length - 1);
         return value[index];
-//        return super.doHandleCountValue(context, fieldNodeContext);
+//        return super.doHandleRandomValue(context, fieldNodeContext);
     }
 
     @Override

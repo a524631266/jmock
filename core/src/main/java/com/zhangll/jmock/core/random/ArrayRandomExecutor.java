@@ -46,7 +46,7 @@ public class ArrayRandomExecutor<T> extends AbstractRandomExecutor {
     }
 
     @Override
-    protected Object doHandleStep(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
+    protected Object doHandleStepUsingMinMaxOrValue(FieldToken currentTokenInfo, FieldNode.StepState currentState) {
         //TODO
         return null;
     }
