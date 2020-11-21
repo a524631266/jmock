@@ -95,3 +95,9 @@ update version
 ```shell
 mvn versions:set -DnewVersion=1.1.1
 ```
+
+
+### 解决plugins无法下载
+```cmd
+mvn dependency:get -DrepoUrl=http://repo.maven.apache.org/maven2/ -Dartifact=org.apache.maven.plugins:maven-gpg-plugin:1.6
+```

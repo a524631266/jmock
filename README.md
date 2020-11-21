@@ -471,8 +471,7 @@ Step01(increase=9)
 [捐赠列表](CONTRIBUTING.md)
 
 
+## 1.1.2 新增内容
+1. Enum 类型的随机生成
+[查看地址](example/src/main/java/com/zhangll/jmock/example/EnumExample.java)
 
-### 解决plugins无法下载
-```cmd
-mvn dependency:get -DrepoUrl=http://repo.maven.apache.org/maven2/ -Dartifact=org.apache.maven.plugins:maven-gpg-plugin:1.6
-```
