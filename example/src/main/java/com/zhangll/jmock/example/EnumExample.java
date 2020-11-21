@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.List;
+
 enum State{
     START(0),
     RUNNGING(1),
@@ -43,6 +45,11 @@ class EnumPojo{
     State state;
     EmptyState emptyState;
     StringState stringState;
+//    StringState[] SS;
+    @BasicTokenInfo(min = "1", max = "3")
+    List<StringState> list;
+    @BasicTokenInfo(min = "1", max = "3")
+    List<State> list2;
 }
 
 public class EnumExample {

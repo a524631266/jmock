@@ -141,6 +141,45 @@ public class FieldNode implements ASTNode{
         declaredField.set(target, source);
     }
 
+    /**
+     * Array<T>
+     * 一般来说就是返回一个范型的list
+     * 这里的范型没有做更多的约束，因此只有一个innerBasicTokens可用
+     *
+     * @return
+     */
+    @Override
+    public List<FieldNode> getGenericFieldNodes() {
+        // TODO 先做一个实时获取
+        List<FieldNode> result = new ArrayList<>();
+        for (Type actualTypeArgument : this.getActualTypeArguments()) {
+            FieldNode node = new FieldNode(
+                    (Class) actualTypeArgument,
+                    null,
+                    this.innerBasicTokens,
+                    null,
+                    null,
+                    this.executorStore
+                    );
+            result.add(node);
+        }
+        return result;
+    }
+
+    @Override
+    public FieldNode getComponentContext() {
+        FieldNode node = new FieldNode(
+                this.getComponentType(),
+                null,
+                this.innerBasicTokens,
+                null,
+                null,
+                this.executorStore
+        );
+        return node;
+    }
+
+
     @Override
     public Field getDeclaredField() {
         return declaredField;

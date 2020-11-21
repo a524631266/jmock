@@ -118,7 +118,9 @@ public class ArrayRandomExecutor<T> extends AbstractRandomExecutor {
                 for (int i = 0; i < elementNum; i++) {
                     if (fieldNodeContext.innerContainerIsInnerType()) {
 
-                        o[i] = executor.getRule(fieldNodeContext.getInnerBasicTokens()).apply(mockContext, fieldNodeContext);
+                        FieldNode componentContext = fieldNodeContext.getComponentContext();
+                        o[i] = executor.getRule(fieldNodeContext.getInnerBasicTokens())
+                                .apply(mockContext, componentContext);
                     } else {
                         // componentType =  POJO Type
                         o[i] = mockContext.mock(componentType, fieldNodeContext.getDeclaredField(), fieldNodeContext.getInnerPojoTokens());

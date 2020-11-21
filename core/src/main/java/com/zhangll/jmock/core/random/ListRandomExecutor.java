@@ -6,7 +6,6 @@ import com.zhangll.jmock.core.model.FieldToken;
 import com.zhangll.jmock.core.rule.Rule;
 import com.zhangll.jmock.core.type.BasicType;
 import com.zhangll.jmock.core.uitl.RandomUtil;
-import com.zhangll.jmock.core.model.FieldNode;
 
 import java.lang.reflect.Type;
 import java.util.*;
@@ -146,7 +145,10 @@ public class ListRandomExecutor<T> extends AbstractRandomExecutor {
                         // 通过子token规则获取subFiledToken内容
 
                         if (fieldNodeContext.innerContainerIsInnerType()) {
-                            o.add(executor.getRule(fieldNodeContext.getInnerBasicTokens()).apply(mockContext, null));
+//                            o.add(executor.getRule(fieldNodeContext.getInnerBasicTokens()).apply(mockContext, null));
+                            FieldNode listGenericNode = fieldNodeContext.getGenericFieldNodes().get(0);
+                            o.add(executor.getRule(fieldNodeContext.getInnerBasicTokens())
+                                    .apply(mockContext, listGenericNode));
                         } else {
                             o.add(mockContext.mock((Class<?>) actualTypeArguments[0],fieldNodeContext.getDeclaredField(), fieldNodeContext.getInnerPojoTokens()));
 //                            o.add(mockContext.mockWithContext((Class<?>) actualTypeArguments[0], fieldNodeContext));

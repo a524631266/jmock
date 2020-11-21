@@ -24,4 +24,12 @@ public interface ASTNode {
     void assignInnerObject(Object target, MockContext context);
     void swap(Object target, Object source);
 
+    /**
+     * 获取当前Field节点树中的范型所表示的tokens
+     * @return
+     */
+    List<FieldNode> getGenericFieldNodes();
+
+
+    FieldNode getComponentContext();
 }

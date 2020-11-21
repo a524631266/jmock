@@ -1,6 +1,7 @@
 package com.zhangll.jmock.core.ext;
 
 import com.zhangll.jmock.core.AnnotationMockContext;
+import com.zhangll.jmock.core.annotation.BasicTokenInfo;
 import com.zhangll.jmock.core.random.RandomType;
 import lombok.Getter;
 import lombok.ToString;
@@ -8,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 import static org.junit.Assert.*;
 enum State{
@@ -47,6 +49,12 @@ class EnumPojo{
     State state;
     EmptyState emptyState;
     StringState stringState;
+
+    @BasicTokenInfo(min = "1", max = "3")
+    List<State> stateList;
+
+    @BasicTokenInfo(min = "1", max = "3")
+    StringState[] stateList2;
 }
 
 public class EnumRandomExecutorTest {
@@ -79,6 +87,14 @@ public class EnumRandomExecutorTest {
             assertNotNull(state);
             assertNotNull(stringState);
             assertNull(emptyState);
+
+            List<State> stateList = mock.getStateList();
+            assertTrue(stateList.size()>0 && stateList.size()<4);
+
+            StringState[] stateList2 = mock.getStateList2();
+            assertTrue(stateList.size()>0 && stateList.size()<4);
+            System.out.println(mock);
+
         }
     }
 
