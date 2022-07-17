@@ -48,7 +48,7 @@ public abstract class MockContext {
      * @param innerPojoTokens
      * @return
      */
-    private FieldNode initMappingStore(Class<?> cClass,
+    protected FieldNode initMappingStore(Class<?> cClass,
                                        Field containerField,
                                        Map<String, FieldToken> innerPojoTokens,
                                        Integer deep) {
@@ -76,7 +76,7 @@ public abstract class MockContext {
 //            resource = root.getType().newInstance();
 //            resource = cClass.newInstance();
             // 一般使用默认的构造器构造方法
-//            resource = getInnerClassObject(cClass, root, pojoTokens);
+            resource = getInnerClassObject(cClass, root, pojoTokens);
             if(resource == null){
                 Constructor<?>[] declaredConstructors = cClass.getDeclaredConstructors();
                 for (Constructor<?> declaredConstructor : declaredConstructors) {
@@ -109,21 +109,26 @@ public abstract class MockContext {
      * @param pojoTokens
      * @return
      */
-//    private Object getInnerClassObject(Class<?> cClass, FieldNode root, Map<String, FieldToken> pojoTokens) throws IllegalAccessException, InvocationTargetException, InstantiationException {
-//        Class<?> enclosingClass = cClass.getEnclosingClass();
-//        if (enclosingClass != null) {
-//            // 单个对象. 这里如何判断是否停止mock,是根据什么来判断
-////            Object enCloseObject = createObject(enclosingClass, root, pojoTokens);
-//            // container对象
-//            Object enCloseObject = mock(enclosingClass, root==null || root.getParent() == null? null: root.getParent().getDeclaredField(), pojoTokens);
-//            Constructor<?> constructor = cClass.getDeclaredConstructors()[0];
-//            constructor.setAccessible(true);
-//            if(constructor != null){
-//                return constructor.newInstance(enCloseObject);
-//            }
-//        }
-//        return null;
-//    }
+    private Object getInnerClassObject(Class<?> cClass,
+                                       FieldNode root,
+                                       Map<String, FieldToken> pojoTokens) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+        Class<?> enclosingClass = cClass.getEnclosingClass();
+        if (enclosingClass != null) {
+            // 单个对象. 这里如何判断是否停止mock,是根据什么来判断
+//            Object enCloseObject = createObject(enclosingClass, root, pojoTokens);
+            // container对象
+            Object enCloseObject = mock(enclosingClass,
+                    root==null || root.getParent() == null? null: root.getParent().getDeclaredField(),
+                    pojoTokens,
+                    root==null || root.getParent() == null? 1 : root.getDeep() + 1);
+            Constructor<?> constructor = cClass.getDeclaredConstructors()[0];
+            constructor.setAccessible(true);
+            if(constructor != null){
+                return constructor.newInstance(enCloseObject);
+            }
+        }
+        return null;
+    }
 
     /**
      * 给 target 赋值 field,
