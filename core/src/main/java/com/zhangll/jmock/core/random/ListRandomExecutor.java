@@ -150,7 +150,13 @@ public class ListRandomExecutor<T> extends AbstractRandomExecutor {
                             o.add(executor.getRule(fieldNodeContext.getInnerBasicTokens())
                                     .apply(mockContext, listGenericNode));
                         } else {
-                            o.add(mockContext.mock((Class<?>) actualTypeArguments[0],fieldNodeContext.getDeclaredField(), fieldNodeContext.getInnerPojoTokens()));
+                            o.add(
+                                    mockContext.mock(
+                                            (Class<?>) actualTypeArguments[0],
+                                            fieldNodeContext.getDeclaredField(),
+                                            fieldNodeContext.getInnerPojoTokens(),
+                                            fieldNodeContext.getDeep()
+                            ));
 //                            o.add(mockContext.mockWithContext((Class<?>) actualTypeArguments[0], fieldNodeContext));
 //                            o.add(fieldNodeContext.);
 //                            fieldNodeContext.assignInnerObject(o, mockContext);

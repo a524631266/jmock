@@ -30,15 +30,18 @@ public class NodeParser {
     /**
      * 根据当前的类，获取fieldTokens
      *
-     * @param cClass
-     * @param currentField
+     * @param cClass 类信息
+     * @param currentField 当前 field
      * @param pojoTokenMap 一般是通过 pojo的方式注入的
-     * @return
+     * @return 返回field对应的node
      */
-    public FieldNode initNodeTree(Class<?> cClass, Field currentField, Map<String, FieldToken> pojoTokenMap) {
-        // 1.获取当前的currentFieldToken
+    public FieldNode initNodeTree(Class<?> cClass,
+                                  Field currentField,
+                                  Map<String, FieldToken> pojoTokenMap,
+                                  Integer deep) {
+        // 1.获取当前的currentFieldToken。
         FieldToken currentBasicToken = getCurrentBasicToken(cClass, currentField);
-        // 根据优先级，融合merge
+        // 根据优先级，融合merge ，场景是出现在主类中
         FieldToken mergedBasicToken = mergePojoToken(currentField, currentBasicToken, pojoTokenMap);
         // 2. 获取innercurrnetToken，一般是在Contain中（id，为列名）
         Map<String, FieldToken> innerPojoTokens = getInnerPojoTokens(currentField, pojoTokenMap);
@@ -47,20 +50,20 @@ public class NodeParser {
         mergePojoTokens(innerPojoTokens, pojoTokens);
 
         FieldToken innerBasicToken = getInnerBasicToken(currentField);
-        FieldNode parent = initParentNode(cClass, currentField, mergedBasicToken, innerPojoTokens, innerBasicToken);
+        FieldNode currentNode = initParentNode(cClass, currentField, mergedBasicToken, innerPojoTokens, innerBasicToken, deep);
         // 如果是内置类型，就停止直接返回节点
-        if (parent.isInnerType()) {
-            return parent;
+        if (currentNode.isInnerType()) {
+            return currentNode;
         }
         // 获取所有fields 包含父类
         Field[] declaredFields = getAllDeclaredFields(cClass);
         for (Field declaredField : declaredFields) {
             if(!canEscapeField(declaredField)){
-                FieldNode node = initNodeTree(declaredField.getType(), declaredField, innerPojoTokens);
-                parent.addChild(node);
+                FieldNode node = initNodeTree(declaredField.getType(), declaredField, innerPojoTokens, deep + 1);
+                currentNode.addChild(node);
             }
         }
-        return parent;
+        return currentNode;
     }
 
     private boolean canEscapeField(Field declaredField) {
@@ -134,14 +137,15 @@ public class NodeParser {
                                      Field currentField,
                                      FieldToken currentFieldToken,
                                      Map<String, FieldToken> innerPojoTokens,
-                                     FieldToken innerBasicToken) {
+                                     FieldToken innerBasicToken,
+                                     Integer deep) {
         return new FieldNode(
                 cClass,
                 currentField,
                 currentFieldToken,
                 innerPojoTokens,
                 innerBasicToken,
-                executorStore);
+                executorStore, deep);
     }
 
 

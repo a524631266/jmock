@@ -31,15 +31,17 @@ public class ArrayRandomExecutor<T> extends AbstractRandomExecutor {
     public Rule getDefaultRule() {
         return defaultRule;
     }
+
     @Override
     protected Object convertToCurrentType(FieldNode fieldNodeContext, Object result) {
         return BasicType.transWrapperArrayToBasicArray(
                 fieldNodeContext.getType().getComponentType(),
                 (Object[]) result);
     }
+
     @Override
     public Rule getRule(FieldToken fieldToken) {
-        if(fieldToken == null) {
+        if (fieldToken == null) {
             return defaultRule;
         }
         return new DefaultArrayRule(fieldToken);
@@ -53,21 +55,21 @@ public class ArrayRandomExecutor<T> extends AbstractRandomExecutor {
 
     /**
      * 根据解析规则 name中的range进行匹配
-     *
+     * <p>
      * 1.'name|1': array
-     *
+     * <p>
      * 从属性值 array 中随机选取 1 个元素，作为最终值。
-     *
+     * <p>
      * 2. 'name|+1': array
-     *
+     * <p>
      * 从属性值 array 中顺序选取 1 个元素，作为最终值。
-     *
+     * <p>
      * 3. 'name|min-max': array
-     *
+     * <p>
      * 通过重复属性值 array 生成一个新数组，重复次数大于等于 min，小于等于 max。
-     *
+     * <p>
      * 4. 'name|count': array
-     *
+     * <p>
      * 通过重复属性值 array 生成一个新数组，重复次数为 count。
      */
     public class DefaultArrayRule implements Rule<Object[]> {
@@ -86,33 +88,33 @@ public class ArrayRandomExecutor<T> extends AbstractRandomExecutor {
         public Object[] apply(MockContext mockContext, FieldNode fieldNodeContext) {
 //            assert(fieldNodeContext.getCurrentTokenInfo() == fieldToken);
             // 当前的list类型
-            if(!fieldNodeContext.isArray()){
+            if (!fieldNodeContext.isArray()) {
                 throw new IllegalArgumentException("must be array");
             }
             Class<?> componentType = fieldNodeContext.getComponentType();
 
             // 元素数量
-            int elementNum =fieldToken.getCount() == 0
-                    ? RandomUtil.getMin2Max(fieldToken.getMin(),fieldToken.getMax())
-                    :fieldToken.getCount();
+            int elementNum = fieldToken.getCount() == 0
+                    ? RandomUtil.getMin2Max(fieldToken.getMin(), fieldToken.getMax())
+                    : fieldToken.getCount();
             // 基本数据类型不能转化为Object[]
             // 在数组中没有
             Object[] o = (Object[]) Array.newInstance(
                     BasicType.primitiveToWarpper(componentType), elementNum);
-            if(fieldNodeContext.getCurrentTokenInfo() != null
-                    && fieldNodeContext.getCurrentTokenInfo().getStep()>0
-                    && fieldNodeContext.getCurrentTokenInfo().getValue().length>0
-                    ){
+            if (fieldNodeContext.getCurrentTokenInfo() != null
+                    && fieldNodeContext.getCurrentTokenInfo().getStep() > 0
+                    && fieldNodeContext.getCurrentTokenInfo().getValue().length > 0
+            ) {
                 int step = fieldNodeContext.getCurrentTokenInfo().getStep();
                 String[] value = fieldNodeContext.getCurrentTokenInfo().getValue();
                 int valueLength = value.length;
                 int count = 0;
                 for (int i = 0; i < elementNum; i++) {
-                    o[i] = value[(count)  % valueLength];
-                    count+= step;
+                    o[i] = value[(count) % valueLength];
+                    count += step;
                 }
                 return o;
-            }else {
+            } else {
 
                 RandomType executor = mockContext.getExecutor(componentType);
                 for (int i = 0; i < elementNum; i++) {
@@ -123,7 +125,11 @@ public class ArrayRandomExecutor<T> extends AbstractRandomExecutor {
                                 .apply(mockContext, componentContext);
                     } else {
                         // componentType =  POJO Type
-                        o[i] = mockContext.mock(componentType, fieldNodeContext.getDeclaredField(), fieldNodeContext.getInnerPojoTokens());
+                        o[i] = mockContext.mock(
+                                componentType,
+                                fieldNodeContext.getDeclaredField(),
+                                fieldNodeContext.getInnerPojoTokens(),
+                                fieldNodeContext.getDeep());
 //                        fieldNodeContext.assignInnerObject(o[i], mockContext);
 //                        o[i] = mockContext.mockWithContext(componentType, fieldNodeContext);
                     }

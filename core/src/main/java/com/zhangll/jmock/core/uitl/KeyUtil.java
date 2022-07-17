@@ -13,25 +13,32 @@ public class KeyUtil {
      * @param field 其中一个
      * @return com.zhangll.flink.Father#sonsNameList1
      */
-    public static String generateKey(Class cls, Field field){
+    public static String generateKey(Class<?> cls, Field field){
         if (field ==null) {
             return cls.getName();
         }
         return cls.getName() +"#"+ field.getName();
     }
-    public static String generateKey(Class cls, PojoTokenInfo pojoTokenInfo){
+    public static String generateKey(Class<?> cls, PojoTokenInfo pojoTokenInfo){
         if ("".equals(pojoTokenInfo.id())) {
             return cls.getName();
         }
         return cls.getName() +"#"+ pojoTokenInfo.id();
     }
 
-    public static String generateKey(Class cls, PojoTokenInfo pojoTokenInfo, String fieldName){
+    public static String generateKey(Class<?> cls, PojoTokenInfo pojoTokenInfo, String fieldName){
         String className = "";
         if ((className= pojoTokenInfo.id()).equals("")) {
             className = cls.getName();
         }
         return className + pojoTokenInfo.id() + fieldName;
+    }
+
+    public static String generateKey(Class<?> cls, Field field, Integer deep){
+        if (field ==null) {
+            return cls.getName();
+        }
+        return cls.getName() +"#"+ field.getName() + "#" +deep;
     }
 
 }

@@ -39,7 +39,7 @@ public abstract class MockContext {
         if(cClass == null){
             return null;
         }
-        return (T) this.mock(cClass, null, null);
+        return (T) this.mock(cClass, null, null, 0);
     }
 
     /**
@@ -48,29 +48,35 @@ public abstract class MockContext {
      * @param innerPojoTokens
      * @return
      */
-    private FieldNode initMappingStore(Class<?> cClass, Field containerField, Map<String, FieldToken> innerPojoTokens) {
+    private FieldNode initMappingStore(Class<?> cClass,
+                                       Field containerField,
+                                       Map<String, FieldToken> innerPojoTokens,
+                                       Integer deep) {
         FieldNode root = null;
-        if((root = mappingStore.getFieldNode(cClass ,containerField ))==null){
-            root = nodeParser.initNodeTree(cClass, null, innerPojoTokens);
-            mappingStore.setNodeMap(cClass, containerField, root);
+        // 缓存
+        if((root = mappingStore.getFieldNode(cClass ,containerField , deep))==null){
+            root = nodeParser.initNodeTree(cClass, null, innerPojoTokens ,deep);
+            // 设置内容
+            mappingStore.setNodeMap(cClass, containerField, root, deep);
         }
         return root;
     }
 
     /**
-     * 创建一个空对象
+     * 创建一个空对象.
+     * 初始化一个半成品bean对象
      * @param cClass
      * @param root
      * @param pojoTokens
      * @return
      */
-    protected Object createObject(Class<?> cClass, FieldNode root, Map<String, FieldToken> pojoTokens) {
+    protected Object createInstance(Class<?> cClass, FieldNode root, Map<String, FieldToken> pojoTokens) {
         Object resource = null;
         try {
 //            resource = root.getType().newInstance();
 //            resource = cClass.newInstance();
             // 一般使用默认的构造器构造方法
-            resource = getInnerClassObject(cClass, root, pojoTokens);
+//            resource = getInnerClassObject(cClass, root, pojoTokens);
             if(resource == null){
                 Constructor<?>[] declaredConstructors = cClass.getDeclaredConstructors();
                 for (Constructor<?> declaredConstructor : declaredConstructors) {
@@ -103,21 +109,21 @@ public abstract class MockContext {
      * @param pojoTokens
      * @return
      */
-    private Object getInnerClassObject(Class<?> cClass, FieldNode root, Map<String, FieldToken> pojoTokens) throws IllegalAccessException, InvocationTargetException, InstantiationException {
-        Class<?> enclosingClass = cClass.getEnclosingClass();
-        if (enclosingClass != null) {
-            // 单个对象. 这里如何判断是否停止mock,是根据什么来判断
-//            Object enCloseObject = createObject(enclosingClass, root, pojoTokens);
-            // container对象
-            Object enCloseObject = mock(enclosingClass, root==null || root.getParent() == null? null: root.getParent().getDeclaredField(), pojoTokens);
-            Constructor<?> constructor = cClass.getDeclaredConstructors()[0];
-            constructor.setAccessible(true);
-            if(constructor != null){
-                return constructor.newInstance(enCloseObject);
-            }
-        }
-        return null;
-    }
+//    private Object getInnerClassObject(Class<?> cClass, FieldNode root, Map<String, FieldToken> pojoTokens) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+//        Class<?> enclosingClass = cClass.getEnclosingClass();
+//        if (enclosingClass != null) {
+//            // 单个对象. 这里如何判断是否停止mock,是根据什么来判断
+////            Object enCloseObject = createObject(enclosingClass, root, pojoTokens);
+//            // container对象
+//            Object enCloseObject = mock(enclosingClass, root==null || root.getParent() == null? null: root.getParent().getDeclaredField(), pojoTokens);
+//            Constructor<?> constructor = cClass.getDeclaredConstructors()[0];
+//            constructor.setAccessible(true);
+//            if(constructor != null){
+//                return constructor.newInstance(enCloseObject);
+//            }
+//        }
+//        return null;
+//    }
 
     /**
      * 给 target 赋值 field,
@@ -139,7 +145,7 @@ public abstract class MockContext {
         return target;
     }
 
-    public RandomType getExecutor(Class cClass){
+    public RandomType getExecutor(Class<?> cClass){
         RandomType executor = executorStore.getExecutor(cClass);
         return executor;
     }
@@ -152,20 +158,19 @@ public abstract class MockContext {
      * @param pojoTokens     映射, 一般是所属类名
      * @return
      */
-    public Object mock(Class<?> cClass, Field containerField, Map<String, FieldToken> pojoTokens) {
+    public Object mock(Class<?> cClass, Field containerField, Map<String, FieldToken> pojoTokens, Integer deep) {
         if(cClass == null){
             return null;
         }
-        FieldNode root = null;
         // 1.初始化 root
-        root = initMappingStore(cClass, containerField, pojoTokens);
+        FieldNode root = initMappingStore(cClass, containerField, pojoTokens, deep);
         // 1. 创建一个对象,不过这个对象是
-        Object resource = createObject(cClass, root, pojoTokens);
+        Object resource = createInstance(cClass, root, pojoTokens);
         return doObjectBindField(resource, root);
     }
 
-    public Object mockWithContext(Class currentClass, FieldNode fieldNode){
-        Object object = createObject(currentClass, fieldNode, null);
+    public Object mockWithContext(Class<?> currentClass, FieldNode fieldNode){
+        Object object = createInstance(currentClass, fieldNode, null);
         return doObjectBindField(object, fieldNode);
     };
 

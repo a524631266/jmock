@@ -354,7 +354,7 @@ public class RandomTest {
         );
         Field sonsNameList = Father.class.getDeclaredField("sonsNameList");
         for (int i = 0; i < 200; i++) {
-            List object = (List) rule.apply(mockContext, getFieldNodeContext(sonsNameList));
+            List object = (List) rule.apply(mockContext, getFieldNodeContext(sonsNameList, 0));
 //            System.out.println(object);
             assertTrue( object.size() == count);
         }
@@ -371,7 +371,7 @@ public class RandomTest {
         Field field = Father.class.getDeclaredField("sonsAgeList");
 
         for (int i = 0; i < 200; i++) {
-            List object = (List) rule.apply(mockContext, getFieldNodeContext(field));
+            List object = (List) rule.apply(mockContext, getFieldNodeContext(field, 0));
 //            System.out.println(object);
             assertTrue( object.size() == count);
         }
@@ -388,7 +388,7 @@ public class RandomTest {
         int count = 10;
         Field field = Father.class.getDeclaredField("sonsNameList");
         for (int i = 0; i < 200; i++) {
-            List object = (List) rule.apply(mockContext, getFieldNodeContext(field));
+            List object = (List) rule.apply(mockContext, getFieldNodeContext(field, 0));
 //            System.out.println(object);
             assertTrue( object.size() == count);
         }
@@ -404,7 +404,7 @@ public class RandomTest {
         int count = 10;
         Field field = Father.class.getDeclaredField("sonsMoneyList");
         for (int i = 0; i < 200; i++) {
-            List object = (List) rule.apply(mockContext, getFieldNodeContext(field));
+            List object = (List) rule.apply(mockContext, getFieldNodeContext(field, 0));
 //            System.out.println(object);
             assertTrue( object.size() == count);
         }
@@ -420,14 +420,14 @@ public class RandomTest {
         int count = 10;
         Field field = Father.class.getDeclaredField("sonsLongList");
         for (int i = 0; i < 200; i++) {
-            List object = (List) rule.apply(mockContext, getFieldNodeContext(field));
+            List object = (List) rule.apply(mockContext, getFieldNodeContext(field, 0));
 //            System.out.println(object);
             assertTrue( object.size() == count);
         }
     }
 
-    private FieldNode getFieldNodeContext(Field field) {
-        FieldNode fieldNode = nodeParser.initNodeTree(field.getType(),field, pojoToken);
+    private FieldNode getFieldNodeContext(Field field, Integer deep) {
+        FieldNode fieldNode = nodeParser.initNodeTree(field.getType(),field, pojoToken, deep);
         return fieldNode;
     }
 
@@ -454,7 +454,7 @@ public class RandomTest {
         int count = 10;
         Field field = Father.class.getDeclaredField("sonsMoneyList");
         for (int i = 0; i < 200; i++) {
-            List object = (List) rule.apply(mockContext, getFieldNodeContext(field));
+            List object = (List) rule.apply(mockContext, getFieldNodeContext(field, 0));
 //            System.out.println(object);
             assertTrue( object.size() == count);
         }

@@ -12,20 +12,20 @@ import java.util.Map;
  * 用来存储被设置过的 key 与 mapping 映射
  */
 public class MappingStore {
-    private Map<String , FieldNode> nodeMap = new HashMap<>();
+    private final Map<String , FieldNode> nodeMap = new HashMap<>();
 
     public void setNodeMap(String key, FieldNode node) {
         this.nodeMap.put(key, node);
     }
 
-    public void setNodeMap(Class cls, Field field, FieldNode node) {
+    public void setNodeMap(Class<?> cls, Field field, FieldNode node, Integer deep) {
 
-        setNodeMap(KeyUtil.generateKey(cls, field), node);
+        setNodeMap(KeyUtil.generateKey(cls, field, deep), node);
     }
 
     /**
      * 返回不可变对象
-     * @return
+     * @return 返回一个map， key：string 类型，node位map
      */
     public Map<String, FieldNode> getNodeMap() {
         return Collections.unmodifiableMap(nodeMap);
@@ -33,16 +33,15 @@ public class MappingStore {
 
     /**
      * 根据key返回对象
-     * @param key
-     * @return
+     * @param key 查询的key
+     * @return 返回node
      */
     public FieldNode getFieldNode(String key) {
-        FieldNode orDefault = nodeMap.getOrDefault(key, null);
-        return orDefault;
+        return nodeMap.getOrDefault(key, null);
     }
 
-    public FieldNode getFieldNode(Class cls, Field field) {
-        return getFieldNode(KeyUtil.generateKey(cls, field));
+    public FieldNode getFieldNode(Class<?> cls, Field field, Integer deep) {
+        return getFieldNode(KeyUtil.generateKey(cls, field, deep));
     }
 
 }

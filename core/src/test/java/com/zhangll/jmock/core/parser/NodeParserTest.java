@@ -104,7 +104,7 @@ public class NodeParserTest {
 
     @Test
     public void testParseClass(){
-        FieldNode node = nodeParser.initNodeTree(Father.class, null, pojoTokenMap);
+        FieldNode node = nodeParser.initNodeTree(Father.class, null, pojoTokenMap, 0);
         System.out.println(node);
     }
 

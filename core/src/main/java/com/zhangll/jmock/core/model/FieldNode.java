@@ -24,10 +24,15 @@ import java.util.Map;
  * 1.
  */
 public class FieldNode implements ASTNode{
-    final Class currentClass;
+    final Class<?> currentClass;
     final boolean isInnerType;
     private final RandomType executor;
     private final ExecutorStore executorStore;
+
+    /**
+     * 当前深度，从root = 0开始
+     */
+    private final Integer deep;
 //    private Map<String, FieldToken> fieldTokens = new HashMap<>();
     /**
      * 默认为null
@@ -70,7 +75,8 @@ public class FieldNode implements ASTNode{
     public FieldNode(Class currentClass, Field field,
                      FieldToken currentTokenInfo,
                      Map<String, FieldToken> innerPojoTokens,
-                     FieldToken innerBasicTokens, ExecutorStore executorStore) {
+                     FieldToken innerBasicTokens, ExecutorStore executorStore,
+                     Integer deep) {
         this.currentClass = currentClass;
         this.executorStore = executorStore;
         this.executor = executorStore.getExecutor(currentClass);
@@ -95,6 +101,7 @@ public class FieldNode implements ASTNode{
         }else{
             this.stepState = new StepState(0, currentTokenInfo.getStep());
         }
+        this.deep = deep;
     }
 
 
@@ -159,7 +166,8 @@ public class FieldNode implements ASTNode{
                     this.innerBasicTokens,
                     null,
                     null,
-                    this.executorStore
+                    this.executorStore,
+                    this.deep
                     );
             result.add(node);
         }
@@ -174,7 +182,8 @@ public class FieldNode implements ASTNode{
                 this.innerBasicTokens,
                 null,
                 null,
-                this.executorStore
+                this.executorStore,
+                this.getDeep()
         );
         return node;
     }
@@ -283,5 +292,9 @@ public class FieldNode implements ASTNode{
             // 每次刷新都会更新一下进度，进度为 默认+2操作
             progress += step;
         }
+    }
+
+    public Integer getDeep() {
+        return deep;
     }
 }
