@@ -1,5 +1,6 @@
 package com.zhangll.jmock.core.student;
 
+import com.zhangll.jmock.core.annotation.BasicTokenInfo;
 import lombok.Data;
 
 import java.util.Date;
@@ -20,10 +21,11 @@ public class StudentSelfCard {
     /**
      * 籍贯
      */
-    private Integer native_;
+    private String native_;
     /**
      * 发证日期
      */
+    @BasicTokenInfo(min = "2022-01-15 00:10:20" , max = "2022-01-20 00:10:20", step = "2")
     private Date issueDate;
     /**
      * 失效日期

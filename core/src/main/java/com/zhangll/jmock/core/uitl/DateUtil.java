@@ -29,6 +29,8 @@ public class DateUtil {
             return TimeFormat;
         }else if(cClass == Timestamp.class){
             return TimestampFormat;
+        } else if(cClass == java.util.Date.class){
+            return TimestampFormat;
         }
         return null;
     }
@@ -36,7 +38,8 @@ public class DateUtil {
     public static boolean isSqlTime(Class cClass){
         return cClass == Date.class
                 | cClass == Time.class
-                | cClass == Timestamp.class;
+                | cClass == Timestamp.class
+                | cClass == java.util.Date.class;
     }
 
     public static long getBase(Class cClass) {
