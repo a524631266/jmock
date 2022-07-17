@@ -6,6 +6,7 @@ import com.zhangll.jmock.core.model.FieldNode;
 import com.zhangll.jmock.core.model.FieldToken;
 import com.zhangll.jmock.core.random.ExecutorStore;
 import com.zhangll.jmock.core.uitl.DateUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -20,6 +21,7 @@ import java.util.*;
  * 3. 默认选项
  * @author zhangll
  */
+@Slf4j
 public class NodeParser {
     protected final ExecutorStore executorStore;
 
@@ -55,6 +57,7 @@ public class NodeParser {
         if (currentNode.isInnerType()) {
             return currentNode;
         }
+        log.debug("class field : {} is not InnerType", currentField);
         // 获取所有fields 包含父类
         Field[] declaredFields = getAllDeclaredFields(cClass);
         for (Field declaredField : declaredFields) {

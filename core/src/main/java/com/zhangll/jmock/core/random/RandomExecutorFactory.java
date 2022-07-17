@@ -32,6 +32,8 @@ public class RandomExecutorFactory {
         randomMap.put(Time.class, new SqlTimeSimpleRandomExecutor(Time.class));
         randomMap.put(Timestamp.class, new SqlTimeSimpleRandomExecutor(Timestamp.class));
         randomMap.put(Array.class, new ArrayRandomExecutor<>());
+        // 支持 Date类型数据。
+        randomMap.put(java.util.Date.class, new JavaDateRandomExecutor(java.util.Date.class));
     }
 
     public static RandomType getRandom(Class type) {
